@@ -25,3 +25,13 @@ In `experts/`, the provided expert policies are:
 * Walker2d-v2.pkl
 
 The name of the pickle file corresponds to the name of the gym environment.
+
+## 1. installation
+
+* Guidline - https://github.com/openai/mujoco-py/blob/master/README.md#requirements  
+* Installation steps
+```bash
+mkdir ~/.mujoco
+mv <your folder> ~/.mujoco/mjpro150
+put mjkey.txt into ~/.mujoco/mjkey.txt
+```
