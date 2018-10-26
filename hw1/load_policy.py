@@ -14,7 +14,6 @@ def load_policy(filename):
     assert set(policy_params.keys()) == {'logstdevs_1_Da', 'hidden', 'obsnorm', 'out'}
 
     # Keep track of input and output dims (i.e. observation and action dims) for the user
-
     def build_policy(obs_bo):
         def read_layer(l):
             assert list(l.keys()) == ['AffineLayer']

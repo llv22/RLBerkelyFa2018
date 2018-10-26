@@ -88,10 +88,10 @@ def make_session(num_cpu):
 
 ALREADY_INITIALIZED = set()
 def initialize():
-    # About current variables to avoid warning : "Please use tf.global_variables instead."
+    # 1. About current variables to avoid warning : "Please use tf.global_variables instead."
     # new_variables = set(tf.all_variables()) - ALREADY_INITIALIZED
     new_variables = set(tf.global_variables()) - ALREADY_INITIALIZED
-    # About current variables to avoid warning : "Use `tf.variables_initializer` instead."
+    # 2. About current variables to avoid warning : "Use `tf.variables_initializer` instead."
     # get_session().run(tf.initialize_variables(new_variables))
     get_session().run(tf.variables_initializer(new_variables))
     ALREADY_INITIALIZED.update(new_variables)

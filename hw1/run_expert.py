@@ -50,6 +50,7 @@ def main():
             totalr = 0.
             steps = 0
             while not done:
+                # trajectory sampling
                 action = policy_fn(obs[None,:])
                 observations.append(obs)
                 actions.append(action)
