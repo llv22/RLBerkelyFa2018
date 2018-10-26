@@ -26,7 +26,8 @@ In `experts/`, the provided expert policies are:
 
 The name of the pickle file corresponds to the name of the gym environment.
 
-## 1. installation
+## Assignment
+### 1. Installation
 
 * Guidline - https://github.com/openai/mujoco-py/blob/master/README.md#requirements  
 * Installation steps
@@ -35,3 +36,19 @@ mkdir ~/.mujoco
 mv <your folder> ~/.mujoco/mjpro150
 put mjkey.txt into ~/.mujoco/mjkey.txt
 ```
+
+### 2. Exercise
+#### 2.1 [Section 2] Behavior Cloning
+```bash
+python run_expert.py experts/Hopper-v2.pkl Hopper-v2 --render --num_rollouts 1
+```
+Performance Cost:
+1. mean return 3781.212325396108
+2. std of return 0.0
+
+```bash
+python run_expert.py experts/Hopper-v2.pkl Hopper-v2 --render --num_rollouts 20
+```
+Performance Cost:
+1. mean return 3778.1261029261864
+2. std of return 3.5304729743473184
