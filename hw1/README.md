@@ -44,5 +44,5 @@ put mjkey.txt into ~/.mujoco/mjkey.txt
 python run_expert.py experts/Hopper-v2.pkl Hopper-v2 --render --num_rollouts 1
 ```
 Reward performance analysis:
-1. average reward return $\frac{\sum_{t} r_{t}}{T}$ = 3781.212325396108, suppose $\left\lVert t \right\rVert = T$
-2. std of reward return $\sigma(r_{t})$ = 0.0
+1. average reward: $\frac{\sum_{t} r_{t}}{T}$ = 3781.212325396108, suppose $\left\lVert t \right\rVert = T$
+2. standard deviation of reward: $\sigma(r_{t})$ = 0.0
