@@ -26,13 +26,13 @@ def main():
     parser.add_argument("--max_timesteps", type=int)
     parser.add_argument('--num_rollouts', type=int, default=20, help='Number of expert roll outs')
     args = parser.parse_args()
-
-    # expert data dir
     expert_data_dir = args.expert_data
+
     print('loading and building expert policy')
     policy_fn = load_policy.load_policy(args.expert_policy_file)
     print('loaded and built')
 
+    ## 1, run expert policy to generate roll-outs
     with tf.Session():
         tf_util.initialize()
 

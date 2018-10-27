@@ -225,6 +225,8 @@ def function(inputs, outputs, updates=None, givens=None):
         return lambda *inputs : f(*inputs)[0]
 
 class _Function(object):
+    """ _Function class to convert tf.tensor to implicit object, which could be use to call function of tf.Tensor.
+    """
     def __init__(self, inputs, outputs, updates, givens, check_nan=False):
         assert all(len(i.op.inputs)==0 for i in inputs), "inputs should all be placeholders"
         self.inputs = inputs
@@ -234,6 +236,14 @@ class _Function(object):
         self.givens = {} if givens is None else givens
         self.check_nan = check_nan
     def __call__(self, *inputvals):
+        """[__call__() directly invoke session().run() for output of graphic]
+        
+        Raises:
+            RuntimeError -- [runtime exception for get the result as nan]
+        
+        Returns:
+            [action tf.Tensor] -- [pi(At|Ot) output action]
+        """
         assert len(inputvals) == len(self.inputs)
         feed_dict = dict(zip(self.inputs, inputvals))
         feed_dict.update(self.givens)

@@ -39,16 +39,10 @@ put mjkey.txt into ~/.mujoco/mjkey.txt
 
 ### 2. Exercise
 #### 2.1 [Section 2] Behavior Cloning
+* Generation of expert behaviors $o_t$ and $a_t$
 ```bash
 python run_expert.py experts/Hopper-v2.pkl Hopper-v2 --render --num_rollouts 1
 ```
 Performance Cost:
 1. mean return 3781.212325396108
 2. std of return 0.0
-
-```bash
-python run_expert.py experts/Hopper-v2.pkl Hopper-v2 --render --num_rollouts 20
-```
-Performance Cost:
-1. mean return 3778.1261029261864
-2. std of return 3.5304729743473184
