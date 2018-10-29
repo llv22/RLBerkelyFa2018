@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: (run_expert)",
+            "name": "Python: (Hopper-v2)",
             "type": "python",
             "request": "launch",
             "program": "/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw1/run_expert.py",
@@ -15,6 +15,25 @@
             "args": [
                 "hw1/experts/Hopper-v2.pkl",
                 "Hopper-v2",
+                "--render",
+                "--num_rollouts",
+                "1",
+                "--expert_data",
+                "hw1/expert_data"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: (HalfCheetah-v2)",
+            "type": "python",
+            "request": "launch",
+            "program": "/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw1/run_expert.py",
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-10.0/lib:/usr/local/nccl/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
+            },
+            "args": [
+                "hw1/experts/HalfCheetah-v2.pkl",
+                "HalfCheetah-v2",
                 "--render",
                 "--num_rollouts",
                 "1",
