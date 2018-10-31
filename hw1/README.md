@@ -234,3 +234,12 @@ function [bc_policy_estimate] in 266.3633 s
 ```bash
 python run_expert.py experts/Humanoid-v2.pkl Humanoid-v2 --num_rollouts 50 --only_expert_generate 2
 ```
+time 1: 
+mean return 10267.833819902753
+std of return 778.7349450080611
+function [dagger_policy_estimate] in 6001.7666 s
+
+time 2: 
+mean return 10377.02161569598
+std of return 61.91716123687015
+function [dagger_policy_estimate] in 6263.4127 s
