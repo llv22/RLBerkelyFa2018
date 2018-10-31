@@ -90,3 +90,6 @@ ENV/
 
 # generate expert data
 hw1/expert_data/
+
+# macOS local cache
+.DS_Store

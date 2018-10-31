@@ -15,11 +15,12 @@
             "args": [
                 "hw1/experts/Hopper-v2.pkl",
                 "Hopper-v2",
-                "--render",
                 "--num_rollouts",
                 "1",
                 "--expert_data",
-                "hw1/expert_data"
+                "hw1/expert_data",
+                "--only_expert_generate",
+                "1"
             ],
             "console": "integratedTerminal"
         },
