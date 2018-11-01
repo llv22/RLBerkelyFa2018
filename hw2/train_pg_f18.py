@@ -99,14 +99,14 @@ class Agent(object):
                 sy_ac_na: placeholder for actions
                 sy_adv_n: placeholder for advantages
         """
-        raise NotImplementedError
+        # raise NotImplementedError
         sy_ob_no = tf.placeholder(shape=[None, self.ob_dim], name="ob", dtype=tf.float32)
         if self.discrete:
             sy_ac_na = tf.placeholder(shape=[None], name="ac", dtype=tf.int32) 
         else:
             sy_ac_na = tf.placeholder(shape=[None, self.ac_dim], name="ac", dtype=tf.float32) 
-        # YOUR CODE HERE
-        sy_adv_n = None
+        # YOUR CODE HERE - 4. Problem 2(b)(i)
+        sy_adv_n = tf.placeholder(shape=[None, self.ob_dim, self.ac_dim], name='adv', dtype=tf.float32)
         return sy_ob_no, sy_ac_na, sy_adv_n
 
 
@@ -138,15 +138,16 @@ class Agent(object):
                 Pass in self.n_layers for the 'n_layers' argument, and
                 pass in self.size for the 'size' argument.
         """
-        raise NotImplementedError
+        # raise NotImplementedError
         if self.discrete:
-            # YOUR_CODE_HERE
-            sy_logits_na = None
+            # YOUR_CODE_HERE - 4. Problem 2(b)(ii)
+            # shape (batch_size, self.ac_dim), not via logits
+            sy_logits_na = build_mlp(sy_ob_no, self.ac_dim, "discrete_mlp", self.n_layers, self.size, output_activation=tf.nn.relu)
             return sy_logits_na
         else:
-            # YOUR_CODE_HERE
-            sy_mean = None
-            sy_logstd = None
+            # YOUR_CODE_HERE - 4. Problem 2(b)(ii)
+            sy_mean = build_mlp(sy_ob_no, self.ac_dim, "continuous_mlp", self.n_layers, self.size, outoutput_activation=tf.nn.relu)
+            sy_logstd = tf.get_variable(shape=[self.ac_dim,], dtype=tf.float32, name="sy_logstd")
             return (sy_mean, sy_logstd)
 
     #========================================================================================#
@@ -176,15 +177,18 @@ class Agent(object):
         
                  This reduces the problem to just sampling z. (Hint: use tf.random_normal!)
         """
-        raise NotImplementedError
+        # raise NotImplementedError
         if self.discrete:
             sy_logits_na = policy_parameters
-            # YOUR_CODE_HERE
-            sy_sampled_ac = None
+            # YOUR_CODE_HERE - 4. Problem 2(b)(iii)
+            ## Deterministic sample action will lead to the same sampled_ac, add some noise for sampled action
+            # sy_sampled_ac = tf.argmax(sy_logits_na, axis=-1)
+            # [Learn] Use tf.multinomial to generate (batch_size, 1), then to use tf.squeence tp remove the last dimension to shape (batch_size,)
+            sy_sampled_ac = tf.squeence(tf.multinomial(sy_logits_na, 1), axis=-1)
         else:
             sy_mean, sy_logstd = policy_parameters
-            # YOUR_CODE_HERE
-            sy_sampled_ac = None
+            # YOUR_CODE_HERE - 4. Problem 2(b)(iii) via boardcasting of tf.exp(sy_logstd) from (self.ac_dim,) to (batch_size, self.ac_dim)
+            sy_sampled_ac = sy_mean + tf.exp(sy_logstd) * tf.random_normal(tf.shape(sy_mean))
         return sy_sampled_ac
 
     #========================================================================================#
@@ -213,14 +217,15 @@ class Agent(object):
                 For the discrete case, use the log probability under a categorical distribution.
                 For the continuous case, use the log probability under a multivariate gaussian.
         """
-        raise NotImplementedError
+        # raise NotImplementedError
         if self.discrete:
             sy_logits_na = policy_parameters
-            # YOUR_CODE_HERE
-            sy_logprob_n = None
+            # YOUR_CODE_HERE - 4. Problem 2(b)(iv)
+            ## Difference between sparse_softmax_cross_entropy_with_logits and softmax_cross_entropy_with_logits,  refer to https://stackoverflow.com/questions/37312421/whats-the-difference-between-sparse-softmax-cross-entropy-with-logits-and-softm
+            # tf.shape(sy_ac_na) = (batch_size,), tf.shape(sy_logits_na) = (batch_size, self.ac_dim)
         else:
             sy_mean, sy_logstd = policy_parameters
-            # YOUR_CODE_HERE
+            # YOUR_CODE_HERE - 4. Problem 2(b)(iv)
             sy_logprob_n = None
         return sy_logprob_n
 
