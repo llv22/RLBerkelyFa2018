@@ -106,7 +106,9 @@ class Agent(object):
         else:
             sy_ac_na = tf.placeholder(shape=[None, self.ac_dim], name="ac", dtype=tf.float32) 
         # YOUR CODE HERE - 4. Problem 2(b)(i)
-        sy_adv_n = tf.placeholder(shape=[None, self.ob_dim, self.ac_dim], name='adv', dtype=tf.float32)
+        # sy_adv_n.shape = batch_size, only for Q(i,t) for samples
+        # refer to https://github.com/Kelym/DeepRL-UCB2017-Homework/blob/master/hw2/train_pg.py 
+        sy_adv_n = tf.placeholder(shape=[None], name='adv', dtype=tf.float32)
         return sy_ob_no, sy_ac_na, sy_adv_n
 
 
@@ -223,10 +225,17 @@ class Agent(object):
             # YOUR_CODE_HERE - 4. Problem 2(b)(iv)
             ## Difference between sparse_softmax_cross_entropy_with_logits and softmax_cross_entropy_with_logits,  refer to https://stackoverflow.com/questions/37312421/whats-the-difference-between-sparse-softmax-cross-entropy-with-logits-and-softm
             # tf.shape(sy_ac_na) = (batch_size,), tf.shape(sy_logits_na) = (batch_size, self.ac_dim)
+            sy_logprob_n = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=sy_ac_na, logits=sy_logits_na)
         else:
             sy_mean, sy_logstd = policy_parameters
             # YOUR_CODE_HERE - 4. Problem 2(b)(iv)
-            sy_logprob_n = None
+            ## Multivariate Nominal in tensorflow, refer to https://www.tensorflow.org/versions/r1.10/api_docs/python/tf/contrib/distributions/MultivariateNormalDiag
+            tfd = tf.contrib.distributions
+            ## Hint: Use the log probability under a multivariate gaussian.
+            # Learned from github.com/mwhittaker
+            ## [Learn] Do the negate here works; 
+            #  Do it in loss / weighted_negative_likelihood not work.
+            sy_logprob_n = tfd.MultivariateNormalDiag(loc=sy_mean, scale_diag=sy_logstd).log_prob(sy_ac_na)
         return sy_logprob_n
 
     def build_computation_graph(self):
@@ -267,7 +276,9 @@ class Agent(object):
         #                           ----------PROBLEM 2----------
         # Loss Function and Training Operation
         #========================================================================================#
-        loss = None # YOUR CODE HERE
+        ## YOUR CODE HERE - 4. Problem 2(b)(v)
+        # element-wise multiply for logpro_n and adv_n by position, Q: how to select out adv_n
+        loss = tf.reduce_mean(self.sy_logprob_n * self.sy_adv_n)
         self.update_op = tf.train.AdamOptimizer(self.learning_rate).minimize(loss)
 
         #========================================================================================#
@@ -315,8 +326,9 @@ class Agent(object):
             #====================================================================================#
             #                           ----------PROBLEM 3----------
             #====================================================================================#
-            raise NotImplementedError
-            ac = None # YOUR CODE HERE
+            # raise NotImplementedError
+            ## YOUR CODE HERE - 5. Problem 3.1
+            ac = self.sess.run(self.sy_sampled_ac)
             ac = ac[0]
             acs.append(ac)
             ob, rew, done, _ = env.step(ac)
