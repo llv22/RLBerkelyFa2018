@@ -41,8 +41,8 @@ def build_mlp(input_placeholder, output_size, scope, n_layers, size, activation=
     with tf.variable_scope(scope):
         X = input_placeholder
         for _ in range(n_layers):
-            X = tf.dense(X, size, activation=activation)
-        output_placeholder = tf.dense(X, output_size, activation=output_activation)
+            X = tf.layers.dense(X, size, activation=activation)
+        output_placeholder = tf.layers.dense(X, output_size, activation=output_activation)
     return output_placeholder
 
 def pathlength(path):
@@ -186,7 +186,7 @@ class Agent(object):
             ## Deterministic sample action will lead to the same sampled_ac, add some noise for sampled action
             # sy_sampled_ac = tf.argmax(sy_logits_na, axis=-1)
             # [Learn] Use tf.multinomial to generate (batch_size, 1), then to use tf.squeence tp remove the last dimension to shape (batch_size,)
-            sy_sampled_ac = tf.squeence(tf.multinomial(sy_logits_na, 1), axis=-1)
+            sy_sampled_ac = tf.squeeze(tf.multinomial(sy_logits_na, 1), axis=-1)
         else:
             sy_mean, sy_logstd = policy_parameters
             # YOUR_CODE_HERE - 4. Problem 2(b)(iii) via boardcasting of tf.exp(sy_logstd) from (self.ac_dim,) to (batch_size, self.ac_dim)
@@ -278,8 +278,9 @@ class Agent(object):
         #========================================================================================#
         ## YOUR CODE HERE - 4. Problem 2(b)(v)
         # element-wise multiply for logpro_n and adv_n by position, Q: how to select out adv_n
-        loss = tf.reduce_mean(self.sy_logprob_n * self.sy_adv_n)
-        self.update_op = tf.train.AdamOptimizer(self.learning_rate).minimize(loss)
+        # have to share in order to let Line 558 access for loss value
+        self.loss = tf.reduce_mean(self.sy_logprob_n * self.sy_adv_n)
+        self.update_op = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
 
         #========================================================================================#
         #                           ----------PROBLEM 6----------
@@ -410,11 +411,24 @@ class Agent(object):
             Store the Q-values for all timesteps and all trajectories in a variable 'q_n',
             like the 'ob_no' and 'ac_na' above. 
         """
-        # YOUR_CODE_HERE
+        # YOUR_CODE_HERE - 5. Problem 3.3 (b) 
+        # Question: do we need to concatenate to 1D array? or use 2D array, just refer to https://github.com/Kelym/DeepRL-UCB2017-Homework/blob/master/hw2/train_pg.py as 1D array
         if self.reward_to_go:
-            raise NotImplementedError
+            # raise NotImplementedError
+            # 1. for re_tau loop : each trajectories' reward to collect trajectory length
+            # 2. for start loop : 
+            #   1) (gamma ** np.arange(start, len(re_tau)) to generate descent discount factor [1, \gamma[0],  \gamma[0]^2, ....]
+            #   2) re_tau[::-1][:len(re_tau)-start] to generate 1:T steps length rewards
+            #   3) sum for each step length : sum() -> 1:T steps rewards
+            # issue: gamma ** np.arange(len(re_tau)-start) NOT gamma ** np.arange(start, len(re_tau)), power index is always generated from 0 to last len(re_tau) - start as last index end
+            q_n = np.concatenate([[re_tau[::-1][:len(re_tau)-start] * (gamma ** np.arange(len(re_tau)-start)) \
+                    for start in np.arange(len(re_tau))] \
+                for re_tau in re_n])
         else:
-            raise NotImplementedError
+            # raise NotImplementedError
+            ## trajectory-based PG, then only need to collect for [1, \gamma[0],  \gamma[0]^2, ...], via 1 line, need to copy for 1:T for each trajectory for T steps, in order to element-wise multiple to sum
+            q_n = np.concatenate([[sum(re_tau * (self.gamma ** np.array(range(len(re_tau))[::-1])))] * len(re_tau) \
+                    for re_tau in re_n])
         return q_n
 
     def compute_advantage(self, ob_no, q_n):
@@ -481,8 +495,15 @@ class Agent(object):
         if self.normalize_advantages:
             # On the next line, implement a trick which is known empirically to reduce variance
             # in policy gradient methods: normalize adv_n to have mean zero and std=1.
-            raise NotImplementedError
-            adv_n = None # YOUR_CODE_HERE
+            # raise NotImplementedError
+            # YOUR_CODE_HERE - 5. Problem 3.2
+            # Option 1: 
+            # using adv_mean = tf.reduce_mean(adv_n) and adv_std = tf.sqrt(tf.reduce_mean(tf.square(adv_n - adv_mean))), then adv_n = (adv_n - adv_mean) / adv_std  
+            # Option 2:
+            # check with https://www.tensorflow.org/api_docs/python/tf/nn/moments, we can calculate adv_mean and adv_std in a step
+            adv_mean, adv_variance = tf.nn.moments(tf.constant(adv_n), axes=[0])
+            adv_std = tf.sqrt(adv_variance)
+            adv_n = tf.cond(adv_std < 1e-9, lambda: (adv_n-adv_mean), lambda: (adv_n-adv_mean)/adv_std)
         return q_n, adv_n
 
     def update_parameters(self, ob_no, ac_na, q_n, adv_n):
@@ -532,8 +553,12 @@ class Agent(object):
         # For debug purposes, you may wish to save the value of the loss function before
         # and after an update, and then log them below. 
 
-        # YOUR_CODE_HERE
-        raise NotImplementedError
+        # YOUR_CODE_HERE - 5. Problem 3.3 (c) 
+        # raise NotImplementedError
+        # also refer to https://github.com/Kelym/DeepRL-UCB2017-Homework/blob/master/hw2/train_pg.py#L455
+        loss_val, _ = self.sess.run([self.loss, self.update_op], feed_dict={self.sy_ob_no: ob_no, self.sy_ac_na: ac_na, self.sy_adv_n: adv_n})
+        logz.log_tabular("Loss", loss_val)
+        
 
 
 def train_PG(
@@ -631,7 +656,9 @@ def train_PG(
         ac_na = np.concatenate([path["action"] for path in paths])
         re_n = [path["reward"] for path in paths]
 
+        # First to collect estimate return for sampled trajectories
         q_n, adv_n = agent.estimate_return(ob_no, re_n)
+        # Then to update parameters via self.update_op
         agent.update_parameters(ob_no, ac_na, q_n, adv_n)
 
         # Log diagnostics
