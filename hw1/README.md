@@ -37,6 +37,12 @@ mv <your folder> ~/.mujoco/mjpro150
 put mjkey.txt into ~/.mujoco/mjkey.txt
 ```
 
+* on ubuntu system
+Issue: mujoco_py/gl/eglshim.c:4:21: fatal error: GL/glew.h: No such file or directory
+```bash
+sudo apt-get install libglew-dev
+```
+
 ### 2. Exercise
 #### 2.1 [Section 2] Behavior Cloning
 ##### Part 1

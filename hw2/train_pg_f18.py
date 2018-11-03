@@ -428,7 +428,7 @@ class Agent(object):
             #   2) re_tau[::-1][:len(re_tau)-start] to generate 1:T steps length rewards
             #   3) sum for each step length : sum() -> 1:T steps rewards
             # issue: gamma ** np.arange(len(re_tau)-start) NOT gamma ** np.arange(start, len(re_tau)), power index is always generated from 0 to last len(re_tau) - start as last index end
-            q_n = np.concatenate([[re_tau[::-1][:len(re_tau)-start] * (gamma ** np.arange(len(re_tau)-start)) \
+            q_n = np.concatenate([[re_tau[::-1][:len(re_tau)-start] * (self.gamma ** np.arange(len(re_tau)-start)) \
                     for start in np.arange(len(re_tau))] \
                 for re_tau in re_n])
         else:
@@ -703,6 +703,7 @@ def main():
     parser.add_argument('--n_experiments', '-e', type=int, default=1)
     parser.add_argument('--n_layers', '-l', type=int, default=2)
     parser.add_argument('--size', '-s', type=int, default=64)
+    parser.add_argument('--process_in_parallel', '-p', type=int, default=0)
     args = parser.parse_args()
 
     if not(os.path.exists('data')):
@@ -745,10 +746,14 @@ def main():
         processes.append(p)
         # if you comment in the line below, then the loop will block 
         # until this process finishes
-        # p.join()
+        if not args.process_in_parallel:
+            # if not run in parallel for processes, just run in sequence
+            p.join()
 
-    for p in processes:
-        p.join()
+    # otherwise, run in parallel; only finished, back to main process
+    if args.process_in_parallel:
+        for p in processes:
+            p.join()
 
 if __name__ == "__main__":
     main()

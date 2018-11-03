@@ -88,8 +88,11 @@ ENV/
 # Rope project settings
 .ropeproject
 
-# generate expert data
+# homework 1: generate expert data
 hw1/expert_data/
 
 # macOS local cache
 .DS_Store
+
+# homework 2: generate data
+data/
