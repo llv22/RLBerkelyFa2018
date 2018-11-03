@@ -329,8 +329,15 @@ class Agent(object):
             #====================================================================================#
             # raise NotImplementedError
             ## YOUR CODE HERE - 5. Problem 3.1
-            ac = self.sess.run(self.sy_sampled_ac)
+            # sample action based on Pi_{theta}(Observation)
+            # print("NN(Pi) input ob.shape = %s, ob = %s" % (np.array(ob).reshape(-1, 4).shape, np.array(ob).reshape(-1, 4).tolist()))
+            # ac = self.sess.run([self.sy_sampled_ac], feed_dict={self.sy_ob_no: np.array(ob).reshape(-1, 4)})
+            # print("NN(Pi) input ob.shape = %s, ob = %s" % (ob[None].shape, ob[None].tolist()))
+            ## issue: not [self.sy_sampled_ac], otherwise it will have [] as list for single parameter 
+            # ac = self.sess.run(self.sy_sampled_ac, feed_dict={self.sy_ob_no: ob[None]})
+            ac = self.sess.run(self.sy_sampled_ac, feed_dict={self.sy_ob_no: ob[None]})
             ac = ac[0]
+            # print("NN(Pi) output ac.shape = %s, ac = %s" % (ac.shape, ac))
             acs.append(ac)
             ob, rew, done, _ = env.step(ac)
             rewards.append(rew)
