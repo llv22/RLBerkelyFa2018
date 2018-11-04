@@ -427,9 +427,10 @@ class Agent(object):
             #   1) (gamma ** np.arange(start, len(re_tau)) to generate descent discount factor [1, \gamma[0],  \gamma[0]^2, ....]
             #   2) re_tau[::-1][:len(re_tau)-start] to generate 1:T steps length rewards
             #   3) sum for each step length : sum() -> 1:T steps rewards
-            # issue: gamma ** np.arange(len(re_tau)-start) NOT gamma ** np.arange(start, len(re_tau)), power index is always generated from 0 to last len(re_tau) - start as last index end
-            q_n = np.concatenate([[re_tau[::-1][:len(re_tau)-start] * (self.gamma ** np.arange(len(re_tau)-start)) \
-                    for start in np.arange(len(re_tau))] \
+            ## issue: gamma ** np.arange(len(re_tau)-start) NOT gamma ** np.arange(start, len(re_tau)), power index is always generated from 0 to last len(re_tau) - start as last index end
+            ## q_n's value summation is must-have for each t'=1:T of \sum_{t'=1}^{T} r(s_{i,t'}, a_{i,t'}) 
+            q_n = np.concatenate([[sum(re_tau[::-1][:len(re_tau)-start] * (self.gamma ** np.arange(len(re_tau)-start))) \
+                    for start in range(len(re_tau))] \
                 for re_tau in re_n])
         else:
             # raise NotImplementedError
@@ -476,7 +477,7 @@ class Agent(object):
 
     def estimate_return(self, ob_no, re_n):
         """
-            Estimates the returns over a set of trajectories.
+            Estimates the returns over a set of trajectories. [Take Care: Don't use tensorflow for calculating estimate_return, as it's in numpy]
 
             let sum_of_path_lengths be the sum of the lengths of the paths sampled from 
                 Agent.sample_trajectories
@@ -494,7 +495,9 @@ class Agent(object):
                     advantages whose length is the sum of the lengths of the paths
         """
         q_n = self.sum_of_rewards(re_n)
+        # print("q_n:", q_n)
         adv_n = self.compute_advantage(ob_no, q_n)
+        # print("adv_n:", adv_n)
         #====================================================================================#
         #                           ----------PROBLEM 3----------
         # Advantage Normalization
@@ -508,9 +511,12 @@ class Agent(object):
             # using adv_mean = tf.reduce_mean(adv_n) and adv_std = tf.sqrt(tf.reduce_mean(tf.square(adv_n - adv_mean))), then adv_n = (adv_n - adv_mean) / adv_std  
             # Option 2:
             # check with https://www.tensorflow.org/api_docs/python/tf/nn/moments, we can calculate adv_mean and adv_std in a step
-            adv_mean, adv_variance = tf.nn.moments(tf.constant(adv_n), axes=[0])
-            adv_std = tf.sqrt(adv_variance)
-            adv_n = tf.cond(adv_std < 1e-9, lambda: (adv_n-adv_mean), lambda: (adv_n-adv_mean)/adv_std)
+            # adv_mean, adv_variance = tf.nn.moments(tf.constant(adv_n), axes=[0])
+            # adv_std = tf.sqrt(adv_variance)
+            # adv_n = tf.cond(adv_std < 1e-9, lambda: (adv_n-adv_mean), lambda: (adv_n-adv_mean)/adv_std)
+            # Option : must be implemented in numpy by value calculation
+            adv_mean, adv_std = np.std(adv_n), np.mean(adv_n)
+            adv_n = adv_n-adv_mean if adv_std < 1e-9 else (adv_n-adv_mean)/adv_std
         return q_n, adv_n
 
     def update_parameters(self, ob_no, ac_na, q_n, adv_n):
@@ -563,7 +569,13 @@ class Agent(object):
         # YOUR_CODE_HERE - 5. Problem 3.3 (c) 
         # raise NotImplementedError
         # also refer to https://github.com/Kelym/DeepRL-UCB2017-Homework/blob/master/hw2/train_pg.py#L455
-        loss_val, _ = self.sess.run([self.loss, self.update_op], feed_dict={self.sy_ob_no: ob_no, self.sy_ac_na: ac_na, self.sy_adv_n: adv_n})
+        ## issue: ValueError: setting an array element with a sequence. - debugging purpose, adv_n->q_n forget to sum for each q(t:1...T)
+        # print("adv_n.shape:", adv_n.shape)
+        # print("adv_n:", adv_n)
+        # print("self.sy_adv_n.shape:", self.sy_adv_n.shape)
+        loss_val, _ = self.sess.run([self.loss, self.update_op], feed_dict={self.sy_ob_no: ob_no, 
+                                                                            self.sy_ac_na: ac_na, 
+                                                                            self.sy_adv_n: adv_n})
         logz.log_tabular("Loss", loss_val)
         
 

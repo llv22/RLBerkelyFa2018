@@ -90,11 +90,13 @@ def get_datasets(fpath, condition=None):
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('logdir', nargs='*')
+    parser.add_argument('--logdir', nargs='*')
     parser.add_argument('--legend', nargs='*')
     parser.add_argument('--value', default='AverageReturn', nargs='*')
     args = parser.parse_args()
 
+    print("args.logdir:", args.logdir)
+    print("len(args.legend):", len(args.legend))
     use_legend = False
     if args.legend is not None:
         assert len(args.legend) == len(args.logdir), \
