@@ -16,7 +16,7 @@ The only file that you need to look at is `train_pg_f18.py`, which you will impl
 See the [HW2 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw2.pdf) for further instructions.
 
 ## 2. Exercise
-### 5.2 [Problem 4] CartPole
+### 5.2 [Problem 4] CartPole - **Discrete Action Space**
 ```bash
 python train_pg_f18.py CartPole-v0 -n 100 -b 1000 -e 3 -dna --exp_name sb_no_rtg_dna
 python train_pg_f18.py CartPole-v0 -n 100 -b 1000 -e 3 -rtg -dna --exp_name sb_rtg_dna
@@ -88,4 +88,8 @@ python plot.py --logdir data/lb_no_rtg_dna_CartPole-v0_04-11-2018_20-20-15/ data
 <img src="data/01_lb_plots/TimestepsThisBatch.png" width="60%"/>
 
 
-### 5.3 [Problem 5] InvertedPendulum
+### 5.3 [Problem 5] InvertedPendulum - **Continous Action Space**
+
+```bash
+python train_pg_f18.py InvertedPendulum-v2 -ep 1000 --discount 0.9 -n 100 -e 3 -l 2 -s 64 -b 5000 -lr 0.01 -rtg --exp_name hc_b5000_r0.01
+```

@@ -148,7 +148,7 @@ class Agent(object):
             return sy_logits_na
         else:
             # YOUR_CODE_HERE - 4. Problem 2(b)(ii)
-            sy_mean = build_mlp(sy_ob_no, self.ac_dim, "continuous_mlp", self.n_layers, self.size, outoutput_activation=tf.nn.relu)
+            sy_mean = build_mlp(sy_ob_no, self.ac_dim, "continuous_mlp", self.n_layers, self.size, output_activation=tf.nn.relu)
             sy_logstd = tf.get_variable(shape=[self.ac_dim,], dtype=tf.float32, name="sy_logstd")
             return (sy_mean, sy_logstd)
 
@@ -621,6 +621,7 @@ def train_PG(
 
     # Is this env continuous, or self.discrete?
     discrete = isinstance(env.action_space, gym.spaces.Discrete)
+    print("action space type:", "discrete" if discrete else "continous")
 
     # Observation and action sizes
     ob_dim = env.observation_space.shape[0]
