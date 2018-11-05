@@ -43,7 +43,7 @@ python train_pg_f18.py CartPole-v0 -n 100 -b 1000 -e 3 -rtg --exp_name sb_rtg_na
 ```
 Analysis for result
 ```bash
-python plot.py --logdir data/sb_no_rtg_dna_CartPole-v0_05-11-2018_16-07-02/ data/sb_rtg_dna_CartPole-v0_05-11-2018_16-09-30/ data/sb_rtg_na_CartPole-v0_05-11-2018_16-11-30/ --legend sb_no_rtg_dna sb_rtg_dna sb_rtg_na --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+python plot.py --logdir data/sb_no_rtg_dna_CartPole-v0_05-11-2018_19-25-17/ data/sb_rtg_dna_CartPole-v0_05-11-2018_19-27-59/ data/sb_rtg_na_CartPole-v0_05-11-2018_19-38-55/ --legend sb_no_rtg_dna sb_rtg_dna sb_rtg_na --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
 ```
 1. Average Return Figure:  
 
@@ -69,7 +69,7 @@ python train_pg_f18.py CartPole-v0 -n 100 -b 5000 -e 3 -rtg --exp_name lb_rtg_na
 ```
 Analysis for result
 ```bash
-python plot.py --logdir data/lb_no_rtg_dna_CartPole-v0_05-11-2018_16-16-35/ data/lb_rtg_dna_CartPole-v0_05-11-2018_16-25-42/ data/lb_rtg_na_CartPole-v0_05-11-2018_16-35-59/ --legend lb_no_rtg_dna lb_rtg_dna lb_rtg_na --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+python plot.py --logdir data/lb_no_rtg_dna_CartPole-v0_05-11-2018_19-52-26/ data/lb_rtg_dna_CartPole-v0_05-11-2018_20-05-54/ data/lb_rtg_na_CartPole-v0_05-11-2018_20-18-38/ --legend lb_no_rtg_dna lb_rtg_dna lb_rtg_na --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
 ```
 1. Average Return Figure:  
 
@@ -98,7 +98,7 @@ python train_pg_f18.py InvertedPendulum-v2 -ep 1000 --discount 0.9 -n 100 -e 3 -
 
 Analysis for result
 ```bash
-python plot.py --logdir data/hc_b6000_r0.01_InvertedPendulum-v2_05-11-2018_16-46-42/ data/hc_b8000_r0.01_InvertedPendulum-v2_05-11-2018_16-59-08/ data/hc_b10000_r0.01_InvertedPendulum-v2_05-11-2018_17-20-03/ --legend hc_b6000_r0.01 hc_b8000_r0.01 hc_b10000_r0.01 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+python plot.py --logdir data/hc_b6000_r0.01_InvertedPendulum-v2_05-11-2018_20-30-17/ data/hc_b8000_r0.01_InvertedPendulum-v2_05-11-2018_21-17-34/ data/hc_b10000_r0.01_InvertedPendulum-v2_05-11-2018_21-41-36/ --legend hc_b6000_r0.01 hc_b8000_r0.01 hc_b10000_r0.01 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
 ```
 
 1. Average Return Figure:  
