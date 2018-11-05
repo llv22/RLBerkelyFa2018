@@ -495,8 +495,9 @@ class Agent(object):
             ## YOUR CODE HERE - 6. Problem (b)
             # status: to verify status
             b_n = self.sess.run(self.baseline_prediction, feed_dict={self.sy_ob_no: ob_no}) 
-            b_n = (b_n - np.mean(b_n)) / (np.std(b_n) + 1e-9)
-            adv_n = q_n - b_n
+            # b_n = (b_n - np.mean(b_n)) / (np.std(b_n) + 1e-9)
+            # reparameterize from N(0, I) to N(np.mean(q_n), np.std(q_n))
+            adv_n = q_n - (b_n * (np.std(q_n) + 1e-9) + np.mean(q_n))
         else:
             adv_n = q_n.copy()
         return adv_n
@@ -541,9 +542,9 @@ class Agent(object):
             # adv_std = tf.sqrt(adv_variance)
             # adv_n = tf.cond(adv_std < 1e-9, lambda: (adv_n-adv_mean), lambda: (adv_n-adv_mean)/adv_std)
             # Option : must be implemented in numpy by value calculation
-            adv_mean, adv_std = np.mean(adv_n), np.std(adv_n)
+            # adv_mean, adv_std = np.mean(adv_n), np.std(adv_n)
             # adv_n = adv_n-adv_mean if adv_std < 1e-9 else (adv_n-adv_mean)/adv_std
-            adv_n = (adv_n-adv_mean)/(adv_std + 1e-9)
+            adv_n = (adv_n - np.mean(adv_n)) / (np.std(adv_n) + 1e-9)
         return q_n, adv_n
 
     def update_parameters(self, ob_no, ac_na, q_n, adv_n):
