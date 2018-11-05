@@ -61,7 +61,7 @@ def setup_logger(logdir, locals_):
 #============================================================================================#
 
 class Agent(object):
-    def __init__(self, computation_graph_args, sample_trajectory_args, estimate_return_args):
+    def __init__(self, computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args):
         super(Agent, self).__init__()
         self.ob_dim = computation_graph_args['ob_dim']
         self.ac_dim = computation_graph_args['ac_dim']
@@ -78,10 +78,24 @@ class Agent(object):
         self.reward_to_go = estimate_return_args['reward_to_go']
         self.nn_baseline = estimate_return_args['nn_baseline']
         self.normalize_advantages = estimate_return_args['normalize_advantages']
+        
+        self.ui_type = debugger_args['ui_type']
+        self.debug = debugger_args['debug']
+        self.tensorboard_debug_address = debugger_args['tensorboard_debug_address']
 
     def init_tf_sess(self):
         tf_config = tf.ConfigProto(inter_op_parallelism_threads=1, intra_op_parallelism_threads=1) 
+        from tensorflow.python import debug as tf_debug
         self.sess = tf.Session(config=tf_config)
+        if self.debug and self.tensorboard_debug_address:
+            raise ValueError(
+                "The --debug and --tensorboard_debug_address flags are mutually "
+                "exclusive.")
+        if self.debug:
+            self.sess = tf_debug.LocalCLIDebugWrapperSession(self.sess, ui_type=self.ui_type)
+        elif self.tensorboard_debug_address:
+            self.sess = tf_debug.TensorBoardDebugWrapperSession(
+                self.sess, self.tensorboard_debug_address)
         self.sess.__enter__() # equivalent to `with self.sess:`
         tf.global_variables_initializer().run() #pylint: disable=E1101
 
@@ -149,7 +163,8 @@ class Agent(object):
         else:
             # YOUR_CODE_HERE - 4. Problem 2(b)(ii)
             sy_mean = build_mlp(sy_ob_no, self.ac_dim, "continuous_mlp", self.n_layers, self.size, output_activation=tf.nn.relu)
-            sy_logstd = tf.get_variable(shape=[self.ac_dim,], dtype=tf.float32, name="sy_logstd")
+            sy_logstd = tf.get_variable(shape=[self.ac_dim,], dtype=tf.float32, name="sy_logstd", initializer=tf.contrib.layers.xavier_initializer())
+            # sy_logstd = tf.Variable(tf.zeros([1, self.ac_dim], name = 'logstd'))
             return (sy_mean, sy_logstd)
 
     #========================================================================================#
@@ -225,17 +240,22 @@ class Agent(object):
             # YOUR_CODE_HERE - 4. Problem 2(b)(iv)
             ## Difference between sparse_softmax_cross_entropy_with_logits and softmax_cross_entropy_with_logits,  refer to https://stackoverflow.com/questions/37312421/whats-the-difference-between-sparse-softmax-cross-entropy-with-logits-and-softm
             # tf.shape(sy_ac_na) = (batch_size,), tf.shape(sy_logits_na) = (batch_size, self.ac_dim)
-            sy_logprob_n = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=sy_ac_na, logits=sy_logits_na)
+            sy_logprob_n = -tf.nn.sparse_softmax_cross_entropy_with_logits(labels=sy_ac_na, logits=sy_logits_na)
         else:
             sy_mean, sy_logstd = policy_parameters
             # YOUR_CODE_HERE - 4. Problem 2(b)(iv)
             ## Multivariate Nominal in tensorflow, refer to https://www.tensorflow.org/versions/r1.10/api_docs/python/tf/contrib/distributions/MultivariateNormalDiag
-            tfd = tf.contrib.distributions
+            # tfd = tf.contrib.distributions
             ## Hint: Use the log probability under a multivariate gaussian.
             # Learned from github.com/mwhittaker
             ## [Learn] Do the negate here works; 
             #  Do it in loss / weighted_negative_likelihood not work.
-            sy_logprob_n = tfd.MultivariateNormalDiag(loc=sy_mean, scale_diag=sy_logstd).log_prob(sy_ac_na)
+            # sy_logprob_n = tfd.MultivariateNormalDiag(loc=sy_ac_na, scale_diag=tf.exp(sy_logstd)).log_prob(sy_mean)
+            # refer to https://github.com/fwtan/cs294-homework/blob/master/hw2/train_pg.py
+            # tmp = tf.norm(sy_mean - sy_ac_na/(sy_logstd + 1e-4), axis=-1)
+            # sy_logprob_n = -0.5 * tmp * tmp  # Hint: Use the log probability under a multivariate gaussian. 
+            sy_z = (sy_mean - sy_ac_na) / tf.exp(sy_logstd)
+            sy_logprob_n = - 0.5 * tf.reduce_sum(tf.square(sy_z), axis = -1)
         return sy_logprob_n
 
     def build_computation_graph(self):
@@ -279,7 +299,7 @@ class Agent(object):
         ## YOUR CODE HERE - 4. Problem 2(b)(v)
         # element-wise multiply for logpro_n and adv_n by position, Q: how to select out adv_n
         # have to share in order to let Line 558 access for loss value
-        self.loss = tf.reduce_mean(self.sy_logprob_n * self.sy_adv_n)
+        self.loss = -tf.reduce_mean(self.sy_logprob_n * self.sy_adv_n)
         self.update_op = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
 
         #========================================================================================#
@@ -516,7 +536,8 @@ class Agent(object):
             # adv_n = tf.cond(adv_std < 1e-9, lambda: (adv_n-adv_mean), lambda: (adv_n-adv_mean)/adv_std)
             # Option : must be implemented in numpy by value calculation
             adv_mean, adv_std = np.std(adv_n), np.mean(adv_n)
-            adv_n = adv_n-adv_mean if adv_std < 1e-9 else (adv_n-adv_mean)/adv_std
+            # adv_n = adv_n-adv_mean if adv_std < 1e-9 else (adv_n-adv_mean)/adv_std
+            adv_n = (adv_n-adv_mean)/(adv_std + 1e-9)
         return q_n, adv_n
 
     def update_parameters(self, ob_no, ac_na, q_n, adv_n):
@@ -577,6 +598,8 @@ class Agent(object):
                                                                             self.sy_ac_na: ac_na, 
                                                                             self.sy_adv_n: adv_n})
         logz.log_tabular("Loss", loss_val)
+        if len(self.policy_parameters) == 2:
+            print("self.sy_logstd = ", self.sess.run(self.policy_parameters[1]))
         
 
 
@@ -595,7 +618,10 @@ def train_PG(
         nn_baseline, 
         seed,
         n_layers,
-        size):
+        size,
+        ui_type,
+        debug,
+        tensorboard_debug_address):
 
     start = time.time()
 
@@ -626,6 +652,7 @@ def train_PG(
     # Observation and action sizes
     ob_dim = env.observation_space.shape[0]
     ac_dim = env.action_space.n if discrete else env.action_space.shape[0]
+    print("action dim:", ac_dim)
 
     #========================================================================================#
     # Initialize Agent
@@ -652,7 +679,13 @@ def train_PG(
         'normalize_advantages': normalize_advantages,
     }
 
-    agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args)
+    debugger_args = {
+        'ui_type': ui_type,
+        'debug': debug,
+        'tensorboard_debug_address': tensorboard_debug_address
+    }
+
+    agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args)
 
     # build computation graph
     agent.build_computation_graph()
@@ -717,6 +750,27 @@ def main():
     parser.add_argument('--n_layers', '-l', type=int, default=2)
     parser.add_argument('--size', '-s', type=int, default=64)
     parser.add_argument('--process_in_parallel', '-p', type=int, default=0)
+    parser.add_argument(
+        "--ui_type",
+        type=str,
+        default="curses",
+        help="Command-line user interface type (curses | readline)")
+    parser.add_argument(
+        "--debug",
+        # type="bool",
+        type=lambda x: (str(x).lower() == 'true'),
+        nargs="?",
+        const=True,
+        default=False,
+        help="Use debugger to track down bad values during training. "
+        "Mutually exclusive with the --tensorboard_debug_address flag.")
+    parser.add_argument(
+        "--tensorboard_debug_address",
+        type=str,
+        default=None,
+        help="Connect to the TensorBoard Debugger Plugin backend specified by "
+        "the gRPC address (e.g., localhost:1234). Mutually exclusive with the "
+        "--debug flag.")
     args = parser.parse_args()
 
     if not(os.path.exists('data')):
@@ -735,6 +789,7 @@ def main():
         print('Running experiment with seed %d'%seed)
 
         def train_func():
+            print("args:", args)
             train_PG(
                 exp_name=args.exp_name,
                 env_name=args.env_name,
@@ -750,7 +805,10 @@ def main():
                 nn_baseline=args.nn_baseline, 
                 seed=seed,
                 n_layers=args.n_layers,
-                size=args.size
+                size=args.size,
+                ui_type=args.ui_type,
+                debug=args.debug,
+                tensorboard_debug_address=args.tensorboard_debug_address
                 )
         # # Awkward hacky process runs, because Tensorflow does not like
         # # repeatedly calling train_PG in the same thread.
