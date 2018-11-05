@@ -157,12 +157,14 @@ class Agent(object):
         # raise NotImplementedError
         if self.discrete:
             # YOUR_CODE_HERE - 4. Problem 2(b)(ii)
-            # shape (batch_size, self.ac_dim), not via logits
+            # shape (batch_size, self.ac_dim), not via logits 
             sy_logits_na = build_mlp(sy_ob_no, self.ac_dim, "discrete_mlp", self.n_layers, self.size, output_activation=tf.nn.relu)
             return sy_logits_na
         else:
             # YOUR_CODE_HERE - 4. Problem 2(b)(ii)
-            sy_mean = build_mlp(sy_ob_no, self.ac_dim, "continuous_mlp", self.n_layers, self.size, output_activation=tf.nn.relu)
+            # sy_mean = build_mlp(sy_ob_no, self.ac_dim, "continuous_mlp", self.n_layers, self.size, output_activation=tf.nn.relu)
+            sy_mean = build_mlp(sy_ob_no, self.ac_dim, "continuous_mlp", self.n_layers, self.size)
+            # sy_logstd = tf.get_variable(shape=[self.ac_dim,], dtype=tf.float32, name="sy_logstd")
             sy_logstd = tf.get_variable(shape=[self.ac_dim,], dtype=tf.float32, name="sy_logstd", initializer=tf.contrib.layers.xavier_initializer())
             # sy_logstd = tf.Variable(tf.zeros([1, self.ac_dim], name = 'logstd'))
             return (sy_mean, sy_logstd)
@@ -245,17 +247,17 @@ class Agent(object):
             sy_mean, sy_logstd = policy_parameters
             # YOUR_CODE_HERE - 4. Problem 2(b)(iv)
             ## Multivariate Nominal in tensorflow, refer to https://www.tensorflow.org/versions/r1.10/api_docs/python/tf/contrib/distributions/MultivariateNormalDiag
-            # tfd = tf.contrib.distributions
+            tfd = tf.contrib.distributions
             ## Hint: Use the log probability under a multivariate gaussian.
             # Learned from github.com/mwhittaker
             ## [Learn] Do the negate here works; 
             #  Do it in loss / weighted_negative_likelihood not work.
-            # sy_logprob_n = tfd.MultivariateNormalDiag(loc=sy_ac_na, scale_diag=tf.exp(sy_logstd)).log_prob(sy_mean)
+            sy_logprob_n = tfd.MultivariateNormalDiag(loc=sy_ac_na, scale_diag=tf.exp(sy_logstd)).log_prob(sy_mean)
             # refer to https://github.com/fwtan/cs294-homework/blob/master/hw2/train_pg.py
             # tmp = tf.norm(sy_mean - sy_ac_na/(sy_logstd + 1e-4), axis=-1)
             # sy_logprob_n = -0.5 * tmp * tmp  # Hint: Use the log probability under a multivariate gaussian. 
-            sy_z = (sy_mean - sy_ac_na) / tf.exp(sy_logstd)
-            sy_logprob_n = - 0.5 * tf.reduce_sum(tf.square(sy_z), axis = -1)
+            # sy_z = (sy_mean - sy_ac_na) / tf.exp(sy_logstd)
+            # sy_logprob_n = - 0.5 * tf.reduce_sum(tf.square(sy_z), axis = -1)
         return sy_logprob_n
 
     def build_computation_graph(self):
