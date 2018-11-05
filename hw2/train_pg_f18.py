@@ -312,17 +312,18 @@ class Agent(object):
         # neural network baseline. These will be used to fit the neural network baseline. 
         #========================================================================================#
         if self.nn_baseline:
-            raise NotImplementedError
+            # raise NotImplementedError
             self.baseline_prediction = tf.squeeze(build_mlp(
                                     self.sy_ob_no, 
-                                    1, 
+                                    1,
                                     "nn_baseline",
                                     n_layers=self.n_layers,
                                     size=self.size))
-            # YOUR_CODE_HERE
-            self.sy_target_n = None
-            baseline_loss = None
-            self.baseline_update_op = tf.train.AdamOptimizer(self.learning_rate).minimize(baseline_loss)
+            ## YOUR CODE HERE - 6. Problem (a)
+            # status: to verify status, V_pi(s) is invalid name, have to go for V_pi_s
+            self.sy_target_n = tf.placeholder(shape=[None], name='V_pi_s', dtype=tf.float32)
+            self.baseline_loss = tf.losses.mean_squared_error(labels=self.sy_target_n, predictions=self.baseline_prediction)
+            self.baseline_update_op = tf.train.AdamOptimizer(self.learning_rate).minimize(self.baseline_loss)
 
     def sample_trajectories(self, itr, env):
         # Collect paths until we have enough timesteps
@@ -451,13 +452,13 @@ class Agent(object):
             #   3) sum for each step length : sum() -> 1:T steps rewards
             ## issue: gamma ** np.arange(len(re_tau)-start) NOT gamma ** np.arange(start, len(re_tau)), power index is always generated from 0 to last len(re_tau) - start as last index end
             ## q_n's value summation is must-have for each t'=1:T of \sum_{t'=1}^{T} r(s_{i,t'}, a_{i,t'}) 
-            q_n = np.concatenate([[sum(re_tau[::-1][:len(re_tau)-start] * (self.gamma ** np.arange(len(re_tau)-start))) \
+            q_n = np.concatenate([[sum(re_tau[start:] * (self.gamma ** np.arange(0, len(re_tau)-start))) \
                     for start in range(len(re_tau))] \
                 for re_tau in re_n])
         else:
             # raise NotImplementedError
             ## trajectory-based PG, then only need to collect for [1, \gamma[0],  \gamma[0]^2, ...], via 1 line, need to copy for 1:T for each trajectory for T steps, in order to element-wise multiple to sum
-            q_n = np.concatenate([[sum(re_tau * (self.gamma ** np.array(range(len(re_tau))[::-1])))] * len(re_tau) \
+            q_n = np.concatenate([[sum(re_tau * (self.gamma ** np.array(range(len(re_tau)))))] * len(re_tau) \
                     for re_tau in re_n])
         return q_n
 
@@ -490,8 +491,11 @@ class Agent(object):
             # Hint #bl1: rescale the output from the nn_baseline to match the statistics
             # (mean and std) of the current batch of Q-values. (Goes with Hint
             # #bl2 in Agent.update_parameters.
-            raise NotImplementedError
-            b_n = None # YOUR CODE HERE
+            # raise NotImplementedError
+            ## YOUR CODE HERE - 6. Problem (b)
+            # status: to verify status
+            b_n = self.sess.run(self.baseline_prediction, feed_dict={self.sy_ob_no: ob_no}) 
+            b_n = (b_n - np.mean(b_n)) / (np.std(b_n) + 1e-9)
             adv_n = q_n - b_n
         else:
             adv_n = q_n.copy()
@@ -574,9 +578,14 @@ class Agent(object):
             # targets to have mean zero and std=1. (Goes with Hint #bl1 in 
             # Agent.compute_advantage.)
 
-            # YOUR_CODE_HERE
-            raise NotImplementedError
-            target_n = None 
+            ## YOUR CODE HERE - 6. Problem (c)
+            # status: verify
+            # raise NotImplementedError
+            # normalize q_n to N(0, I)
+            target_n = (q_n - np.mean(q_n)) / (np.std(q_n) + 1e-9)
+            loss_base_val, _ = self.sess.run([self.baseline_loss, self.baseline_update_op], feed_dict={self.sy_ob_no: ob_no, 
+                                                                                                       self.sy_target_n: target_n})
+            logz.log_tabular("Baseline Loss", loss_base_val)
 
         #====================================================================================#
         #                           ----------PROBLEM 3----------
@@ -600,7 +609,7 @@ class Agent(object):
                                                                             self.sy_ac_na: ac_na, 
                                                                             self.sy_adv_n: adv_n})
         logz.log_tabular("Loss", loss_val)
-        if len(self.policy_parameters) == 2:
+        if type(self.policy_parameters) is tuple and len(self.policy_parameters) == 2:
             print("self.sy_logstd = ", self.sess.run(self.policy_parameters[1]))
         
 
