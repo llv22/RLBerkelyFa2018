@@ -541,7 +541,7 @@ class Agent(object):
             # adv_std = tf.sqrt(adv_variance)
             # adv_n = tf.cond(adv_std < 1e-9, lambda: (adv_n-adv_mean), lambda: (adv_n-adv_mean)/adv_std)
             # Option : must be implemented in numpy by value calculation
-            adv_mean, adv_std = np.std(adv_n), np.mean(adv_n)
+            adv_mean, adv_std = np.mean(adv_n), np.std(adv_n)
             # adv_n = adv_n-adv_mean if adv_std < 1e-9 else (adv_n-adv_mean)/adv_std
             adv_n = (adv_n-adv_mean)/(adv_std + 1e-9)
         return q_n, adv_n
