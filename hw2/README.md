@@ -201,5 +201,49 @@ python plot.py --logdir data/hc_b30000_r0.005_HalfCheetah-v2_06-11-2018_00-50-14
 * for batch=50000, lrs=(0.005 0.01 0.02)
 Result analysis:
 ```bash
-python plot.py --logdir data/hc_b50000_r0.005_HalfCheetah-v2_06-11-2018_05-50-55 --legend hc_b50000_r0.005 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+python plot.py --logdir data/hc_b50000_r0.005_HalfCheetah-v2_06-11-2018_05-50-55 data/hc_b50000_r0.01_HalfCheetah-v2_06-11-2018_10-18-09 data/hc_b50000_r0.02_HalfCheetah-v2_06-11-2018_12-29-48 --legend hc_b50000_r0.005 hc_b50000_r0.01 hc_b50000_r0.02 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
 ```
+
+1. Average Return Figure:  
+
+<img src="data/04_HalfCheetah/b50000/AverageReturn.png" width="60%"/>
+
+2. Eposide Length Mean:  
+
+<img src="data/04_HalfCheetah/b50000/EpLenMean.png" width="60%"/>
+
+3. Standard Deviation Return:  
+
+<img src="data/04_HalfCheetah/b50000/StdReturn.png" width="60%"/>
+
+4. Time Steps used is this batch:  
+
+<img src="data/04_HalfCheetah/b50000/TimestepsThisBatch.png" width="60%"/>
+
+Conclusion: obviously batch size=50000, learning rate=0.02 help RL algorithm start to converge
+
+* For batch=50000, learning rate=0.02
+
+##### trial 1
+```bash
+python train_pg_f18.py HalfCheetah-v2 -ep 150 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b 50000 -lr 0.02 --exp_name t1_hc_b50000_r0.02
+```
+output folder: data/t1_hc_b50000_r0.02_HalfCheetah-v2_06-11-2018_14-25-58
+
+##### trial 2
+```bash
+python train_pg_f18.py HalfCheetah-v2 -ep 150 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b 50000 -lr 0.02 -rtg --exp_name t2_hc_b50000_r0.02
+```
+output folder:
+
+##### trial 3
+```bash
+python train_pg_f18.py HalfCheetah-v2 -ep 150 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b <b * > -lr <r * > --nn_baseline --exp_name t3_hc_b<b * >_r<r * >
+```
+output folder:
+
+##### trial 4
+```bash
+python train_pg_f18.py HalfCheetah-v2 -ep 150 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b <b * > -lr <r * > -rtg --nn_baseline --exp_name t4_hc_b<b * >_r<r * >
+```
+output folder:

@@ -61,7 +61,7 @@ def setup_logger(logdir, locals_):
 #============================================================================================#
 
 class Agent(object):
-    def __init__(self, computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args):
+    def __init__(self, computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args, bonus_args):
         super(Agent, self).__init__()
         self.ob_dim = computation_graph_args['ob_dim']
         self.ac_dim = computation_graph_args['ac_dim']
@@ -83,8 +83,16 @@ class Agent(object):
         self.debug = debugger_args['debug']
         self.tensorboard_debug_address = debugger_args['tensorboard_debug_address']
 
+        self.tf_threads = bonus_args['tf_threads']
+        self.gae_lambda = bonus_args['gae_lambda']
+
     def init_tf_sess(self):
-        tf_config = tf.ConfigProto(inter_op_parallelism_threads=1, intra_op_parallelism_threads=1) 
+        #
+        ## Setup for tensorflow inter/intra threading number
+        #
+        ## YOUR CODE HERE - 8. Problem (a)
+        tf_config = tf.ConfigProto(inter_op_parallelism_threads=self.tf_threads, intra_op_parallelism_threads=self.tf_threads) 
+        # Add debugging capacity with support --debug=True
         from tensorflow.python import debug as tf_debug
         self.sess = tf.Session(config=tf_config)
         if self.debug and self.tensorboard_debug_address:
@@ -462,7 +470,7 @@ class Agent(object):
                     for re_tau in re_n])
         return q_n
 
-    def compute_advantage(self, ob_no, q_n):
+    def compute_advantage(self, ob_no, q_n, re_n):
         """
             Computes advantages by (possibly) subtracting a baseline from the estimated Q values
 
@@ -474,6 +482,10 @@ class Agent(object):
                 ob_no: shape: (sum_of_path_lengths, ob_dim)
                 q_n: shape: (sum_of_path_lengths). A single vector for the estimated q values 
                     whose length is the sum of the lengths of the paths
+
+                ## Orlando's refinement to get shape of [[traj0], [traj1], ...]
+                re_n: length: num_paths. Each element in re_n is a numpy array 
+                    containing the rewards for the particular path
 
             returns:
                 adv_n: shape: (sum_of_path_lengths). A single vector for the estimated 
@@ -495,9 +507,31 @@ class Agent(object):
             ## YOUR CODE HERE - 6. Problem (b)
             # status: to verify status
             b_n = self.sess.run(self.baseline_prediction, feed_dict={self.sy_ob_no: ob_no}) 
-            # b_n = (b_n - np.mean(b_n)) / (np.std(b_n) + 1e-9)
-            # reparameterize from N(0, I) to N(np.mean(q_n), np.std(q_n))
-            adv_n = q_n - (b_n * (np.std(q_n) + 1e-9) + np.mean(q_n))
+            # normlize for b_n via Reparameterize from N(0, I) to N(np.mean(q_n), np.std(q_n))
+            b_n = b_n * (np.std(q_n) + 1e-9) + np.mean(q_n)
+            if self.gae_lambda < 0:
+                #
+                ## Disable GAE(lambda) option 
+                #
+                adv_n = q_n - b_n
+            else:
+                #
+                ## Enable GAE(lambda) option 
+                #
+                # raise NotImplementedError
+                ## YOUR CODE HERE - 8. Problem (b)
+                # refer to https://github.com/daggertye/CS294_homework/blob/master/hw2/train_pg.py#L369
+                adv_n = []
+                for rewards in re_n:
+                    adv = np.zeros(len(rewards))
+                    adv[-1] = rewards[-1] - b_n[-1]
+                    for i in range(len(rewards)-1)[::-1]:
+                        delta = rewards[i] + self.gamma * b_n[i+1] - b_n[i]
+                        adv[i] = adv[i+1] * self.gamma * self.gae_lambda + delta
+                    # if not reward to go, just the same as the first adv[0], as from advantage function, they are the same.
+                    if not reward_to_go:
+                        adv = np.ones(len(rewards)) * adv[0]
+                    adv_n.extend(adv)
         else:
             adv_n = q_n.copy()
         return adv_n
@@ -523,7 +557,7 @@ class Agent(object):
         """
         q_n = self.sum_of_rewards(re_n)
         # print("q_n:", q_n)
-        adv_n = self.compute_advantage(ob_no, q_n)
+        adv_n = self.compute_advantage(ob_no, q_n, re_n)
         # print("adv_n:", adv_n)
         #====================================================================================#
         #                           ----------PROBLEM 3----------
@@ -633,7 +667,9 @@ def train_PG(
         size,
         ui_type,
         debug,
-        tensorboard_debug_address):
+        tensorboard_debug_address,
+        tf_threads,
+        gae_lambda):
 
     start = time.time()
 
@@ -697,7 +733,12 @@ def train_PG(
         'tensorboard_debug_address': tensorboard_debug_address
     }
 
-    agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args)
+    bonus_args = {
+        "tf_threads": tf_threads,
+        "gae_lambda": gae_lambda
+    }
+
+    agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args, bonus_args)
 
     # build computation graph
     agent.build_computation_graph()
@@ -746,6 +787,7 @@ def train_PG(
 def main():
     import argparse
     parser = argparse.ArgumentParser()
+    # Basic setting
     parser.add_argument('env_name', type=str)
     parser.add_argument('--exp_name', type=str, default='vpg')
     parser.add_argument('--render', action='store_true')
@@ -762,6 +804,7 @@ def main():
     parser.add_argument('--n_layers', '-l', type=int, default=2)
     parser.add_argument('--size', '-s', type=int, default=64)
     parser.add_argument('--process_in_parallel', '-p', type=int, default=0)
+    # Debugging capacity parameters
     parser.add_argument(
         "--ui_type",
         type=str,
@@ -783,6 +826,11 @@ def main():
         help="Connect to the TensorBoard Debugger Plugin backend specified by "
         "the gRPC address (e.g., localhost:1234). Mutually exclusive with the "
         "--debug flag.")
+    # Section 8 - Bonus part setting
+    parser.add_argument('--tf_threads', '-t', type=int, default=1)
+    # if gae_lambda < 0, it means that we close GAE(lambda)
+    parser.add_argument('--gae_lambda', '-glambda', type=float, default=-1.0)
+
     args = parser.parse_args()
 
     if not(os.path.exists('data')):
@@ -820,7 +868,9 @@ def main():
                 size=args.size,
                 ui_type=args.ui_type,
                 debug=args.debug,
-                tensorboard_debug_address=args.tensorboard_debug_address
+                tensorboard_debug_address=args.tensorboard_debug_address,
+                tf_threads=args.tf_threads,
+                gae_lambda=args.gae_lambda
                 )
         # # Awkward hacky process runs, because Tensorflow does not like
         # # repeatedly calling train_PG in the same thread.
