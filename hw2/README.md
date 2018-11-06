@@ -234,7 +234,7 @@ output folder: data/t1_hc_b50000_r0.02_HalfCheetah-v2_06-11-2018_14-25-58
 ```bash
 python train_pg_f18.py HalfCheetah-v2 -ep 150 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b 50000 -lr 0.02 -rtg --exp_name t2_hc_b50000_r0.02
 ```
-output folder:
+output folder: data/t2_hc_b50000_r0.02_HalfCheetah-v2_06-11-2018_21-22-32
 
 ##### trial 3
 ```bash
@@ -247,3 +247,11 @@ output folder:
 python train_pg_f18.py HalfCheetah-v2 -ep 150 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b <b * > -lr <r * > -rtg --nn_baseline --exp_name t4_hc_b<b * >_r<r * >
 ```
 output folder:
+
+
+### 8 Bonus
+a) threading parallelization
+
+b) GAE-$\lambda$
+
+c) PG's multiple gradient descent steps
