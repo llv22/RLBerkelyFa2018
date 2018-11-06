@@ -126,4 +126,80 @@ pip install box2d-py # install to support after swig installed
 python train_pg_f18.py LunarLanderContinuous-v2 -ep 1000 --discount 0.99 -n 100 -e 3 -l 2 -s 64 -b 40000 -lr 0.005 -rtg --nn_baseline --exp_name ll_b40000_r0.005
 ```
 
+Result analysis:
+```bash
+python plot.py --logdir data/ll_b40000_r0.005_LunarLanderContinuous-v2_05-11-2018_22-21-46 --legend ll_b40000_r0.005 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+```
+
+1. Average Return Figure:  
+
+<img src="data/03_lunar_plots/AverageReturn.png" width="60%"/>
+
+2. Eposide Length Mean:  
+
+<img src="data/03_lunar_plots/EpLenMean.png" width="60%"/>
+
+3. Standard Deviation Return:  
+
+<img src="data/03_lunar_plots/StdReturn.png" width="60%"/>
+
+4. Time Steps used is this batch:  
+
+<img src="data/03_lunar_plots/TimestepsThisBatch.png" width="60%"/>
+
 #### 2. [Problem 8] HalfCheetah - Discrete Action Space
+
+```bash
+bash HalfCheetah.sh
+```
+
+* for batch=10000, lrs=(0.005 0.01 0.02)
+Result analysis:
+```bash
+python plot.py --logdir data/hc_b10000_r0.005_HalfCheetah-v2_05-11-2018_23-06-28 data/hc_b10000_r0.01_HalfCheetah-v2_05-11-2018_23-41-32 data/hc_b10000_r0.02_HalfCheetah-v2_06-11-2018_00-15-45 --legend hc_b10000_r0.005 hc_b10000_r0.01 hc_b10000_r0.02 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+```
+
+1. Average Return Figure:  
+
+<img src="data/04_HalfCheetah/b10000/AverageReturn.png" width="60%"/>
+
+2. Eposide Length Mean:  
+
+<img src="data/04_HalfCheetah/b10000/EpLenMean.png" width="60%"/>
+
+3. Standard Deviation Return:  
+
+<img src="data/04_HalfCheetah/b10000/StdReturn.png" width="60%"/>
+
+4. Time Steps used is this batch:  
+
+<img src="data/04_HalfCheetah/b10000/TimestepsThisBatch.png" width="60%"/>
+
+
+* for batch=30000, lrs=(0.005 0.01 0.02)
+Result analysis:
+```bash
+python plot.py --logdir data/hc_b30000_r0.005_HalfCheetah-v2_06-11-2018_00-50-14 data/hc_b30000_r0.01_HalfCheetah-v2_06-11-2018_02-32-01 data/hc_b30000_r0.02_HalfCheetah-v2_06-11-2018_04-13-33 --legend hc_b30000_r0.005 hc_b30000_r0.01 hc_b30000_r0.02 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+```
+1. Average Return Figure:  
+
+<img src="data/04_HalfCheetah/b30000/AverageReturn.png" width="60%"/>
+
+2. Eposide Length Mean:  
+
+<img src="data/04_HalfCheetah/b30000/EpLenMean.png" width="60%"/>
+
+3. Standard Deviation Return:  
+
+<img src="data/04_HalfCheetah/b30000/StdReturn.png" width="60%"/>
+
+4. Time Steps used is this batch:  
+
+<img src="data/04_HalfCheetah/b30000/TimestepsThisBatch.png" width="60%"/>
+
+
+* for batch=50000, lrs=(0.005 0.01 0.02)
+Result analysis:
+```bash
+python plot.py --logdir data/hc_b50000_r0.005_HalfCheetah-v2_06-11-2018_05-50-55 --legend hc_b50000_r0.005 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+```
