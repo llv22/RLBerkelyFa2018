@@ -227,7 +227,7 @@ class QLearner(object):
     # might as well be random, since you haven't trained your net...)
 
     #####
-
+    raise NotImplementedError
     # YOUR CODE HERE
 
   def update_model(self):
