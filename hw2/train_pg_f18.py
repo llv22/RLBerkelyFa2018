@@ -529,7 +529,7 @@ class Agent(object):
                         delta = rewards[i] + self.gamma * b_n[i+1] - b_n[i]
                         adv[i] = adv[i+1] * self.gamma * self.gae_lambda + delta
                     # if not reward to go, just the same as the first adv[0], as from advantage function, they are the same.
-                    if not reward_to_go:
+                    if not self.reward_to_go:
                         adv = np.ones(len(rewards)) * adv[0]
                     adv_n.extend(adv)
         else:

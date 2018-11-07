@@ -248,6 +248,7 @@ python train_pg_f18.py HalfCheetah-v2 -ep 150 --discount 0.95 -n 100 -e 3 -l 2 -
 ```
 output folder: data/t4_hc_b50000_r0.02_HalfCheetah-v2_07-11-2018_03-38-25
 
+Result Analysis:
 ```bash
 python plot.py --logdir data/t1_hc_b50000_r0.02_HalfCheetah-v2_06-11-2018_14-25-58 data/t2_hc_b50000_r0.02_HalfCheetah-v2_06-11-2018_22-20-14 data/t3_hc_b50000_r0.02_HalfCheetah-v2_07-11-2018_01-02-25  data/t4_hc_b50000_r0.02_HalfCheetah-v2_07-11-2018_03-38-25 --legend t1_hc_b50000_r0.02_HalfCheetah-v2_rtg t2_hc_b50000_r0.02_HalfCheetah-v2_nn_baseline t3_hc_b50000_r0.02_HalfCheetah-v2 t4_hc_b50000_r0.02_HalfCheetah-v2_rtg_nn_baseline --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
 ```
@@ -267,9 +268,66 @@ python plot.py --logdir data/t1_hc_b50000_r0.02_HalfCheetah-v2_06-11-2018_14-25-
 
 <img src="data/04_HalfCheetah/deliverables/TimestepsThisBatch.png" width="60%"/>
 
-### 8 Bonus
+### 8 Bonus [take Walker2d-v2 as example]
+
 a) threading parallelization
 
+* single thread
+```bash
+python train_pg_f18.py Walker2d-v2 -ep 1000 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b 10000 -lr 0.02 -rtg --nn_baseline --exp_name Walker2d-v2-1thread
+```
+output folder: data/Walker2d-v2-1thread_Walker2d-v2_07-11-2018_10-18-38
+
+* 3 threads
+```bash
+python train_pg_f18.py Walker2d-v2 -ep 1000 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b 10000 -lr 0.02 -rtg --nn_baseline -t 3 --exp_name Walker2d-v2-3threads
+```
+output folder: data/Walker2d-v2-3threads_Walker2d-v2_07-11-2018_10-48-03
+
+Result Analysis:
+```bash
+python plot.py --logdir data/Walker2d-v2-1thread_Walker2d-v2_07-11-2018_10-18-38 data/Walker2d-v2-3threads_Walker2d-v2_07-11-2018_10-48-03 --legend Walker2d-v2-1thread Walker2d-v2-3threads --value AverageReturn Time
+```
+1. Average Return Figure:  
+
+<img src="data/05_Bouns/threading/AverageReturn.png" width="60%"/>
+
+2. Time Figure:  
+
+<img src="data/05_Bouns/threading/Time.png" width="60%"/>
+
+
 b) GAE-$\lambda$
+
+* GAE-$\lambda$, compared with 3 threads
+```bash
+python train_pg_f18.py Walker2d-v2 -ep 1000 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b 10000 -lr 0.02 -rtg --nn_baseline -t 3 -glambda 0.9 --exp_name Walker2d-v2-3threads-GAE-labmda
+```
+output folder: data/Walker2d-v2-3threads-GAE-labmda_Walker2d-v2_07-11-2018_11-37-45
+
+Result Analysis:
+```bash
+python plot.py --logdir data/Walker2d-v2-3threads_Walker2d-v2_07-11-2018_10-48-03 data/Walker2d-v2-3threads-GAE-labmda_Walker2d-v2_07-11-2018_11-37-45 --legend Walker2d-v2-3threads Walker2d-v2-3threads-GAE-labmda --value Time AverageReturn StdReturn EpLenMean TimestepsThisBatch
+```
+1. Average Return Figure:  
+
+<img src="data/05_Bouns/GAE/AverageReturn.png" width="60%"/>
+
+2. Eposide Length Mean:  
+
+<img src="data/05_Bouns/GAE/EpLenMean.png" width="60%"/>
+
+3. Standard Deviation Return:  
+
+<img src="data/05_Bouns/GAE/StdReturn.png" width="60%"/>
+
+4. Time Steps used is this batch:  
+
+<img src="data/05_Bouns/GAE/TimestepsThisBatch.png" width="60%"/>
+
+4. Time Figure:  
+
+<img src="data/05_Bouns/GAE/Time.png" width="60%"/>
+
 
 c) PG's multiple gradient descent steps
