@@ -403,4 +403,4 @@ python plot.py --logdir data/Walker2d-v2-3threads-n200_Walker2d-v2_07-11-2018_18
 <img src="data/05_Bouns/more/TimestepsThisBatch.png" width="60%"/>
 
 
-**Conclusion**: Probably GAE, multiple steps of GD with more stable value =>somehow rewards calculation may be wrong,it converge to 0 with low std
+**Conclusion**: GAE, multiple steps of GD with more stable value => Q(s,a) may be wrong, as converging to 0 with low std
