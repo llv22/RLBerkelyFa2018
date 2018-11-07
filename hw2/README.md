@@ -333,6 +333,7 @@ python plot.py --logdir data/Walker2d-v2-3threads_Walker2d-v2_07-11-2018_10-48-0
 c) PG's multiple gradient descent steps
 
 * PG with multiple gradient descent steps
+
 ```bash
 python train_pg_f18.py Walker2d-v2 -ep 1000 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b 10000 -lr 0.02 -rtg --nn_baseline -t 3 -gds 5 --exp_name Walker2d-v2-3threads-5gds
 ```
@@ -358,3 +359,48 @@ python plot.py --logdir data/Walker2d-v2-3threads_Walker2d-v2_07-11-2018_10-48-0
 <img src="data/05_Bouns/GDsteps/TimestepsThisBatch.png" width="60%"/>
 
 **Conclusion**: Not converged, but obviously speed up and more stable for value output
+
+* Increase iteration number to compare
+
+1. 3 threads with 200 iteration
+```bash
+python train_pg_f18.py Walker2d-v2 -ep 1000 --discount 0.95 -n 200 -e 3 -l 2 -s 32 -b 10000 -lr 0.02 -rtg --nn_baseline -t 3 --exp_name Walker2d-v2-3threads-n200
+```
+output folder: data/Walker2d-v2-3threads-n200_Walker2d-v2_07-11-2018_18-12-54
+
+
+2. gds==5 for 3 threads with 200 iteration
+
+```bash
+python train_pg_f18.py Walker2d-v2 -ep 1000 --discount 0.95 -n 200 -e 3 -l 2 -s 32 -b 10000 -lr 0.02 -rtg --nn_baseline -t 3 -gds 5 --exp_name Walker2d-v2-3threads-n200-5gds
+```
+output folder: data/Walker2d-v2-3threads-n200-5gds_Walker2d-v2_07-11-2018_19-24-47
+
+3. gds==5 for 3 threads with 200 iteration and GAE-$\lambda$
+
+```bash
+python train_pg_f18.py Walker2d-v2 -ep 1000 --discount 0.95 -n 200 -e 3 -l 2 -s 32 -b 10000 -lr 0.02 -rtg --nn_baseline -t 3 -gds 5 -glambda 0.9 --exp_name Walker2d-v2-3threads-n200-5gds-gae-glambda0.9
+```
+output folder: data/Walker2d-v2-3threads-n200-5gds-gae-glambda0.9_Walker2d-v2_07-11-2018_21-03-35
+
+```bash
+python plot.py --logdir data/Walker2d-v2-3threads-n200_Walker2d-v2_07-11-2018_18-12-54 data/Walker2d-v2-3threads-n200-5gds_Walker2d-v2_07-11-2018_19-24-47 data/Walker2d-v2-3threads-n200-5gds-gae-glambda0.9_Walker2d-v2_07-11-2018_21-03-35 --legend Walker2d-v2-3threads-n200 Walker2d-v2-3threads-n200-5gds Walker2d-v2-3threads-n200-5gds-gae-glambda0.9 --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+```
+1. Average Return Figure:  
+
+<img src="data/05_Bouns/more/AverageReturn.png" width="60%"/>
+
+2. Eposide Length Mean:  
+
+<img src="data/05_Bouns/more/EpLenMean.png" width="60%"/>
+
+3. Standard Deviation Return:  
+
+<img src="data/05_Bouns/more/StdReturn.png" width="60%"/>
+
+4. Time Steps used is this batch:  
+
+<img src="data/05_Bouns/more/TimestepsThisBatch.png" width="60%"/>
+
+
+**Conclusion**: Probably GAE, multiple steps of GD with more stable value =>somehow rewards calculation may be wrong,it converge to 0 with low std
