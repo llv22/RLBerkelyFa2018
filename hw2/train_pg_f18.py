@@ -85,6 +85,7 @@ class Agent(object):
 
         self.tf_threads = bonus_args['tf_threads']
         self.gae_lambda = bonus_args['gae_lambda']
+        self.gradient_descent_steps = bonus_args['gradient_descent_steps']
 
     def init_tf_sess(self):
         #
@@ -640,9 +641,11 @@ class Agent(object):
         # print("adv_n.shape:", adv_n.shape)
         # print("adv_n:", adv_n)
         # print("self.sy_adv_n.shape:", self.sy_adv_n.shape)
-        loss_val, _ = self.sess.run([self.loss, self.update_op], feed_dict={self.sy_ob_no: ob_no, 
-                                                                            self.sy_ac_na: ac_na, 
-                                                                            self.sy_adv_n: adv_n})
+        for _ in range(self.gradient_descent_steps):
+            # via multiple gradient descent steps
+            loss_val, _ = self.sess.run([self.loss, self.update_op], feed_dict={self.sy_ob_no: ob_no, 
+                                                                                self.sy_ac_na: ac_na, 
+                                                                                self.sy_adv_n: adv_n})
         logz.log_tabular("Loss", loss_val)
         if type(self.policy_parameters) is tuple and len(self.policy_parameters) == 2:
             print("self.sy_logstd = ", self.sess.run(self.policy_parameters[1]))
@@ -669,7 +672,8 @@ def train_PG(
         debug,
         tensorboard_debug_address,
         tf_threads,
-        gae_lambda):
+        gae_lambda,
+        gradient_descent_steps):
 
     start = time.time()
 
@@ -735,7 +739,8 @@ def train_PG(
 
     bonus_args = {
         "tf_threads": tf_threads,
-        "gae_lambda": gae_lambda
+        "gae_lambda": gae_lambda,
+        "gradient_descent_steps": gradient_descent_steps
     }
 
     agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args, bonus_args)
@@ -830,6 +835,8 @@ def main():
     parser.add_argument('--tf_threads', '-t', type=int, default=1)
     # if gae_lambda < 0, it means that we close GAE(lambda)
     parser.add_argument('--gae_lambda', '-glambda', type=float, default=-1.0)
+    # PG gradient descent steps
+    parser.add_argument('--gradient_descent_steps', '-gds', type=int, default=1)
 
     args = parser.parse_args()
 
@@ -870,7 +877,8 @@ def main():
                 debug=args.debug,
                 tensorboard_debug_address=args.tensorboard_debug_address,
                 tf_threads=args.tf_threads,
-                gae_lambda=args.gae_lambda
+                gae_lambda=args.gae_lambda,
+                gradient_descent_steps=args.gradient_descent_steps
                 )
         # # Awkward hacky process runs, because Tensorflow does not like
         # # repeatedly calling train_PG in the same thread.

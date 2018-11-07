@@ -325,9 +325,36 @@ python plot.py --logdir data/Walker2d-v2-3threads_Walker2d-v2_07-11-2018_10-48-0
 
 <img src="data/05_Bouns/GAE/TimestepsThisBatch.png" width="60%"/>
 
-4. Time Figure:  
+5. Time Figure:  
 
 <img src="data/05_Bouns/GAE/Time.png" width="60%"/>
 
 
 c) PG's multiple gradient descent steps
+
+* PG with multiple gradient descent steps
+```bash
+python train_pg_f18.py Walker2d-v2 -ep 1000 --discount 0.95 -n 100 -e 3 -l 2 -s 32 -b 10000 -lr 0.02 -rtg --nn_baseline -t 3 -gds 5 --exp_name Walker2d-v2-3threads-5gds
+```
+output folder: data/Walker2d-v2-3threads-5gds_Walker2d-v2_07-11-2018_13-07-27
+Result Analysis:
+```bash
+python plot.py --logdir data/Walker2d-v2-3threads_Walker2d-v2_07-11-2018_10-48-03 data/Walker2d-v2-3threads-5gds_Walker2d-v2_07-11-2018_13-07-27 --legend Walker2d-v2-3threads Walker2d-v2-3threads-5gds --value AverageReturn StdReturn EpLenMean TimestepsThisBatch
+```
+1. Average Return Figure:  
+
+<img src="data/05_Bouns/GDsteps/AverageReturn.png" width="60%"/>
+
+2. Eposide Length Mean:  
+
+<img src="data/05_Bouns/GDsteps/EpLenMean.png" width="60%"/>
+
+3. Standard Deviation Return:  
+
+<img src="data/05_Bouns/GDsteps/StdReturn.png" width="60%"/>
+
+4. Time Steps used is this batch:  
+
+<img src="data/05_Bouns/GDsteps/TimestepsThisBatch.png" width="60%"/>
+
+**Conclusion**: Not converged, but obviously speed up and more stable for value output
