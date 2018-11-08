@@ -19,6 +19,7 @@ See the [HW3 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw
 
 The starter code was based on an implementation of Q-learning for Atari generously provided by Szymon Sidor from OpenAI.
 
+## 1. Installation
 * For mac preparation
     ```bash
     brew install ffmpeg
@@ -41,3 +42,5 @@ The starter code was based on an implementation of Q-learning for Atari generous
     ```bash
     conda install swig
     ```
+
+## 2. Exercise
