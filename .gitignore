@@ -96,3 +96,9 @@ hw1/expert_data/
 
 # homework 2: generate data
 data/
+
+# tex documentation
+*_instructions*.aux
+*_instructions*.log
+*_instructions*.out
+*_instructions*.synctex.gz
