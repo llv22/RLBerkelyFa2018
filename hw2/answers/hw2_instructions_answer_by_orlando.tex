@@ -257,7 +257,7 @@ Given $p_\theta(\tau) = p_\theta(s_{1:t}, a_{1:t-1}) p_\theta(s_{t+1:T}, a_{t:T}
  = \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \int \frac{\nabla_\theta p_\theta(a_t|s_t)}{p_\theta(a_t|s_t)} b(s) p_\theta(s_{t+1:T}, a_{t:T} | s_t) d(s_{t+1:T}, a_{t:T})\rbrace \\
  =  \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t:T})\rbrace \\
 \end{multline}
- As measure indepdence, $d(s_{t+1:T}, a_{t:T}) = d(s_{t+1:T}, a_{t+1:T} | a_t)$, we can further split inner measure as follow (short for $(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})$ to $(s_{1:t-1},a_{1:t-1}) $):
+ As measure indepdence, $d(s_{t+1:T}, a_{t:T}) = d(s_{t+1:T}, a_{t+1:T} | a_t) d(a_t)$, we can further split inner measure as follow (short for $(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})$ to $(s_{1:t-1},a_{1:t-1}) $):
   \begin{multline}
  \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t:T})\rbrace \\
  = \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | a_t)\rbrace d(a_t)\rbrack
