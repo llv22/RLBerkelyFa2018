@@ -20,8 +20,18 @@ See the [HW3 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw
 The starter code was based on an implementation of Q-learning for Atari generously provided by Szymon Sidor from OpenAI.
 
 * For windows version of gym[atari], refer to https://stackoverflow.com/questions/42605769/openai-gym-atari-on-windows
+
+1. atari-py installation for windows
 ```bash
 pip install --no-index -f https://github.com/Kojoley/atari-py/releases atari_py
 # If you have any distutils supported compiler you can install from sources:
 pip install git+https://github.com/Kojoley/atari-py.git
+```
+2. ffmpeg installation for windows
+```bash
+conda install -c conda-forge ffmpeg
+```
+3. swig installation for windows (box2d dependency)
+```bash
+conda install swig
 ```
