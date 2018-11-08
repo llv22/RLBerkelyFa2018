@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{fullpage}
+\usepackage{amsmath}
 \usepackage{url}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -152,19 +153,41 @@ By \href{https://brilliant.org/wiki/linearity-of-expectation/}{\textcolor{blue}{
         p_\theta(\tau) = p_\theta(s_t, a_t)p_\theta(\tau / s_t, a_t | s_t, a_t)
     \end{align*}
     Please show equation \ref{independent} by using the law of iterated expectations, breaking $\mathbb{E}_{\tau \sim p_\theta(\tau)}$ by decoupling the state-action marginal from the rest of the trajectory.
-    
-\begin{center}
-	\line(1,0){100} \textbf{Solution for 1-(a)}  \line(1,0){100}
-\end{center}
 
+\begin{center}
+	\textbf{Solution for 1-(a)}
+\end{center}
 \textbf{Proof}: Given $p_\theta(\tau) = p_\theta(s_t, a_t)p_\theta(\tau / s_t, a_t | s_t, a_t)$, via \href{https://brilliant.org/wiki/linearity-of-expectation/}{\textcolor{blue}{linearity of expectation}}  rule:
 \begin{align*}
-	\sum_{t=1}^T \mathbb{E}_{\tau \sim p_\theta(\tau)}\left[ \nabla_\theta \log \pi_\theta(a_t|s_t) \left(b(s_t)\right)\right] = 
+	\sum_{t=1}^T \mathbb{E}_{\tau \sim p_\theta(\tau)}\left[ \nabla_\theta \log \pi_\theta(a_t|s_t) \left(b(s_t)\right)\right] = \sum_{t=1}^T \mathbb{E}_{(s_t, \theta_t) \sim p_{\theta}(s_t, a_t)}\lbrace \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t) \rbrace
 \end{align*}
-
-\begin{center}
-	$\ast$~$\ast $~$\ast$
-\end{center}
+Using \textbf{Fubins's Theorem}
+\begin{multline}
+	\sum_{t=1}^T \mathbb{E}_{(s_t, \theta_t) \sim p_{\theta}(s_t, a_t)}\lbrace \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t) \rbrace \\
+	= \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \mathbb{E}_{(s_t, \theta_t) \sim p_{\theta}(s_t, a_t)} \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t) \rbrace \\
+	=  \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{(s_t,a_t)} \frac{\nabla_\theta p_{\theta} (a_t|s_t)}{p_{\theta}(a_t | s_t)} p_{\theta}(s_t, a_t) b(s_t) d(s_t, a_t)\rbrace \\
+	= \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{(s_t,a_t)} \nabla_\theta p_{\theta} (a_t|s_t) p_{\theta}(s_t) b(s_t) d(s_t, a_t)\rbrace
+\end{multline}
+As $p_{\theta}(s_t, a_t) = p_{\theta}(s_t) p_{\theta}(a_t|s_t)$, we can \textbf{split measure} $d(s_t, a_t) = d(a_t|s_t) d(s_t)$,  having
+\begin{multline}
+   \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{(s_t,a_t)} \nabla_\theta p_{\theta} (a_t|s_t) p_{\theta}(s_t) b(s_t) d(s_t, a_t)\rbrace \\
+   = \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{s_t} \lbrack \int_{a_t|s_t} \nabla_{\theta} p_{\theta}(a_t|s_t) p_{\theta}(s_t) b(s_t) d(a_t|s_t)\rbrack d(s_t)\rbrace
+\end{multline}
+As $p_{\theta}(s_t)$ and $b(s_t)$ is \textbf{independent with measure} $d(a_t|s_t)$, we put them out of $d(a_t|s_t)$, having:
+\begin{multline}
+   \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{s_t} \lbrack \int_{a_t|s_t} \nabla_{\theta} p_{\theta}(a_t|s_t) p_{\theta}(s_t) b(s_t) d(a_t|s_t)\rbrack d(s_t)\rbrace \\
+   = \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{s_t} p_{\theta}(s_t) b(s_t) \lbrack \int_{a_t|s_t} \nabla_{\theta} p_{\theta}(a_t|s_t) d(a_t|s_t)\rbrack d(s_t)\rbrace
+\end{multline}
+As operator $\nabla_\theta$ and $\int_{a_t|s_t}$ for $p_\theta(a_t|s_t)$ under $d(a_t|s_t)$ for $\theta$ is \textbf{communitive}, we can do further as follow:
+\begin{multline}
+ \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{s_t} p_{\theta}(s_t) b(s_t)  \nabla_{\theta} \lbrack \int_{a_t|s_t} p_{\theta}(a_t|s_t) d(a_t|s_t)\rbrack d(s_t)\rbrace \\
+ =  \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{s_t} p_{\theta}(s_t) b(s_t) \lbrack \nabla_{\theta}  1 \rbrack d(s_t)\rbrace \\
+ =  \sum_{t=1}^T \mathbb{E}_{(\tau / s_t, \theta_t| s_t, a_t)} \lbrace \int_{s_t} \lbrack p_{\theta}(s_t) b(s_t) 0 \rbrack d(s_t)\rbrace = 0
+\end{multline}
+Finally we use $p_\theta(\tau) = p_\theta(s_t, a_t)p_\theta(\tau / s_t, a_t | s_t, a_t)$ to get:
+\begin{multline}
+  \mathbb{E}_{\tau \sim p_\theta(\tau)} \left[\sum_{t=1}^T \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t)\right] = \sum_{t=1}^T \mathbb{E}_{\tau \sim p_\theta(\tau)}\left[ \nabla_\theta \log \pi_\theta(a_t|s_t) \left(b(s_t)\right)\right] = 0
+\end{multline}
 
 \item Alternatively, we can consider the structure of the MDP and express $p_\theta(\tau)$ as a product of the trajectory distribution up to $s_t$ (which we denote as $(s_{1:t}, a_{1:t-1})$) and the trajectory distribution after $s_t$ conditioned on the first part (which we denote as $(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1})$):
     \begin{align*}
@@ -174,7 +197,108 @@ By \href{https://brilliant.org/wiki/linearity-of-expectation/}{\textcolor{blue}{
 \item Explain why, for the inner expectation, conditioning on $(s_1, a_1, ..., a_{t^*-1}, s_{t^*})$ is equivalent to conditioning only on $s_{t^*}$.
 \item Please show equation \ref{independent} by using the law of iterated expectations, breaking $\mathbb{E}_{\tau \sim p_\theta(\tau)}$ by decoupling trajectory up to $s_t$ from the trajectory after $s_t$.
 \end{enumerate}
+
+\begin{center}
+	\textbf{Solution for 1-(b)}
+\end{center}
+\begin{enumerate}[label=(\alph*)]
+\item 
+\textbf{Proof}: From descrption, we need to prove
+    \begin{align*}
+	p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1} ) = p_\theta(s_{t+1:T}, a_{t:T} | s_{t} )
+	\end{align*}
+From $p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1} )$,
+\begin{multline}
+  p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1} ) = \frac{p_\theta(s_{1:T}, a_{1:T})}{p_\theta(s_{1:t}, a_{1:t-1})} \\
+  = \frac{p_\theta(\tau)}{p_\theta(s_{1:t}, a_{1:t-1})} = \frac{p_\theta(\tau)}{p(s_1)\prod_{t'=1}^{t-1} \pi_\theta(a_{t'}|s_{t'})\Gamma(s_{t'+1}|s_{t'}, a_{t'})}
+\end{multline}
+From definition of $p_\theta(s_t) = p(s_1)\prod_{t'=1}^{t-1} \pi_\theta(a_{t'}|s_{t'})\Gamma(s_{t'+1}|s_{t'}, a_{t'})$, we can put into equation above:
+\begin{multline}
+p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1} ) = \frac{p_\theta(\tau)}{p(s_1)\prod_{t'=1}^{t-1} \pi_\theta(a_{t'}|s_{t'})\Gamma(s_{t'+1}|s_{t'}, a_{t'})} = \frac{p_\theta(s_{1:T}, a_{1:T})}{p_\theta(s_t)}
+\end{multline}
+With expansion of $p_\theta(\tau)$, we have:
+\begin{multline}
+p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1} ) = \frac{p_\theta(s_{1:T}, a_{1:T})}{p(s_1)\prod_{t'=1}^{t-1} \pi_\theta(a_{t'}|s_{t'})\Gamma(s_{t'+1}|s_{t'}, a_{t'})} \\
+= \frac{p(s_1)\prod_{t'=1}^{T} \pi_\theta(a_{t'}|s_{t'})\Gamma(s_{t'+1}|s_{t'}, a_{t'})}{p(s_1)\prod_{t'=1}^{t-1} \pi_\theta(a_{t'}|s_{t'})\Gamma(s_{t'+1}|s_{t'}, a_{t'})} \\
+= \prod_{t'=t}^{T} \pi_\theta(a_{t'}|s_{t'})\Gamma(s_{t'+1}|s_{t'}, a_{t'}) \\
+= \frac{p_\theta(s_t)\prod_{t'=t}^{T} \pi_\theta(a_{t'}|s_{t'})\Gamma(s_{t'+1}|s_{t'}, a_{t'})}{p_\theta(s_t)}
+= \frac{p_\theta(s_{t:T}, a_{t:T})}{p_\theta(s_t)} 
+\end{multline}
+
+With condition probablity defintion $p(a|b) = \frac{p(a, b)}{p(b)}$, we have
+    \begin{align*}
+	 \frac{p_\theta(s_{t:T}, a_{t:T})}{p_\theta(s_t)}  = p_\theta(s_{t+1:T}, a_{t:T} | s_t) 
+    \end{align*}
+From equation above, we prove:
+    \begin{align*}
+	p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1} ) = p_\theta(s_{t+1:T}, a_{t:T} | s_{t} )
+	\end{align*}
+
+\item
+\textbf{Proof}:
+Based on defintion of $p_\theta(\tau)$, we have:
+    \begin{align*}
+    p_\theta(\tau) = p_\theta(s_{1:t}, a_{1:t-1}) p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1})
+	\end{align*}
+As conclusion proved in (a), we replace $p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1})$:
+	\begin{multline}
+	p_\theta(\tau) = p_\theta(s_{1:t}, a_{1:t-1}) p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1}) \\
+		= p_\theta(s_{1:t}, a_{1:t-1}) p_\theta(s_{t+1:T}, a_{t:T} | s_t)
+	\end{multline}
+Given $p_\theta(\tau) = p_\theta(s_{1:t}, a_{1:t-1}) p_\theta(s_{t+1:T}, a_{t:T} | s_t)$, via \href{https://brilliant.org/wiki/linearity-of-expectation/}{\textcolor{blue}{linearity of expectation}}  rule:
+\begin{multline}
+\sum_{t=1}^T \mathbb{E}_{\tau \sim p_\theta(\tau)}\left[ \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t)\right] \\
+ =  \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \mathbb{E}_{(s_{t+1:T},a_{t:T}) \sim p_\theta(s_{t+1:T},a_{t:T}|s_{1:t}, a_{1:t-1})} \lbrack  \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t)\rbrack \rbrace \\
+ =  \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \mathbb{E}_{(s_{t+1:T},a_{t:T}) \sim p_\theta(s_{t+1:T},a_{t:T}|s_t)} \lbrack  \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t)\rbrack \rbrace 
+ \end{multline}
+ As constant $s_t$ in measure $d(s_{1:t}, a_{1:-1})$, we have $p_\theta(s_{t+1:T}, a_{t:T} | s_t)$ = $p_\theta(s_{t+1:T}, a_{t:T} )$:
+ \begin{multline}
+ \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \mathbb{E}_{(s_{t+1:T},a_{t:T}) \sim p_\theta(s_{t+1:T},a_{t:T}|s_t)} \lbrack  \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t)\rbrack \rbrace \\
+ = \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \int \frac{\nabla_\theta p_\theta(a_t|s_t)}{p_\theta(a_t|s_t)} b(s) p_\theta(s_{t+1:T}, a_{t:T} | s_t) d(s_{t+1:T}, a_{t:T})\rbrace \\
+ =  \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t:T})\rbrace \\
+\end{multline}
+ As measure indepdence, $d(s_{t+1:T}, a_{t:T}) = d(s_{t+1:T}, a_{t+1:T} | a_t)$, we can further split inner measure as follow (short for $(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})$ to $(s_{1:t-1},a_{1:t-1}) $):
+  \begin{multline}
+ \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t:T})\rbrace \\
+ = \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | a_t)\rbrace d(a_t)\rbrack
+ \end{multline}
+As parameter independence, we can take $b(s)$ tp $d(a_t)$ measure:
+ \begin{multline}
+ \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | a_t)\rbrace d(a_t)\rbrack \\
+= \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t}  b(s) \lbrace \int \nabla_\theta p_\theta(a_t|s_t)  p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | a_t)\rbrace d(a_t)\rbrack
+\end{multline}
+As in measure $d(s_{1:t}, a_{1:t-1})$, $s_t$ is constant, we can have $d(s_{t+1:T}, a_{t+1:T} | a_t) = d(s_{t+1:T}, a_{t+1:T} | s_t, a_t) $, then:
+ \begin{multline}
+\sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t}  b(s) \lbrace \int \nabla_\theta p_\theta(a_t|s_t)  p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | a_t)\rbrace d(a_t)\rbrack \\
+= \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t}  b(s) \lbrace \int \nabla_\theta p_\theta(a_t|s_t)  p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | s_t, a_t)\rbrace d(a_t)\rbrack
+\end{multline}
+As measure $d(s_{t+1:T}, a_{t+1:T} | s_t, a_t) $ is independent with $\nabla_\theta p_\theta(a_t|s_t)$, we have:
+ \begin{multline}
+\sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t}  b(s) \lbrace \int \nabla_\theta p_\theta(a_t|s_t)  p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | s_t, a_t)\rbrace d(a_t)\rbrack \\
+= \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t}  b(s) \nabla_\theta p_\theta(a_t|s_t) \lbrace \int  p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | s_t, a_t)\rbrace d(a_t)\rbrack \\
+=  \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t}  b(s) \nabla_\theta p_\theta(a_t|s_t)  d(a_t)\rbrack
+\end{multline}
+As measure $d(a_t)$ is independent with $b(s)$ and $\nabla_{\theta}$, we have:
+ \begin{multline}
+\sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t}  b(s) \nabla_\theta p_\theta(a_t|s_t)  d(a_t)\rbrack \\
+= \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack b(s) \int_{a_t}  \nabla_\theta p_\theta(a_t|s_t)  d(a_t)\rbrack \\
+= \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack b(s) \nabla_\theta \lbrace \int_{a_t}   p_\theta(a_t|s_t)  d(a_t) \rbrace \rbrack
+\end{multline}
+As $\int_{a_t}   p_\theta(a_t|s_t)  d(a_t) = 1$, we can further simplify:
+ \begin{multline}
+\sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack b(s) \nabla_\theta \lbrace \int_{a_t}   p_\theta(a_t|s_t)  d(a_t) \rbrace \rbrack \\
+= \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack b(s) \nabla_\theta 1 \rbrack = 0
+\end{multline}
+
+Finally using $p_\theta(\tau) = p_\theta(s_{1:t}, a_{1:t-1}) p_\theta(s_{t+1:T}, a_{t:T} | s_t)$, we prove:
+\begin{multline}
+\mathbb{E}_{\tau \sim p_\theta(\tau)} \left[\sum_{t=1}^T \nabla_\theta \log \pi_\theta(a_t|s_t) b(s_t)\right] = \sum_{t=1}^T \mathbb{E}_{\tau \sim p_\theta(\tau)}\left[ \nabla_\theta \log \pi_\theta(a_t|s_t) \left(b(s_t)\right)\right] = 0
+\end{multline}
+
 \end{enumerate}
+
+\end{enumerate}
+
 Since the policy gradient with respect to $\theta$ can be decoupled as a summation of terms over timesteps $t \in [1, T]$, because we have shown that the policy gradient is unbiased for each of these terms,
 the entire policy gradient is also unbiased with respect to a vector of state-dependent baselines over the timesteps: $[b(s_1), b(s_2), ... b(s_T)]$.
 
