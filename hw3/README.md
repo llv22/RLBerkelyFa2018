@@ -1,11 +1,11 @@
 # CS294-112 HW 3: Q-Learning
 
 Dependencies:
- * Python **3.5**
+ * Python **3.6**
  * Numpy version **1.14.5**
  * TensorFlow version **1.10.5**
  * MuJoCo version **1.50** and mujoco-py **1.50.1.56**
- * OpenAI Gym version **0.10.5**
+ * OpenAI Gym version **0.10.8**
  * seaborn
  * Box2D==**2.3.2**
  * OpenCV

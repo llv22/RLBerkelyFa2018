@@ -115,6 +115,7 @@ class QLearner(object):
 
     # set up placeholders
     # placeholder for current observation (or state)
+    ## Orlando's comments: smart for [None] + list(input_shape)
     self.obs_t_ph              = tf.placeholder(
         tf.float32 if lander else tf.uint8, [None] + list(input_shape))
     # placeholder for current action
@@ -158,7 +159,22 @@ class QLearner(object):
     # Tip: use huber_loss (from dqn_utils) instead of squared error when defining self.total_error
     ######
 
-    # YOUR CODE HERE
+    # YOUR CODE HERE - Problem 1.3 Implementation 
+    ## 1. q_values network
+    # q_values.shape = (None, action_size)
+    q_values = q_func(obs_t_float, self.num_actions, scope="q_func", reuse=False)
+    # select target action for q_values, filtered by self.act_t_ph
+
+    self.q_func_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='q_func')
+
+    ## 2. target_q_value network
+    # check if self.done_mask_ph == 1, then don't need to add gamma * tf.reduce_max(q_prime_values, axis=-1)
+    q_prime_values = q_func(obs_tp1_float, self.num_actions, scope="target_q_func", reuse=False)
+    self.target_q_func_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='target_q_func')
+    y_values = self.rew_t_ph + gamma * tf.reduce_max(q_prime_values, axis=-1)
+
+    # for q_value and q_target_value's Bellman error
+    self.total_error = huber_loss(q_values - y_values)
 
     ######
 

@@ -153,13 +153,19 @@ By \href{https://brilliant.org/wiki/linearity-of-expectation/}{\textcolor{blue}{
     \end{align*}
     Please show equation \ref{independent} by using the law of iterated expectations, breaking $\mathbb{E}_{\tau \sim p_\theta(\tau)}$ by decoupling the state-action marginal from the rest of the trajectory.
     
-\textbf{Solution for 1-(a)} 
+\begin{center}
+	\line(1,0){100} \textbf{Solution for 1-(a)}  \line(1,0){100}
+\end{center}
 
 \textbf{Proof}: Given $p_\theta(\tau) = p_\theta(s_t, a_t)p_\theta(\tau / s_t, a_t | s_t, a_t)$, via \href{https://brilliant.org/wiki/linearity-of-expectation/}{\textcolor{blue}{linearity of expectation}}  rule:
 \begin{align*}
 	\sum_{t=1}^T \mathbb{E}_{\tau \sim p_\theta(\tau)}\left[ \nabla_\theta \log \pi_\theta(a_t|s_t) \left(b(s_t)\right)\right] = 
 \end{align*}
-    
+
+\begin{center}
+	$\ast$~$\ast $~$\ast$
+\end{center}
+
 \item Alternatively, we can consider the structure of the MDP and express $p_\theta(\tau)$ as a product of the trajectory distribution up to $s_t$ (which we denote as $(s_{1:t}, a_{1:t-1})$) and the trajectory distribution after $s_t$ conditioned on the first part (which we denote as $(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1})$):
     \begin{align*}
         p_\theta(\tau) = p_\theta(s_{1:t}, a_{1:t-1}) p_\theta(s_{t+1:T}, a_{t:T} | s_{1:t}, a_{1:t-1})
