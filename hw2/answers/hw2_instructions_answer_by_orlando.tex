@@ -262,7 +262,7 @@ Given $p_\theta(\tau) = p_\theta(s_{1:t}, a_{1:t-1}) p_\theta(s_{t+1:T}, a_{t:T}
  \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) \sim p_\theta(s_{1:t-1},a_{1:t-1})} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t:T})\rbrace \\
  = \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | a_t)\rbrace d(a_t)\rbrack
  \end{multline}
-As parameter independence, we can take $b(s)$ tp $d(a_t)$ measure:
+As parameter independence, we can take $b(s)$ out of $d(a_t)$ measure:
  \begin{multline}
  \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t} \lbrace \int \nabla_\theta p_\theta(a_t|s_t) b(s) p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | a_t)\rbrace d(a_t)\rbrack \\
 = \sum_{t=1}^T \mathbb{E}_{(s_{1:t-1},a_{1:t-1}) } \lbrack \int_{a_t}  b(s) \lbrace \int \nabla_\theta p_\theta(a_t|s_t)  p_\theta(s_{t+1:T}, a_{t+1:T} | s_t, a_t ) d(s_{t+1:T}, a_{t+1:T} | a_t)\rbrace d(a_t)\rbrack
