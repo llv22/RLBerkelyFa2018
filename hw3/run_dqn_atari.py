@@ -35,6 +35,7 @@ def atari_learn(env,
     num_iterations = float(num_timesteps) / 4.0
 
     lr_multiplier = 1.0
+    # Why need to add PiecewiseSchedule for epsilon threshold estimation?
     lr_schedule = PiecewiseSchedule([
                                          (0,                   1e-4 * lr_multiplier),
                                          (num_iterations / 10, 1e-4 * lr_multiplier),

@@ -66,6 +66,7 @@ class PiecewiseSchedule(object):
             raised when outside value is requested.
         """
         idxes = [e[0] for e in endpoints]
+        # guarantee the first element in tuple is in asending order
         assert idxes == sorted(idxes)
         self._interpolation = interpolation
         self._outside_value = outside_value
@@ -149,7 +150,7 @@ def initialize_interdependent_variables(session, vars_list, feed_dict):
             try:
                 # If using an older version of TensorFlow, uncomment the line
                 # below and comment out the line after it.
-		#session.run(tf.initialize_variables([v]), feed_dict)
+		        #session.run(tf.initialize_variables([v]), feed_dict)
                 session.run(tf.variables_initializer([v]), feed_dict)
             except tf.errors.FailedPreconditionError:
                 new_vars_left.append(v)

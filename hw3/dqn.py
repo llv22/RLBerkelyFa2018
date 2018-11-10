@@ -161,20 +161,21 @@ class QLearner(object):
 
     # YOUR CODE HERE - Problem 1.3 Implementation 
     ## 1. q_values network
-    # q_values.shape = (None, action_size)
-    q_values = q_func(obs_t_float, self.num_actions, scope="q_func", reuse=False)
+    # qall_action_values.shape = (None, action_size), as self.qall_action_values will be used later
+    qall_action_values = q_func(obs_t_float, self.num_actions, scope="q_func", reuse=False)
+    self.max_action_for_qall = tf.argmax(qall_action_values, axis=-1)
     # select target action for q_values, filtered by self.act_t_ph
-
-    self.q_func_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='q_func')
+    q_action_values = tf.reduce_sum(qall_action_values * tf.one_hot(self.act_t_ph, self.num_actions), axis=-1)
+    q_func_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='q_func')
 
     ## 2. target_q_value network
     # check if self.done_mask_ph == 1, then don't need to add gamma * tf.reduce_max(q_prime_values, axis=-1)
     q_prime_values = q_func(obs_tp1_float, self.num_actions, scope="target_q_func", reuse=False)
-    self.target_q_func_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='target_q_func')
-    y_values = self.rew_t_ph + gamma * tf.reduce_max(q_prime_values, axis=-1)
+    target_q_func_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='target_q_func')
+    y_values = self.rew_t_ph + gamma * (1 - self.done_mask_ph) * tf.reduce_max(q_prime_values, axis=-1)
 
     # for q_value and q_target_value's Bellman error
-    self.total_error = huber_loss(q_values - y_values)
+    self.total_error = huber_loss(q_action_values - y_values)
 
     ######
 
@@ -243,8 +244,30 @@ class QLearner(object):
     # might as well be random, since you haven't trained your net...)
 
     #####
-    raise NotImplementedError
-    # YOUR CODE HERE
+    # raise NotImplementedError
+    # YOUR CODE HERE - Problem 1.3 Implementation
+    #####
+
+    ## 1. initial action estimation
+    self.replay_buffer_idx = self.replay_buffer.store_frame(self.last_obs)
+
+    ## 2. action sampling
+    if (np.random.random() < self.exploration.value(self.t)) or not self.model_initialized:
+        # if model not initalized, then we can't use initialize_interdependent_variables() as feed_dict is required to fill (<_>|||, what is design?)
+        # if model initialized, also eplsion greedy for random action
+        cur_action = np.random.randint(0, self.num_actions)
+    else:
+        # self.model_initialized == True and (np.random.random() >= self.exploration.value(self.t)) , then I can run sess for action
+        cur_obs = self.replay_buffer.encode_recent_observation()
+        cur_action = self.session.run(self.max_action_for_qall, feed_dict={self.obs_t_ph: cur_obs[None, ]})
+
+    ## 3. make 1 step for simulation envrionment 
+    self.last_obs, reward, done, _ = self.env.step(cur_action)
+    self.replay_buffer.store_effect(self.replay_buffer_idx, cur_action, reward, done)
+    # reset self.last_obs to avoid next call for sel.step_env() to drop into inconsistent state
+    if done:
+        self.last_obs = self.env.reset()
+
 
   def update_model(self):
     ### 3. Perform experience replay and train the network.
@@ -288,14 +311,41 @@ class QLearner(object):
       # you should update every target_update_freq steps, and you may find the
       # variable self.num_param_updates useful for this (it was initialized to 0)
       #####
+      # raise NotImplementedError        
+      # YOUR CODE HERE - Problem 1.3 Implementation
+      #####
+      
+      ## 3.a using self.replay_buffer to sample (obs_batch, act_batch, rew_batch, next_obs_batch, done_mask) with self.batch_size
+      obs_t_batch, act_t_batch, rew_t_batch, next_obs_t_batch, done_t_mask = self.replay_buffer.sample(self.batch_size)
 
-      # YOUR CODE HERE
-
+      ## 3.b initialize the model if it has not been initialized yet
+      if not self.model_initialized:
+          initialize_interdependent_variables(self.session, tf.global_variables(), {
+              self.obs_t_ph: obs_t_batch,
+              self.obs_tp1_ph: next_obs_t_batch,
+          })
+          self.model_initialized = True
+      ## 3.c: train the model
+      self.session.run([self.train_fn, self.total_error], feed_dict={
+          self.obs_t_ph: obs_t_batch,
+          self.act_t_ph: act_t_batch,
+          self.rew_t_ph: rew_t_batch,
+          self.obs_tp1_ph: next_obs_t_batch,
+          self.done_mask_ph: done_t_mask,
+          self.learning_rate: self.optimizer_spec.lr_schedule.value(self.t)
+      })
       self.num_param_updates += 1
+
+      ## 3.d periodically update the target network
+      if self.num_param_updates % self.target_update_freq == 0:
+          # just using var to update target_var via foreach tf.assign
+          self.session.run(self.update_target_fn)
 
     self.t += 1
 
   def log_progress(self):
+    """[logging progress of training and learning]
+    """
     episode_rewards = get_wrapper_by_name(self.env, "Monitor").get_episode_rewards()
 
     if len(episode_rewards) > 0:

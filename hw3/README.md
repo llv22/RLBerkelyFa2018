@@ -22,8 +22,14 @@ The starter code was based on an implementation of Q-learning for Atari generous
 ## 1. Installation
 * For mac preparation
     ```bash
-    brew install ffmpeg
+    brew install ffmpeg # [DON't Install This on macOS, as it don't have libx264 enabled]
     conda install opencv-python
+    conda install gym[atari]
+    ```
+* Issue: encoding problem [Unknown encoder 'libx264'], on ubuntu solution https://stackoverflow.com/questions/9764740/unknown-encoder-libx264
+  This building of ffmpeg on conda, customized with libx264
+    ```bash
+    conda install -c conda-forge ffmpeg
     ```
 
 * For windows version of gym[atari], refer to https://stackoverflow.com/questions/42605769/openai-gym-atari-on-windows
@@ -42,5 +48,11 @@ The starter code was based on an implementation of Q-learning for Atari generous
     ```bash
     conda install swig
     ```
-
 ## 2. Exercise
+
+### 2.1 Q-Learning
+#### 2.1.1 Correctness Verification
+As described in homework 3, using Atari, RAM and Lander to check if Q-learning is somehow running on the same reward level.
+```bash
+python run_dqn_atari.py
+```
