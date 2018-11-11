@@ -1,3 +1,4 @@
+import os
 import argparse
 import gym
 from gym import wrappers
@@ -58,6 +59,7 @@ def atari_learn(env,
 
     dqn.learn(
         env,
+        logdir=logdir,
         q_func=atari_model,
         optimizer_spec=optimizer,
         session=session,
@@ -92,8 +94,8 @@ def set_global_seeds(i):
 def get_session():
     tf.reset_default_graph()
     tf_config = tf.ConfigProto(
-        inter_op_parallelism_threads=1,
-        intra_op_parallelism_threads=1)
+        inter_op_parallelism_threads=thread_num_for_tf,
+        intra_op_parallelism_threads=thread_num_for_tf)
     session = tf.Session(config=tf_config)
     print("AVAILABLE GPUS: ", get_available_gpus())
     return session
@@ -115,7 +117,23 @@ def main():
     seed = 0 # Use a seed of zero (you may want to randomize the seed!)
     env = get_env(seed)
     session = get_session()
-    atari_learn(env, session, num_timesteps=int(4e7))
+    atari_learn(env, session, num_timesteps=num_timesteps)
 
 if __name__ == "__main__":
+    import time
+    parser = argparse.ArgumentParser()
+    # Basic setting
+    parser.add_argument('--exp_name', type=str, default='ram')
+    parser.add_argument('--tf_threads', '-t', type=int, default=1)
+    parser.add_argument('--num_timesteps', '-n', type=int, default=int(4e7))
+    args = parser.parse_args()
+    
+    if not(os.path.exists('data')):
+        os.makedirs('data')
+    # in setup_logger will configure the logger directory: exists clean or update
+    logdir = args.exp_name + '_Pong-ram-v0_' + time.strftime("%d-%m-%Y_%H-%M-%S")
+    logdir = os.path.join('data', logdir)
+    thread_num_for_tf = args.tf_threads
+    num_timesteps = args.num_timesteps
+
     main()

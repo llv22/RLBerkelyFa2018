@@ -189,3 +189,27 @@ exploration 0.020000
 learning_rate 0.001000
 running time 0.255324
 ```
+#### 2.1.2 Evaluation
+* Question 1: logging and plot for atari
+```bash
+python run_dqn_atari.py -t 3 -n 10000000
+```
+Parameter setting:
+ 1. tensorflow internal thread num = 3   
+ 2. n = 10000000   
+Result folder: data/atari_PongNoFrameskip-v4_11-11-2018_13-20-23
+
+Analysis for result   
+```bash
+python plot.py data/atari_PongNoFrameskip-v4_11-11-2018_13-20-23 --legend thread3_n1e7_1q --value MeanRewardFor100Episodes BestMeanEpisodeReward
+```
+1. MeanRewardFor100Episodes Figure:  
+
+<img src="data/atari_PongNoFrameskip-v4_11-11-2018_13-20-23/results/MeanRewardFor100Episodes.png" width="60%"/>
+
+2. BestMeanEpisodeReward Mean:   
+
+<img src="data/atari_PongNoFrameskip-v4_11-11-2018_13-20-23/results/BestMeanEpisodeReward.png" width="60%"/>
+
+Conclusion:  
+* rewards to 1200 episodes (timesteps=2490000) is about 15-20

@@ -10,6 +10,10 @@ import tensorflow                as tf
 import tensorflow.contrib.layers as layers
 from collections import namedtuple
 from dqn_utils import *
+import inspect
+
+## YOUR CODE - Problem 1.4 Evaluation, Question 1
+import logz
 
 OptimizerSpec = namedtuple("OptimizerSpec", ["constructor", "kwargs", "lr_schedule"])
 
@@ -18,6 +22,7 @@ class QLearner(object):
   def __init__(
     self,
     env,
+    logdir,
     q_func,
     optimizer_spec,
     session,
@@ -87,6 +92,32 @@ class QLearner(object):
         If True, then use double Q-learning to compute target values. Otherwise, use vanilla DQN.
         https://papers.nips.cc/paper/3964-double-q-learning.pdf
     """
+    def setup_logger(logdir, locals_):
+        """[setup local logger]
+        
+        Arguments:
+            logdir {[str]} -- [logging directory]
+            locals_ {[list]} -- [local variables]
+        """
+        # Configure output directory for logging
+        logz.configure_output_dir(logdir)
+        # Log experimental parameters
+        args = inspect.getargspec(QLearner.__init__)[0]
+        ## locals_ remove self, env, and unnecessary parameters setting
+        locals_.pop("env")
+        locals_.pop("self")
+        locals_.pop("setup_logger")
+        locals_.pop("exploration")
+        locals_.pop("session")
+        locals_.pop("stopping_criterion")
+        locals_.pop("optimizer_spec")
+        locals_.pop("q_func")
+        params = {k: locals_[k] if k in locals_ else None for k in args}
+        logz.save_params(params)
+    
+    assert logdir is not None
+    setup_logger(logdir, locals())
+
     assert type(env.observation_space) == gym.spaces.Box
     assert type(env.action_space)      == gym.spaces.Discrete
 
@@ -97,9 +128,14 @@ class QLearner(object):
     self.learning_starts = learning_starts
     self.stopping_criterion = stopping_criterion
     self.env = env
-    self.session = session
+    self.session = session 
+    ## Equivalent to `with self.sess:` to avoid issue 
+    #   Callstack: hw3/logz.py", line 81, in pickle_tf_vars
+    #   "ValueError: Cannot evaluate tensor using `eval()`: No default session is registered. Use `with sess.as_default()` or pass an explicit session to `eval(session=sess)`"
+    self.session.__enter__()
     self.exploration = exploration
-    self.rew_file = str(uuid.uuid4()) + '.pkl' if rew_file is None else rew_file
+    # put pkl of reward to logdir
+    self.rew_file = os.path.join(logdir, str(uuid.uuid4()) + '.pkl' if rew_file is None else rew_file)
 
     ###############
     # BUILD MODEL #
@@ -360,6 +396,13 @@ class QLearner(object):
       self.best_mean_episode_reward = max(self.best_mean_episode_reward, self.mean_episode_reward)
 
     if self.t % self.log_every_n_steps == 0 and self.model_initialized:
+      ## YOUR CODE - Problem 1.4 Evaluation, Question 1
+      # logging measure to logz folder, Iteration must be included, Iteration is used for storing Timestep
+      logz.log_tabular("Iteration", self.t)
+      logz.log_tabular("MeanRewardFor100Episodes", self.mean_episode_reward)
+      logz.log_tabular("BestMeanEpisodeReward", self.best_mean_episode_reward)
+      logz.log_tabular("Episodes", len(episode_rewards))
+
       print("Timestep %d" % (self.t,))
       print("mean reward (100 episodes) %f" % self.mean_episode_reward)
       print("best mean reward %f" % self.best_mean_episode_reward)
@@ -367,7 +410,18 @@ class QLearner(object):
       print("exploration %f" % self.exploration.value(self.t))
       print("learning_rate %f" % self.optimizer_spec.lr_schedule.value(self.t))
       if self.start_time is not None:
-        print("running time %f" % ((time.time() - self.start_time) / 60.))
+        spent_time = (time.time() - self.start_time) / 60.
+        print("running time %f" % (spent_time))
+        # logging time to logz folder
+        logz.log_tabular("TimeSpent", spent_time)
+      else:
+        ## logging time to logz folder
+        # issue of log_tabular for the first time : AssertionError: Trying to introduce a new key TimeSpent that you didn't include in the first iteration
+        logz.log_tabular("TimeSpent", None)
+
+      # logging persisted
+      logz.dump_tabular()
+      logz.pickle_tf_vars()
 
       self.start_time = time.time()
 

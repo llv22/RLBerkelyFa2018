@@ -71,6 +71,7 @@ def lander_learn(env,
 
     dqn.learn(
         env=env,
+        logdir=logdir,
         session=session,
         exploration=lander_exploration_schedule(num_timesteps),
         stopping_criterion=lander_stopping_criterion(num_timesteps),
@@ -87,8 +88,8 @@ def set_global_seeds(i):
 def get_session():
     tf.reset_default_graph()
     tf_config = tf.ConfigProto(
-        inter_op_parallelism_threads=1,
-        intra_op_parallelism_threads=1,
+        inter_op_parallelism_threads=thread_num_for_tf,
+        intra_op_parallelism_threads=thread_num_for_tf,
         device_count={'GPU': 0})
     # GPUs don't significantly speed up deep Q-learning for lunar lander,
     # since the observations are low-dimensional
@@ -113,7 +114,23 @@ def main():
     env = get_env(seed)
     session = get_session()
     set_global_seeds(seed)
-    lander_learn(env, session, num_timesteps=500000, seed=seed)
+    lander_learn(env, session, num_timesteps, seed=seed)
 
 if __name__ == "__main__":
+    import time
+    parser = argparse.ArgumentParser()
+    # Basic setting
+    parser.add_argument('--exp_name', type=str, default='lander')
+    parser.add_argument('--tf_threads', '-t', type=int, default=1)
+    parser.add_argument('--num_timesteps', '-n', type=int, default=500000)
+    args = parser.parse_args()
+
+    if not(os.path.exists('data')):
+        os.makedirs('data')
+    # in setup_logger will configure the logger directory: exists clean or update
+    logdir = args.exp_name + '_LunarLander-v2_' + time.strftime("%d-%m-%Y_%H-%M-%S")
+    logdir = os.path.join('data', logdir)
+    thread_num_for_tf = args.tf_threads
+    num_timesteps = args.num_timesteps
+
     main()
