@@ -256,12 +256,17 @@ class QLearner(object):
         # if model not initalized, then we can't use initialize_interdependent_variables() as feed_dict is required to fill (<_>|||, what is design?)
         # if model initialized, also eplsion greedy for random action
         cur_action = np.random.randint(0, self.num_actions)
+        # print("random exploration cur_action:", cur_action)
     else:
         # self.model_initialized == True and (np.random.random() >= self.exploration.value(self.t)) , then I can run sess for action
         cur_obs = self.replay_buffer.encode_recent_observation()
         cur_action = self.session.run(self.max_action_for_qall, feed_dict={self.obs_t_ph: cur_obs[None, ]})
+        # size == self.max_action_for_qall = tf.argmax(qall_action_values, axis=-1), but only for 1 self.last_obs, only for [1*cur_action]
+        assert cur_action.shape == (1, )
+        # print("via Q-network estimate cur_action: %s, shape = %s" %(np.asscalar(cur_action), cur_action.shape))
+        cur_action = np.asscalar(cur_action)
 
-    ## 3. make 1 step for simulation envrionment 
+    ## 3. make 1 step for simulation envrionment
     self.last_obs, reward, done, _ = self.env.step(cur_action)
     self.replay_buffer.store_effect(self.replay_buffer_idx, cur_action, reward, done)
     # reset self.last_obs to avoid next call for sel.step_env() to drop into inconsistent state

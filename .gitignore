@@ -103,3 +103,6 @@ data/
 *_instructions*.out
 *_instructions*.synctex.gz
 *_instructions*.pdf
+
+# homework 3: PyOpenGL-3.0.1
+PyOpenGL-3.0.1/

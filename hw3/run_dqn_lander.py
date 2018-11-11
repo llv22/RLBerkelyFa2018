@@ -1,3 +1,6 @@
+import os
+# Install error for Pyglet on Mac OS X, refer to https://groups.google.com/forum/#!topic/pyglet-users/4H8luPX69zc
+os.environ['DYLD_FALLBACK_LIBRARY_PATH'] = '/lib:/usr/lib:/usr/bin/lib:/' + os.environ['DYLD_FALLBACK_LIBRARY_PATH']
 import argparse
 import gym
 from gym import wrappers
