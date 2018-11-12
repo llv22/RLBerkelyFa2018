@@ -35,8 +35,13 @@ def build_mlp(input_placeholder, output_size, scope, n_layers, size, activation=
 
         Hint: use tf.layers.dense    
     """
-    # YOUR HW2 CODE HERE
-    raise NotImplementedError
+    # YOUR HW2 CODE HERE - 4. Problem 2(a)
+    # raise NotImplementedError 
+    with tf.variable_scope(scope):
+        X = input_placeholder
+        for _ in range(n_layers):
+            X = tf.layers.dense(X, size, activation=activation)
+        output_placeholder = tf.layers.dense(X, output_size, activation=output_activation)
     return output_placeholder
 
 def pathlength(path):
@@ -97,8 +102,10 @@ class Agent(object):
             sy_ac_na = tf.placeholder(shape=[None], name="ac", dtype=tf.int32) 
         else:
             sy_ac_na = tf.placeholder(shape=[None, self.ac_dim], name="ac", dtype=tf.float32) 
-        # YOUR HW2 CODE HERE
-        sy_adv_n = None
+        # YOUR HW2 CODE HERE - 4. Problem 2(b)(i)
+        # sy_adv_n.shape = batch_size, only for Q(i,t) for samples
+        # refer to https://github.com/Kelym/DeepRL-UCB2017-Homework/blob/master/hw2/train_pg.py 
+        sy_adv_n = tf.placeholder(shape=[None], name='adv', dtype=tf.float32)
         return sy_ob_no, sy_ac_na, sy_adv_n
 
     def policy_forward_pass(self, sy_ob_no):
@@ -126,15 +133,16 @@ class Agent(object):
                 Pass in self.n_layers for the 'n_layers' argument, and
                 pass in self.size for the 'size' argument.
         """
-        raise NotImplementedError
+        # raise NotImplementedError
         if self.discrete:
-            # YOUR_HW2 CODE_HERE
-            sy_logits_na = None
+            # YOUR_HW2 CODE_HERE - 4. Problem 2(b)(ii)
+            # shape (batch_size, self.ac_dim), not via logits 
+            sy_logits_na = build_mlp(sy_ob_no, self.ac_dim, "discrete_mlp", self.n_layers, self.size, output_activation=tf.nn.relu)
             return sy_logits_na
         else:
-            # YOUR_HW2 CODE_HERE
-            sy_mean = None
-            sy_logstd = None
+            # YOUR_HW2 CODE_HERE - 4. Problem 2(b)(ii)
+            sy_mean = build_mlp(sy_ob_no, self.ac_dim, "continuous_mlp", self.n_layers, self.size)
+            sy_logstd = tf.get_variable(shape=[self.ac_dim,], dtype=tf.float32, name="sy_logstd", initializer=tf.contrib.layers.xavier_initializer())
             return (sy_mean, sy_logstd)
 
     def sample_action(self, policy_parameters):
@@ -161,15 +169,17 @@ class Agent(object):
         
                  This reduces the problem to just sampling z. (Hint: use tf.random_normal!)
         """
-        raise NotImplementedError
+        # raise NotImplementedError
         if self.discrete:
             sy_logits_na = policy_parameters
-            # YOUR_HW2 CODE_HERE
-            sy_sampled_ac = None
+            # YOUR_HW2 CODE_HERE - 4. Problem 2(b)(iii)
+            ## Deterministic sample action will lead to the same sampled_ac, add some noise for sampled action
+            # [Learn] Use tf.multinomial to generate (batch_size, 1), then to use tf.squeence tp remove the last dimension to shape (batch_size,)
+            sy_sampled_ac = tf.squeeze(tf.multinomial(sy_logits_na, 1), axis=-1)
         else:
             sy_mean, sy_logstd = policy_parameters
-            # YOUR_HW2 CODE_HERE
-            sy_sampled_ac = None
+            # YOUR_HW2 CODE_HERE - 4. Problem 2(b)(iii) via boardcasting of tf.exp(sy_logstd) from (self.ac_dim,) to (batch_size, self.ac_dim)
+            sy_sampled_ac = sy_mean + tf.exp(sy_logstd) * tf.random_normal(tf.shape(sy_mean))
         return sy_sampled_ac
 
     def get_log_prob(self, policy_parameters, sy_ac_na):
@@ -193,15 +203,19 @@ class Agent(object):
                 For the discrete case, use the log probability under a categorical distribution.
                 For the continuous case, use the log probability under a multivariate gaussian.
         """
-        raise NotImplementedError
+        # raise NotImplementedError
         if self.discrete:
             sy_logits_na = policy_parameters
-            # YOUR_HW2 CODE_HERE
-            sy_logprob_n = None
+            # YOUR_HW2 CODE_HERE - 4. Problem 2(b)(iv)
+            ## Difference between sparse_softmax_cross_entropy_with_logits and softmax_cross_entropy_with_logits,  refer to https://stackoverflow.com/questions/37312421/whats-the-difference-between-sparse-softmax-cross-entropy-with-logits-and-softm
+            # tf.shape(sy_ac_na) = (batch_size,), tf.shape(sy_logits_na) = (batch_size, self.ac_dim)
+            sy_logprob_n = -tf.nn.sparse_softmax_cross_entropy_with_logits(labels=sy_ac_na, logits=sy_logits_na)
         else:
             sy_mean, sy_logstd = policy_parameters
-            # YOUR_HW2 CODE_HERE
-            sy_logprob_n = None
+            # YOUR_HW2 CODE_HERE - 4. Problem 2(b)(iv)
+            ## Multivariate Nominal in tensorflow, refer to https://www.tensorflow.org/versions/r1.10/api_docs/python/tf/contrib/distributions/MultivariateNormalDiag
+            tfd = tf.contrib.distributions
+            sy_logprob_n = tfd.MultivariateNormalDiag(loc=sy_ac_na, scale_diag=tf.exp(sy_logstd)).log_prob(sy_mean)
         return sy_logprob_n
 
     def build_computation_graph(self):
@@ -274,8 +288,9 @@ class Agent(object):
                 env.render()
                 time.sleep(0.1)
             obs.append(ob)
-            raise NotImplementedError
-            ac = None # YOUR HW2 CODE HERE
+            # raise NotImplementedError
+            # YOUR HW2 CODE HERE - 5. Problem 3.1
+            ac = self.sess.run(self.sy_sampled_ac, feed_dict={self.sy_ob_no: ob[None]}) 
             ac = ac[0]
             acs.append(ac)
             ob, rew, done, _ = env.step(ac)
@@ -329,8 +344,11 @@ class Agent(object):
         adv_n = None
 
         if self.normalize_advantages:
-            raise NotImplementedError
-            adv_n = None # YOUR_HW2 CODE_HERE
+            # raise NotImplementedError
+            # YOUR_HW2 CODE_HERE - 5. Problem 3.2
+            # On the next line, implement a trick which is known empirically to reduce variance
+            # in policy gradient methods: normalize adv_n to have mean zero and std=1.
+            adv_n = (adv_n - np.mean(adv_n)) / (np.std(adv+n) + 1e-9)
         return adv_n
 
     def update_critic(self, ob_no, next_ob_no, re_n, terminal_n):
@@ -519,6 +537,7 @@ def main():
     parser.add_argument('--n_experiments', '-e', type=int, default=1)
     parser.add_argument('--n_layers', '-l', type=int, default=2)
     parser.add_argument('--size', '-s', type=int, default=64)
+    parser.add_argument('--process_in_parallel', '-p', type=int, default=0)
     args = parser.parse_args()
 
     data_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
@@ -563,11 +582,14 @@ def main():
         processes.append(p)
         # if you comment in the line below, then the loop will block 
         # until this process finishes
-        # p.join()
+        if not args.process_in_parallel:
+            # if not run in parallel for processes, just run in sequence
+            p.join()
 
-    for p in processes:
-        p.join()
-        
+    # otherwise, run in parallel; only finished, back to main process
+    if args.process_in_parallel:
+        for p in processes:
+            p.join()
 
 if __name__ == "__main__":
     main()
