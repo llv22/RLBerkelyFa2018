@@ -284,6 +284,7 @@ Parameter setting:
  1. tensorflow internal thread num = 3   
  2. n = 10000000  
  3. double Q network
+output folder: data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29
 
 
 Q-3.2. improvement for benchmark [compared with Question 2]
@@ -302,6 +303,7 @@ python run_dqn_atari.py -t 3 -n 10000000 -l 1e-3 5e-4 1e-4 -nn 512 256 128
 
 ### 2.2 Actor-Critic Implementation
 #### 2.2.1 Correctness Verification
+##### Question 1: Sanity check with Cartpole
 ```bash
 python train_ac_f18.py CartPole-v0 -n 100 -b 1000 -e 3 --exp_name 1_1 -ntu 1 -ngsptu 1
 ```
@@ -386,3 +388,18 @@ python plot.py data/ac_10_10_CartPole-v0_12-11-2018_17-26-16 --legend CartPolev0
 3. EpLenMean Figure:   
 
 <img src="data/ac_10_10_CartPole-v0_12-11-2018_17-26-16/result/EpLenMean.png" width="60%"/>
+
+##### Question 2: Run actor-critic with more diﬃcult tasks
+* InvertedPendulum-v2
+```bash
+python train_ac_f18.py InvertedPendulum-v2 -ep 1000 --discount 0.95 -n 100 -e 3 -l 2 -s 64 -b 5000 -lr 0.01 --exp_name 100_100 -ntu 100 -ngsptu 100
+```
+output folder: data/
+Analysis of result   
+
+* HalfCheetah-v2
+```bash
+python train_ac_f18.py HalfCheetah-v2 -ep 150 --discount 0.90 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --exp_name <>_<> -ntu <> -ngsptu <>
+```
+output folder: data/
+Analysis of result   
