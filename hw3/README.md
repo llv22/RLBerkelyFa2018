@@ -251,7 +251,7 @@ Conclusion:
 
 * Question 3: Experimenting with hyperparameters
 
-Q-3.1. benchmark for basic setting
+Q-3.1. benchmark for basic setting [the same as  Question 2]
 ```bash
 python run_dqn_atari.py -t 3 -n 10000000
 ```
@@ -261,7 +261,15 @@ Parameter setting:
  3. double Q network
 
 
-Q-3.2. improvement for benchmark
-```bash
+Q-3.2. improvement for benchmark [compared with Question 2]
+* Case 1: with accerlated learning rate   
 
+```bash
+python run_dqn_atari.py -t 3 -n 10000000 -l 1e-3 5e-4 1e-4
+```
+
+* Case 2: with accerlated learning rate and multilayer of Q(state, action) network
+
+```bash
+python run_dqn_atari.py -t 3 -n 10000000 -l 1e-3 5e-4 1e-4 -nn 512 256 128
 ```

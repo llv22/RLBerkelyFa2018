@@ -14,13 +14,14 @@ from atari_wrappers import *
 
 
 def atari_model(ram_in, num_actions, scope, reuse=False):
+    # as described in https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
+    assert nn_output_sizes_before_action[-1] > num_actions
     with tf.variable_scope(scope, reuse=reuse):
         out = ram_in
         #out = tf.concat(1,(ram_in[:,4:5],ram_in[:,8:9],ram_in[:,11:13],ram_in[:,21:22],ram_in[:,50:51], ram_in[:,60:61],ram_in[:,64:65]))
         with tf.variable_scope("action_value"):
-            out = layers.fully_connected(out, num_outputs=256, activation_fn=tf.nn.relu)
-            out = layers.fully_connected(out, num_outputs=128, activation_fn=tf.nn.relu)
-            out = layers.fully_connected(out, num_outputs=64, activation_fn=tf.nn.relu)
+            for output_size in nn_output_sizes_before_action:
+                out = layers.fully_connected(out, num_outputs=output_size, activation_fn=tf.nn.relu)
             out = layers.fully_connected(out, num_outputs=num_actions, activation_fn=None)
 
         return out
@@ -129,6 +130,7 @@ if __name__ == "__main__":
     parser.add_argument('--num_timesteps', '-n', type=int, default=int(4e7))
     parser.add_argument("--enable_double_q", type=lambda x: (str(x).lower() == 'true'), default=True, help="Enable double-Q network or not.")
     parser.add_argument("--lr_schedule", "-l", nargs=3, type=float, default=[1e-4, 1e-4, 5e-5], help='learning rate schedule for 3 steps')
+    parser.add_argument("--act_nn", "-nn", nargs='*', type=int, default=[256, 128, 64], help='output size of Q(state, action) network by layer')
     args = parser.parse_args()
     
     if not(os.path.exists('data')):
@@ -141,5 +143,7 @@ if __name__ == "__main__":
     double_q = args.enable_double_q
     lr_schedule = args.lr_schedule
     assert len(lr_schedule) == 3
+    nn_output_sizes_before_action = args.act_nn
+    assert len(nn_output_sizes_before_action) > 0
 
     main()

@@ -14,11 +14,13 @@ import dqn
 from dqn_utils import *
 
 def lander_model(obs, num_actions, scope, reuse=False):
+    # as described in https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
+    assert nn_output_sizes_before_action[-1] > num_actions
     with tf.variable_scope(scope, reuse=reuse):
         out = obs
         with tf.variable_scope("action_value"):
-            out = layers.fully_connected(out, num_outputs=64, activation_fn=tf.nn.relu)
-            out = layers.fully_connected(out, num_outputs=64, activation_fn=tf.nn.relu)
+            for output_size in nn_output_sizes_before_action:
+                out = layers.fully_connected(out, num_outputs=output_size, activation_fn=tf.nn.relu)
             out = layers.fully_connected(out, num_outputs=num_actions, activation_fn=None)
 
         return out
@@ -124,6 +126,7 @@ if __name__ == "__main__":
     parser.add_argument('--tf_threads', '-t', type=int, default=1)
     parser.add_argument('--num_timesteps', '-n', type=int, default=500000)
     parser.add_argument("--enable_double_q", type=lambda x: (str(x).lower() == 'true'), default=True, help="Enable double-Q network or not.")
+    parser.add_argument("--act_nn", "-nn", nargs='*', type=int, default=[64, 64], help='output size of Q(state, action) network by layer')
     args = parser.parse_args()
 
     if not(os.path.exists('data')):
@@ -134,5 +137,8 @@ if __name__ == "__main__":
     thread_num_for_tf = args.tf_threads
     num_timesteps = args.num_timesteps
     double_q = args.enable_double_q
+    # constant lr-schedule
+    nn_output_sizes_before_action = args.act_nn
+    assert len(nn_output_sizes_before_action) > 0
 
     main()

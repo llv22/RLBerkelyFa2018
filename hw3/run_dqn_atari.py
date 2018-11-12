@@ -15,6 +15,7 @@ from atari_wrappers import *
 
 def atari_model(img_in, num_actions, scope, reuse=False):
     # as described in https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
+    assert nn_output_sizes_before_action[-1] > num_actions
     with tf.variable_scope(scope, reuse=reuse):
         out = img_in
         with tf.variable_scope("convnet"):
@@ -24,7 +25,8 @@ def atari_model(img_in, num_actions, scope, reuse=False):
             out = layers.convolution2d(out, num_outputs=64, kernel_size=3, stride=1, activation_fn=tf.nn.relu)
         out = layers.flatten(out)
         with tf.variable_scope("action_value"):
-            out = layers.fully_connected(out, num_outputs=512,         activation_fn=tf.nn.relu)
+            for output_size in nn_output_sizes_before_action:
+                out = layers.fully_connected(out, num_outputs=output_size, activation_fn=tf.nn.relu)
             out = layers.fully_connected(out, num_outputs=num_actions, activation_fn=None)
 
         return out
@@ -142,6 +144,7 @@ if __name__ == "__main__":
     parser.add_argument('--num_timesteps', '-n', type=int, default=int(2e8))
     parser.add_argument("--enable_double_q", type=lambda x: (str(x).lower() == 'true'), default=True, help="Enable double-Q network or not.")
     parser.add_argument("--lr_schedule", "-l", nargs=3, type=float, default=[1e-4, 1e-4, 5e-5], help='learning rate schedule for 3 steps')
+    parser.add_argument("--act_nn", "-nn", nargs='*', type=int, default=[512], help='output size of Q(state, action) network by layer')
     args = parser.parse_args()
 
     if not(os.path.exists('data')):
@@ -154,5 +157,9 @@ if __name__ == "__main__":
     double_q = args.enable_double_q
     lr_schedule = args.lr_schedule
     assert len(lr_schedule) == 3
+    nn_output_sizes_before_action = args.act_nn
+    assert len(nn_output_sizes_before_action) > 0
+    print(lr_schedule)
+    print(nn_output_sizes_before_action)
 
-    main()
+    # main()
