@@ -252,6 +252,7 @@ class Agent(object):
         # This is used in the loss function.
         self.sy_logprob_n = self.get_log_prob(self.policy_parameters, self.sy_ac_na)
 
+        ## Part 1: actor network part - actor loss to get the policy gradient PI_theta, then to evaluate a_t = PI_theta(a_t|s_t)
         actor_loss = tf.reduce_sum(-self.sy_logprob_n * self.sy_adv_n)
         self.actor_update_op = tf.train.AdamOptimizer(self.learning_rate).minimize(actor_loss)
 
@@ -263,6 +264,7 @@ class Agent(object):
                                 n_layers=self.n_layers,
                                 size=self.size))
         self.sy_target_n = tf.placeholder(shape=[None], name="critic_target", dtype=tf.float32)
+        ## Part 2: critic network part - critic loss to get V(s_t) with minimize norm(V(s_t) - (r(s_t, a_t) + V(s_t + 1)))
         self.critic_loss = tf.losses.mean_squared_error(self.sy_target_n, self.critic_prediction)
         self.critic_update_op = tf.train.AdamOptimizer(self.learning_rate).minimize(self.critic_loss)
 
@@ -295,18 +297,24 @@ class Agent(object):
             acs.append(ac)
             ob, rew, done, _ = env.step(ac)
             # add the observation after taking a step to next_obs
-            # YOUR CODE HERE
-            raise NotImplementedError
+            ## YOUR CODE HERE - HW3 Problem 2.3
+            # raise NotImplementedError
+            # logging ob into next_obs
+            next_obs.append(ob)
             rewards.append(rew)
             steps += 1
             # If the episode ended, the corresponding terminal value is 1
             # otherwise, it is 0
-            # YOUR CODE HERE
+            ## YOUR CODE HERE - HW3 Problem 2.3
             if done or steps > self.max_path_length:
-                raise NotImplementedError
+                # raise NotImplementedError
+                # logging 1 into terminals, as it's finished
+                terminals.append(1)
                 break
             else:
-                raise NotImplementedError
+                # raise NotImplementedError
+                # logging 0 into terminals, as it's still go forward
+                terminals.append(0)
         path = {"observation" : np.array(obs, dtype=np.float32), 
                 "reward" : np.array(rewards, dtype=np.float32), 
                 "action" : np.array(acs, dtype=np.float32),
@@ -339,9 +347,14 @@ class Agent(object):
         # and V(s) when subtracting the baseline
         # Note: don't forget to use terminal_n to cut off the V(s') term when computing Q(s, a)
         # otherwise the values will grow without bound.
-        # YOUR CODE HERE
-        raise NotImplementedError
-        adv_n = None
+        ## YOUR CODE HERE - HW3 Problem 2.3
+        # raise NotImplementedError
+        # V(s_{t_1})
+        V_st_1 = self.sess.run(self.critic_prediction, feed_dict={self.sy_ob_no: next_ob_no})
+        # V(s_t)
+        V_st = self.sess.run(self.critic_prediction, feed_dict={self.sy_ob_no: ob_no})
+        # Ad_{s_t, a_t}^{\pi} = r(s_t, a_t) + \gamma * V(s_{t_1}) - V(s_t)
+        adv_n = re_n + self.gamma * terminal_n * V_st_1 - V_st
 
         if self.normalize_advantages:
             # raise NotImplementedError
@@ -377,8 +390,35 @@ class Agent(object):
         # by evaluating V(s') on the updated critic
         # Note: don't forget to use terminal_n to cut off the V(s') term when computing the target
         # otherwise the values will grow without bound.
-        # YOUR CODE HERE
-        raise NotImplementedError
+        ## YOUR CODE HERE - 5. Problem 3.2
+        # raise NotImplementedError
+        # V(s_{t_1})
+        y_t = self.predict_y_t(next_ob_no, re_n, terminal_n)
+        for i in self.num_grad_steps_per_target_update*self.num_target_updates:
+            # gradident update steps
+            if i > 0  and i % self.num_grad_steps_per_target_update == 0:
+                # recompute the target values
+                y_t = self.predict_y_t(next_ob_no, re_n, terminal_n)
+            ## gradident descent for norm(V^{pi}(s_{it}) - y_{it})
+            _, critic_loss = self.sess.run([self.critic_update_op, self.critic_loss], feed_dict={
+                self.sy_target_n: y_t,
+                self.sy_ob_no:    ob_no
+            })
+
+    def predict_y_t(self, next_ob_no, re_n, terminal_n):
+        """[using critic network to predict y_t]
+        
+        Arguments:
+            next_ob_no {[type]} -- [s_{t+1}]
+            re_n {[type]} -- [r(s, a)]
+            terminal_n {[type]} -- [if s_{t+1} is terminal state]
+        
+        Returns:
+            [type] -- [V(s_t)]
+        """
+        V_st_1 = self.sess.run(self.critic_prediction, feed_dict={self.sy_ob_no: next_ob_no})
+        y_t = re_n + self.gamma * terminal_n * V_st_1
+        return y_t
 
     def update_actor(self, ob_no, ac_na, adv_n):
         """ 
@@ -499,8 +539,11 @@ def train_AC(
         # (1) update the critic, by calling agent.update_critic
         # (2) use the updated critic to compute the advantage by, calling agent.estimate_advantage
         # (3) use the estimated advantage values to update the actor, by calling agent.update_actor
-        # YOUR CODE HERE
-        raise NotImplementedError
+        # YOUR CODE HERE - 5. Problem 3.2
+        # raise NotImplementedError
+        agent.update_critic(ob_no, next_ob_no, re_n, terminal_n)
+        adv_n = agent.estimate_advantage(ob_no, next_ob_no, re_n, terminal_n)
+        agent.update_actor(ob_no, ac_na, adv_n)
 
         # Log diagnostics
         returns = [path["reward"].sum() for path in paths]
