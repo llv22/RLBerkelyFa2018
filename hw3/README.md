@@ -286,6 +286,18 @@ Parameter setting:
  3. double Q network
 output folder: data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29
 
+Analysis for result   
+```bash
+python plot.py data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29 --legend thread3_n1e7_double_q_cnpvgl903653 --value MeanRewardFor100Episodes BestMeanEpisodeReward
+```
+1. MeanRewardFor100Episodes Figure:  
+
+<img src="data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29/results/MeanRewardFor100Episodes.png" width="60%"/>
+
+2. BestMeanEpisodeReward Mean:   
+
+<img src="data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29/results/BestMeanEpisodeReward.png" width="60%"/>
+
 
 Q-3.2. improvement for benchmark [compared with Question 2]
 * Case 1: with accerlated learning rate   
