@@ -36,13 +36,16 @@ def atari_learn(env,
     num_iterations = float(num_timesteps) / 4.0
 
     lr_multiplier = 1.0
+
+    ## 1. learning rate update
     # Why need to add PiecewiseSchedule for epsilon threshold estimation?
+    # Reason: using scheduled learning rate for updates
     lr_schedule = PiecewiseSchedule([
-                                         (0,                   1e-4 * lr_multiplier),
-                                         (num_iterations / 10, 1e-4 * lr_multiplier),
-                                         (num_iterations / 2,  5e-5 * lr_multiplier),
+                                         (0,                   lr_schedule[0] * lr_multiplier),
+                                         (num_iterations / 10, lr_schedule[1] * lr_multiplier),
+                                         (num_iterations / 2,  lr_schedule[2] * lr_multiplier),
                                     ],
-                                    outside_value=5e-5 * lr_multiplier)
+                                    outside_value=lr_schedule[2] * lr_multiplier)
     optimizer = dqn.OptimizerSpec(
         constructor=tf.train.AdamOptimizer,
         kwargs=dict(epsilon=1e-4),
@@ -54,6 +57,7 @@ def atari_learn(env,
         # which is different from the number of steps in the underlying env
         return get_wrapper_by_name(env, "Monitor").get_total_steps() >= num_timesteps
 
+    ## 2. exploring schedule - pure exploring, then less exploring with exploiting
     exploration_schedule = PiecewiseSchedule(
         [
             (0, 1.0),
@@ -137,6 +141,7 @@ if __name__ == "__main__":
     parser.add_argument('--tf_threads', '-t', type=int, default=1)
     parser.add_argument('--num_timesteps', '-n', type=int, default=int(2e8))
     parser.add_argument("--enable_double_q", type=lambda x: (str(x).lower() == 'true'), default=True, help="Enable double-Q network or not.")
+    parser.add_argument("--lr_schedule", "-l", nargs=3, type=float, default=[1e-4, 1e-4, 5e-5], help='learning rate schedule for 3 steps')
     args = parser.parse_args()
 
     if not(os.path.exists('data')):
@@ -147,5 +152,7 @@ if __name__ == "__main__":
     thread_num_for_tf = args.tf_threads
     num_timesteps = args.num_timesteps
     double_q = args.enable_double_q
+    lr_schedule = args.lr_schedule
+    assert len(lr_schedule) == 3
 
     main()

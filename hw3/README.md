@@ -56,6 +56,16 @@ The starter code was based on an implementation of Q-learning for Atari generous
     ```bash
     conda install swig
     ```
+
+* For Ubuntu version
+    1. installation for ffmpeg
+    ```bash
+    sudo apt-get install ffmpeg
+    ```
+    2. installation for libx264
+    ```bash
+    sudo apt-get install libav-tools
+    ```
 ## 2. Exercise
 
 ### 2.1 Q-Learning
@@ -240,3 +250,18 @@ Conclusion:
 * after peek of 200000, vanilla DQN begin to drop down, but double-DQN keep constantly increasing (seems not to reach convergence)
 
 * Question 3: Experimenting with hyperparameters
+
+Q-3.1. benchmark for basic setting
+```bash
+python run_dqn_atari.py -t 3 -n 10000000
+```
+Parameter setting:
+ 1. tensorflow internal thread num = 3   
+ 2. n = 10000000  
+ 3. double Q network
+
+
+Q-3.2. improvement for benchmark
+```bash
+
+```
