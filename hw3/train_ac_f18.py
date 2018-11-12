@@ -5,7 +5,9 @@ Adapted for CS294-112 Fall 2018 by Soroush Nasiriany, Sid Reddy, and Greg Kahn
 """
 import numpy as np
 import tensorflow as tf
-import tensorflow_probability as tfp
+## Issue: as tfp isn't include in tensorflow 1.10.0, just workaround it! Orlando
+# import tensorflow_probability as tfp
+tfp = tf.contrib.distributions
 import gym
 import logz
 import os
@@ -96,7 +98,7 @@ class Agent(object):
                 sy_ac_na: placeholder for actions
                 sy_adv_n: placeholder for advantages
         """
-        raise NotImplementedError
+        # raise NotImplementedError
         sy_ob_no = tf.placeholder(shape=[None, self.ob_dim], name="ob", dtype=tf.float32)
         if self.discrete:
             sy_ac_na = tf.placeholder(shape=[None], name="ac", dtype=tf.int32) 
@@ -361,7 +363,7 @@ class Agent(object):
             # YOUR_HW2 CODE_HERE - 5. Problem 3.2
             # On the next line, implement a trick which is known empirically to reduce variance
             # in policy gradient methods: normalize adv_n to have mean zero and std=1.
-            adv_n = (adv_n - np.mean(adv_n)) / (np.std(adv+n) + 1e-9)
+            adv_n = (adv_n - np.mean(adv_n)) / (np.std(adv_n) + 1e-9)
         return adv_n
 
     def update_critic(self, ob_no, next_ob_no, re_n, terminal_n):
@@ -394,7 +396,7 @@ class Agent(object):
         # raise NotImplementedError
         # V(s_{t_1})
         y_t = self.predict_y_t(next_ob_no, re_n, terminal_n)
-        for i in self.num_grad_steps_per_target_update*self.num_target_updates:
+        for i in range(self.num_grad_steps_per_target_update*self.num_target_updates):
             # gradident update steps
             if i > 0  and i % self.num_grad_steps_per_target_update == 0:
                 # recompute the target values
