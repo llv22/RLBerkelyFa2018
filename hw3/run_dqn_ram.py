@@ -34,11 +34,11 @@ def atari_learn(env,
 
     lr_multiplier = 1.0
     lr_schedule = PiecewiseSchedule([
-                                         (0,                   lr_schedule[0] * lr_multiplier),
-                                         (num_iterations / 10, lr_schedule[1] * lr_multiplier),
-                                         (num_iterations / 2,  lr_schedule[2] * lr_multiplier),
+                                         (0,                   lr_schedule_v[0] * lr_multiplier),
+                                         (num_iterations / 10, lr_schedule_v[1] * lr_multiplier),
+                                         (num_iterations / 2,  lr_schedule_v[2] * lr_multiplier),
                                     ],
-                                    outside_value=lr_schedule[2] * lr_multiplier)
+                                    outside_value=lr_schedule_v[2] * lr_multiplier)
     optimizer = dqn.OptimizerSpec(
         constructor=tf.train.AdamOptimizer,
         kwargs=dict(epsilon=1e-4),
@@ -141,8 +141,8 @@ if __name__ == "__main__":
     thread_num_for_tf = args.tf_threads
     num_timesteps = args.num_timesteps
     double_q = args.enable_double_q
-    lr_schedule = args.lr_schedule
-    assert len(lr_schedule) == 3
+    lr_schedule_v = args.lr_schedule
+    assert len(lr_schedule_v) == 3
     nn_output_sizes_before_action = args.act_nn
     assert len(nn_output_sizes_before_action) > 0
 
