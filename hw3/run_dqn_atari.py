@@ -159,7 +159,5 @@ if __name__ == "__main__":
     assert len(lr_schedule) == 3
     nn_output_sizes_before_action = args.act_nn
     assert len(nn_output_sizes_before_action) > 0
-    print(lr_schedule)
-    print(nn_output_sizes_before_action)
 
-    # main()
+    main()
