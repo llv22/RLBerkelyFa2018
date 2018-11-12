@@ -292,11 +292,11 @@ python plot.py data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29 --legend thread
 ```
 1. MeanRewardFor100Episodes Figure:  
 
-<img src="data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29/results/MeanRewardFor100Episodes.png" width="60%"/>
+<img src="data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29/result/BestMeanEpisodeReward.png" width="60%"/>
 
 2. BestMeanEpisodeReward Mean:   
 
-<img src="data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29/results/BestMeanEpisodeReward.png" width="60%"/>
+<img src="data/atari_PongNoFrameskip-v4_12-11-2018_13-27-29/result/BestMeanEpisodeReward.png" width="60%"/>
 
 
 Q-3.2. improvement for benchmark [compared with Question 2]
