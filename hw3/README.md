@@ -351,43 +351,43 @@ python plot.py data/ac_100_1_CartPole-v0_12-11-2018_21-37-25 --legend CartPolev0
 ```bash
 python train_ac_f18.py CartPole-v0 -n 100 -b 1000 -e 3 --exp_name 1_100 -ntu 1 -ngsptu 100
 ```
-output folder: data/ac_1_100_CartPole-v0_12-11-2018_17-18-48
+output folder: data/ac_1_100_CartPole-v0_12-11-2018_21-45-19
 Analysis of result   
 ```bash
-python plot.py data/ac_1_100_CartPole-v0_12-11-2018_17-18-48 --legend CartPolev0_n100_b1000_e3_exp_name1_100_ntu1_ngsptu100 --value AverageReturn StdReturn EpLenMean
+python plot.py data/ac_1_100_CartPole-v0_12-11-2018_21-45-19 --legend CartPolev0_n100_b1000_e3_exp_name1_100_ntu1_ngsptu100 --value AverageReturn StdReturn EpLenMean
 ```
 1. AverageReturn Figure:  
 
-<img src="data/ac_1_100_CartPole-v0_12-11-2018_17-18-48/result/AverageReturn.png" width="60%"/>
+<img src="data/ac_1_100_CartPole-v0_12-11-2018_21-45-19/result/AverageReturn.png" width="60%"/>
 
 2. StdReturn Figure:   
 
-<img src="data/ac_1_100_CartPole-v0_12-11-2018_17-18-48/result/StdReturn.png" width="60%"/>
+<img src="data/ac_1_100_CartPole-v0_12-11-2018_21-45-19/result/StdReturn.png" width="60%"/>
 
 3. EpLenMean Figure:   
 
-<img src="data/ac_1_100_CartPole-v0_12-11-2018_17-18-48/result/EpLenMean.png" width="60%"/>
+<img src="data/ac_1_100_CartPole-v0_12-11-2018_21-45-19/result/EpLenMean.png" width="60%"/>
 
 3) Trial 3
 ```bash
 python train_ac_f18.py CartPole-v0 -n 100 -b 1000 -e 3 --exp_name 10_10 -ntu 10 -ngsptu 10
 ```
-output folder: data/ac_10_10_CartPole-v0_12-11-2018_17-26-16
+output folder: data/ac_10_10_CartPole-v0_12-11-2018_21-51-09
 Analysis of result   
 ```bash
-python plot.py data/ac_10_10_CartPole-v0_12-11-2018_17-26-16 --legend CartPolev0_n100_b1000_e3_exp_name10_10_ntu10_ngsptu10 --value AverageReturn StdReturn EpLenMean
+python plot.py data/ac_10_10_CartPole-v0_12-11-2018_21-51-09 --legend CartPolev0_n100_b1000_e3_exp_name10_10_ntu10_ngsptu10 --value AverageReturn StdReturn EpLenMean
 ```
 1. AverageReturn Figure:  
 
-<img src="data/ac_10_10_CartPole-v0_12-11-2018_17-26-16/result/AverageReturn.png" width="60%"/>
+<img src="data/ac_10_10_CartPole-v0_12-11-2018_21-51-09/result/AverageReturn.png" width="60%"/>
 
 2. StdReturn Figure:   
 
-<img src="data/ac_10_10_CartPole-v0_12-11-2018_17-26-16/result/StdReturn.png" width="60%"/>
+<img src="data/ac_10_10_CartPole-v0_12-11-2018_21-51-09/result/StdReturn.png" width="60%"/>
 
 3. EpLenMean Figure:   
 
-<img src="data/ac_10_10_CartPole-v0_12-11-2018_17-26-16/result/EpLenMean.png" width="60%"/>
+<img src="data/ac_10_10_CartPole-v0_12-11-2018_21-51-09/result/EpLenMean.png" width="60%"/>
 
 ##### Question 2: Run actor-critic with more diﬃcult tasks
 * InvertedPendulum-v2
