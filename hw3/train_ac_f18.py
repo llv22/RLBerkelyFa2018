@@ -356,7 +356,8 @@ class Agent(object):
         # V(s_t)
         V_st = self.sess.run(self.critic_prediction, feed_dict={self.sy_ob_no: ob_no})
         # Ad_{s_t, a_t}^{\pi} = r(s_t, a_t) + \gamma * V(s_{t_1}) - V(s_t)
-        adv_n = re_n + self.gamma * terminal_n * V_st_1 - V_st
+        # terminal state should be masked, then need to use (1 - terminal_n)
+        adv_n = re_n + self.gamma * (1 - terminal_n) * V_st_1 - V_st
 
         if self.normalize_advantages:
             # raise NotImplementedError
@@ -419,7 +420,8 @@ class Agent(object):
             [type] -- [V(s_t)]
         """
         V_st_1 = self.sess.run(self.critic_prediction, feed_dict={self.sy_ob_no: next_ob_no})
-        y_t = re_n + self.gamma * terminal_n * V_st_1
+        # terminal state should be masked, then need to use (1 - terminal_n)
+        y_t = re_n + self.gamma * (1 - terminal_n) * V_st_1
         return y_t
 
     def update_actor(self, ob_no, ac_na, adv_n):
