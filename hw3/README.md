@@ -298,3 +298,91 @@ python run_dqn_atari.py -t 3 -n 10000000 -l 1e-3 5e-4 1e-4
 ```bash
 python run_dqn_atari.py -t 3 -n 10000000 -l 1e-3 5e-4 1e-4 -nn 512 256 128
 ```
+
+
+### 2.2 Actor-Critic Implementation
+#### 2.2.1 Correctness Verification
+```bash
+python train_ac_f18.py CartPole-v0 -n 100 -b 1000 -e 3 --exp_name 1_1 -ntu 1 -ngsptu 1
+```
+output folder: data/ac_1_1_CartPole-v0_12-11-2018_16-53-00
+Analysis of result   
+```bash
+python plot.py data/ac_1_1_CartPole-v0_12-11-2018_16-53-00 --legend CartPolev0_n100_b1000_e3_exp_name1_1_ntu1_ngsptu1 --value AverageReturn StdReturn EpLenMean
+```
+1. AverageReturn Figure:  
+
+<img src="data/ac_1_1_CartPole-v0_12-11-2018_16-53-00/result/AverageReturn.png" width="60%"/>
+
+2. StdReturn Figure:   
+
+<img src="data/ac_1_1_CartPole-v0_12-11-2018_16-53-00/result/StdReturn.png" width="60%"/>
+
+3. EpLenMean Figure:   
+
+<img src="data/ac_1_1_CartPole-v0_12-11-2018_16-53-00/result/EpLenMean.png" width="60%"/>
+
+#### 2.2.2 Evaluate result
+
+1) Trial 1
+```bash
+python train_ac_f18.py CartPole-v0 -n 100 -b 1000 -e 3 --exp_name 100_1 -ntu 100 -ngsptu 1
+```
+output folder: data/ac_100_1_CartPole-v0_12-11-2018_17-07-52
+Analysis of result   
+```bash
+python plot.py data/ac_100_1_CartPole-v0_12-11-2018_17-07-52 --legend CartPolev0_n100_b1000_e3_exp_name100_1_ntu100_ngsptu1 --value AverageReturn StdReturn EpLenMean
+```
+1. AverageReturn Figure:  
+
+<img src="data/ac_1_1_CartPole-v0_12-11-2018_16-53-00/result/AverageReturn.png" width="60%"/>
+
+2. StdReturn Figure:   
+
+<img src="data/ac_1_1_CartPole-v0_12-11-2018_16-53-00/result/StdReturn.png" width="60%"/>
+
+3. EpLenMean Figure:   
+
+<img src="data/ac_1_1_CartPole-v0_12-11-2018_16-53-00/result/EpLenMean.png" width="60%"/>
+
+2) Trial 2
+```bash
+python train_ac_f18.py CartPole-v0 -n 100 -b 1000 -e 3 --exp_name 1_100 -ntu 1 -ngsptu 100
+```
+output folder: data/ac_1_100_CartPole-v0_12-11-2018_17-18-48
+Analysis of result   
+```bash
+python plot.py data/ac_1_100_CartPole-v0_12-11-2018_17-18-48 --legend CartPolev0_n100_b1000_e3_exp_name1_100_ntu1_ngsptu100 --value AverageReturn StdReturn EpLenMean
+```
+1. AverageReturn Figure:  
+
+<img src="data/ac_1_100_CartPole-v0_12-11-2018_17-18-48/result/AverageReturn.png" width="60%"/>
+
+2. StdReturn Figure:   
+
+<img src="data/ac_1_100_CartPole-v0_12-11-2018_17-18-48/result/StdReturn.png" width="60%"/>
+
+3. EpLenMean Figure:   
+
+<img src="data/ac_1_100_CartPole-v0_12-11-2018_17-18-48/result/EpLenMean.png" width="60%"/>
+
+3) Trial 3
+```bash
+python train_ac_f18.py CartPole-v0 -n 100 -b 1000 -e 3 --exp_name 10_10 -ntu 10 -ngsptu 10
+```
+output folder: data/ac_10_10_CartPole-v0_12-11-2018_17-26-16
+Analysis of result   
+```bash
+python plot.py data/ac_10_10_CartPole-v0_12-11-2018_17-26-16 --legend CartPolev0_n100_b1000_e3_exp_name10_10_ntu10_ngsptu10 --value AverageReturn StdReturn EpLenMean
+```
+1. AverageReturn Figure:  
+
+<img src="data/ac_10_10_CartPole-v0_12-11-2018_17-26-16/result/AverageReturn.png" width="60%"/>
+
+2. StdReturn Figure:   
+
+<img src="data/ac_10_10_CartPole-v0_12-11-2018_17-26-16/result/StdReturn.png" width="60%"/>
+
+3. EpLenMean Figure:   
+
+<img src="data/ac_10_10_CartPole-v0_12-11-2018_17-26-16/result/EpLenMean.png" width="60%"/>
