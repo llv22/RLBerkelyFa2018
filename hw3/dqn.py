@@ -1,3 +1,4 @@
+import os
 import uuid
 import time
 import pickle
@@ -136,6 +137,8 @@ class QLearner(object):
     self.exploration = exploration
     # put pkl of reward to logdir
     self.rew_file = os.path.join(logdir, str(uuid.uuid4()) + '.pkl' if rew_file is None else rew_file)
+    # enable double-Q or not
+    self.double_q = double_q
 
     ###############
     # BUILD MODEL #
@@ -208,8 +211,19 @@ class QLearner(object):
     # check if self.done_mask_ph == 1, then don't need to add gamma * tf.reduce_max(q_prime_values, axis=-1)
     q_prime_values = q_func(obs_tp1_float, self.num_actions, scope="target_q_func", reuse=False)
     target_q_func_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='target_q_func')
-    y_values = self.rew_t_ph + gamma * (1 - self.done_mask_ph) * tf.reduce_max(q_prime_values, axis=-1)
+    if self.double_q:
+        # double-Q network
+        # for max_action as index for input
+        self.max_action_index_for_dQ = tf.placeholder(tf.int32,   [None])
+        # q_prime_values * tf.one_hot(self.max_action_index_for_dQ, self.num_actions) is to mask "all non-max action index" for qall_action network.
+        # tf.reduce_max(q_prime_values * tf.one_hot(self.max_action_index_for_dQ, self.num_actions), axis=-1) is to only first the max action index's Q value for target network of evaluated value
+        # only need to input self.max_action_index_for_dQ with qall network will be sufficient for training and learning.
+        y_values = self.rew_t_ph + gamma * (1 - self.done_mask_ph) * tf.reduce_max(q_prime_values * tf.one_hot(self.max_action_index_for_dQ, self.num_actions), axis=-1)
+    else:
+        # non-double-Q network
+        y_values = self.rew_t_ph + gamma * (1 - self.done_mask_ph) * tf.reduce_max(q_prime_values, axis=-1)
 
+    ## For double-Q network, it's very difficult to splitting for y_values, as argmax(qall_action_values) is needed to reuse "q_func" network.
     # for q_value and q_target_value's Bellman error
     self.total_error = huber_loss(q_action_values - y_values)
 
@@ -367,14 +381,29 @@ class QLearner(object):
           })
           self.model_initialized = True
       ## 3.c: train the model
-      self.session.run([self.train_fn, self.total_error], feed_dict={
-          self.obs_t_ph: obs_t_batch,
-          self.act_t_ph: act_t_batch,
-          self.rew_t_ph: rew_t_batch,
-          self.obs_tp1_ph: next_obs_t_batch,
-          self.done_mask_ph: done_t_mask,
-          self.learning_rate: self.optimizer_spec.lr_schedule.value(self.t)
-      })
+      if self.double_q:
+        # double q case, firstly calculate self.max_action_index_for_dQ's value
+        max_action_index_for_dQ = self.session.run(self.max_action_for_qall, feed_dict={
+            self.obs_t_ph: next_obs_t_batch
+        })
+        self.session.run([self.train_fn, self.total_error], feed_dict={
+            self.obs_t_ph: obs_t_batch,
+            self.act_t_ph: act_t_batch,
+            self.rew_t_ph: rew_t_batch,
+            self.obs_tp1_ph: next_obs_t_batch,
+            self.max_action_index_for_dQ: max_action_index_for_dQ,
+            self.done_mask_ph: done_t_mask,
+            self.learning_rate: self.optimizer_spec.lr_schedule.value(self.t)
+        })
+      else:
+        self.session.run([self.train_fn, self.total_error], feed_dict={
+            self.obs_t_ph: obs_t_batch,
+            self.act_t_ph: act_t_batch,
+            self.rew_t_ph: rew_t_batch,
+            self.obs_tp1_ph: next_obs_t_batch,
+            self.done_mask_ph: done_t_mask,
+            self.learning_rate: self.optimizer_spec.lr_schedule.value(self.t)
+        })
       self.num_param_updates += 1
 
       ## 3.d periodically update the target network

@@ -75,7 +75,7 @@ def lander_learn(env,
         session=session,
         exploration=lander_exploration_schedule(num_timesteps),
         stopping_criterion=lander_stopping_criterion(num_timesteps),
-        double_q=True,
+        double_q=double_q,
         **lander_kwargs()
     )
     env.close()
@@ -123,6 +123,7 @@ if __name__ == "__main__":
     parser.add_argument('--exp_name', type=str, default='lander')
     parser.add_argument('--tf_threads', '-t', type=int, default=1)
     parser.add_argument('--num_timesteps', '-n', type=int, default=500000)
+    parser.add_argument("--enable_double_q", type=lambda x: (str(x).lower() == 'true'), default=True, help="Enable double-Q network or not.")
     args = parser.parse_args()
 
     if not(os.path.exists('data')):
@@ -132,5 +133,6 @@ if __name__ == "__main__":
     logdir = os.path.join('data', logdir)
     thread_num_for_tf = args.tf_threads
     num_timesteps = args.num_timesteps
+    double_q = args.enable_double_q
 
     main()

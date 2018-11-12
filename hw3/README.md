@@ -192,7 +192,7 @@ running time 0.255324
 #### 2.1.2 Evaluation
 * Question 1: logging and plot for atari
 ```bash
-python run_dqn_atari.py -t 3 -n 10000000
+python run_dqn_atari.py -t 3 -n 10000000 --enable_double_q false
 ```
 Parameter setting:
  1. tensorflow internal thread num = 3   
@@ -213,3 +213,13 @@ python plot.py data/atari_PongNoFrameskip-v4_11-11-2018_13-20-23 --legend thread
 
 Conclusion:  
 * rewards to 1200 episodes (timesteps=2490000) is about 15-20
+
+* Question 2: duoble Q-learning
+```bash
+python run_dqn_atari.py -t 3 -n 10000000
+```
+Parameter setting:
+ 1. tensorflow internal thread num = 3   
+ 2. n = 10000000  
+ 3. double Q network
+Result folder: data/atari_PongNoFrameskip-v4_11-11-2018_21-32-52
