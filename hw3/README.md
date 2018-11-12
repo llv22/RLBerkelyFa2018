@@ -222,4 +222,21 @@ Parameter setting:
  1. tensorflow internal thread num = 3   
  2. n = 10000000  
  3. double Q network
-Result folder: data/atari_PongNoFrameskip-v4_11-11-2018_21-32-52
+Result folder: data/atari_PongNoFrameskip-v4_11-11-2018_21-34-41
+Analysis for result   
+```bash
+python plot.py data/atari_PongNoFrameskip-v4_11-11-2018_21-34-41 --legend thread3_n1e7_double_q --value MeanRewardFor100Episodes BestMeanEpisodeReward
+```
+1. MeanRewardFor100Episodes Figure:  
+
+<img src="data/atari_PongNoFrameskip-v4_11-11-2018_21-34-41/results/MeanRewardFor100Episodes.png" width="60%"/>
+
+2. BestMeanEpisodeReward Mean:   
+
+<img src="data/atari_PongNoFrameskip-v4_11-11-2018_21-34-41/results/BestMeanEpisodeReward.png" width="60%"/>
+
+Conclusion:
+* double-Q iterate more stably, but increase slowly compared with vanilla DQN
+* after peek of 200000, vanilla DQN begin to drop down, but double-DQN keep constantly increasing (seems not to reach convergence)
+
+* Question 3: Experimenting with hyperparameters

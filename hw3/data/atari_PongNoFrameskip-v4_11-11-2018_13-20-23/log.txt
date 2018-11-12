@@ -1,4 +1,4 @@
-Timestep	MeanRewardFor100Episodes	BestMeanEpisodeReward	Iteration	TimeSpent
+Iteration	MeanRewardFor100Episodes	BestMeanEpisodeReward	Episodes	TimeSpent
 60000	-20.26153846153846	-inf	65	None
 70000	-20.223684210526315	-inf	76	0.7612501343091329
 80000	-20.264367816091955	-inf	87	0.7628602822621663

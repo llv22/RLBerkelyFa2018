@@ -113,6 +113,8 @@ class QLearner(object):
         locals_.pop("stopping_criterion")
         locals_.pop("optimizer_spec")
         locals_.pop("q_func")
+        ## append exp_name for locals_
+        locals_["exp_name"] = env.spec.id
         params = {k: locals_[k] if k in locals_ else None for k in args}
         logz.save_params(params)
     
