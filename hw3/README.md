@@ -442,3 +442,17 @@ python train_ac_f18.py HalfCheetah-v2 -ep 150 --discount 0.90 -n 100 -e 3 -l 2 -
 ```
 output folder: data/ac_100_100_HalfCheetah-v2_12-11-2018_22-57-07
 Analysis of result   
+```bash
+python plot.py data/ac_100_100_HalfCheetah-v2_12-11-2018_22-57-07 --legend HalfCheetahv2_ep150_discount0.9_n100_b30000_e3_l2_s32_exp_name100_100_ntu100_ngsptu100 --value AverageReturn StdReturn EpLenMean
+```
+1. AverageReturn Figure:  
+
+<img src="data/ac_100_100_HalfCheetah-v2_12-11-2018_22-57-07/result/AverageReturn.png" width="60%"/>
+
+2. StdReturn Figure:   
+
+<img src="data/ac_100_100_HalfCheetah-v2_12-11-2018_22-57-07/result/StdReturn.png" width="60%"/>
+
+3. EpLenMean Figure:   
+
+<img src="data/ac_100_100_HalfCheetah-v2_12-11-2018_22-57-07/result/EpLenMean.png" width="60%"/>
