@@ -305,6 +305,19 @@ Q-3.2. improvement for benchmark [compared with Question 2]
 ```bash
 python run_dqn_atari.py -t 3 -n 10000000 -l 1e-3 5e-4 1e-4
 ```
+output folder: data/atari_PongNoFrameskip-v4_12-11-2018_22-24-09
+
+Analysis for result  
+```bash
+python plot.py data/atari_PongNoFrameskip-v4_12-11-2018_22-24-09 --legend thread3_n1e7_double_q_lr_1e-3_5e-4_1e-4_cnpvgl903653 --value MeanRewardFor100Episodes BestMeanEpisodeReward
+```
+1. MeanRewardFor100Episodes Figure:  
+
+<img src="data/atari_PongNoFrameskip-v4_12-11-2018_22-24-09/result/BestMeanEpisodeReward.png" width="60%"/>
+
+2. BestMeanEpisodeReward Mean:   
+
+<img src="data/atari_PongNoFrameskip-v4_12-11-2018_22-24-09/result/BestMeanEpisodeReward.png" width="60%"/>
 
 * Case 2: with accerlated learning rate and multilayer of Q(state, action) network
 
@@ -406,13 +419,26 @@ python plot.py data/ac_10_10_CartPole-v0_12-11-2018_21-51-09 --legend CartPolev0
 ```bash
 python train_ac_f18.py InvertedPendulum-v2 -ep 1000 --discount 0.95 -n 100 -e 3 -l 2 -s 64 -b 5000 -lr 0.01 --exp_name 100_100 -ntu 100 -ngsptu 100
 ```
-output folder: data/
+output folder: data/ac_100_100_InvertedPendulum-v2_12-11-2018_22-11-51
 Analysis of result   
+```bash
+python plot.py data/ac_100_100_InvertedPendulum-v2_12-11-2018_22-11-51 --legend InvertedPendulumv2_ep1000_discount0.95_n100_b5000_e3_l2_s64_exp_name100_100_ntu100_ngsptu100 --value AverageReturn StdReturn EpLenMean
+```
+1. AverageReturn Figure:  
 
+<img src="data/ac_100_100_InvertedPendulum-v2_12-11-2018_22-11-51/result/AverageReturn.png" width="60%"/>
+
+2. StdReturn Figure:   
+
+<img src="data/ac_100_100_InvertedPendulum-v2_12-11-2018_22-11-51/result/StdReturn.png" width="60%"/>
+
+3. EpLenMean Figure:   
+
+<img src="data/ac_100_100_InvertedPendulum-v2_12-11-2018_22-11-51/result/EpLenMean.png" width="60%"/>
 
 * HalfCheetah-v2
 ```bash
-python train_ac_f18.py HalfCheetah-v2 -ep 150 --discount 0.90 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --exp_name <>_<> -ntu <> -ngsptu <>
+python train_ac_f18.py HalfCheetah-v2 -ep 150 --discount 0.90 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --exp_name 100_100 -ntu 100 -ngsptu 100
 ```
-output folder: data/
+output folder: data/ac_100_100_HalfCheetah-v2_12-11-2018_22-57-07
 Analysis of result   
