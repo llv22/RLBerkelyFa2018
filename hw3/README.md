@@ -272,8 +272,15 @@ python run_dqn_atari.py -t 3 -n 10000000 -l 1e-3 5e-4 1e-4
 * Case 2: with accerlated learning rate and multilayer of Q(state, action) network
 
 ```bash
-python run_dqn_atari.py -t 3 -n 10000000 -l 1e-3 5e-4 1e-4 -nn 512 256 128
+python run_dqn_atari.py -t 3 -n 30000000 -l 1e-3 5e-4 1e-4 -nn 512 256 128
 ```
+output folder: data/atari_PongNoFrameskip-v4_13-11-2018_19-48-00
+
+Analysis for result   
+```bash
+python plot.py data/atari_PongNoFrameskip-v4_13-11-2018_19-48-00 --legend thread3_n3e7_double_q_nn512_256_128_mac --value MeanRewardFor100Episodes BestMeanEpisodeReward
+```
+
 
 ##### Experiment on cnpvgl903653
 Q-3.2. benchmark for basic setting on cnpvgl903653
