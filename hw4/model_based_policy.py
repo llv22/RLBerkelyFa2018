@@ -41,7 +41,10 @@ class ModelBasedPolicy(object):
         """
         ### PROBLEM 1
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        state_ph = tf.placeholder(tf.float32, shape=[None, self._state_dim])
+        action_ph = tf.placeholder(tf.float32, shape=[None, self._action_dim])
+        next_state_ph = tf.placeholder(tf.float32, shape=[None, self._state_dim])
 
         return state_ph, action_ph, next_state_ph
 
@@ -65,7 +68,18 @@ class ModelBasedPolicy(object):
         """
         ### PROBLEM 1
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        ## (a) normalize state and action
+        normalized_state = utils.normalize(state, self._init_dataset.state_mean, self._init_dataset.state_std)
+        normalized_action = utils.normalize(action, self._init_dataset.action_mean, self._init_dataset.action_std)
+        ## output: Tensor("truediv:0", shape=(?, 20), dtype=float32) Tensor("truediv_1:0", shape=(?, 6), dtype=float32)
+        # print(normalized_state, normalized_action)
+        ## (b) concatenate for normalized state and action
+        normalized_state_action = tf.concat([normalized_state, normalized_action], axis=-1)
+        ## (c) via neural network to build the normalized predicted difference between the next state and the current state
+        normalized_next_state_diff_pred = utils.build_mlp(normalized_state_action, self._state_dim, scope="f_func", reuse=reuse)
+        ## (d) Unnormalize the delta state prediction, add to current state to get next_state_pred
+        next_state_pred = utils.unnormalize(normalized_next_state_diff_pred, self._init_dataset.state_mean, self._init_dataset.state_std) + state
 
         return next_state_pred
 
@@ -89,7 +103,14 @@ class ModelBasedPolicy(object):
         """
         ### PROBLEM 1
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        ## (a) and (b) normalized actual and predicted state difference
+        normalized_actual_state_diff = utils.normalize(state_ph - next_state_ph, self._init_dataset.state_mean, self._init_dataset.state_std)
+        normalized_pred_state_diff = utils.normalize(state_ph - next_state_pred, self._init_dataset.state_mean, self._init_dataset.state_std)
+        ## (c) loss for MSE of actual and predicted state difference
+        loss = tf.losses.mean_squared_error(normalized_actual_state_diff, normalized_pred_state_diff)
+        ## (d) optimizer
+        optimizer = tf.train.AdamOptimizer(learning_rate=self._learning_rate).minimize(loss)
 
         return loss, optimizer
 
@@ -136,7 +157,12 @@ class ModelBasedPolicy(object):
 
         ### PROBLEM 1
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        state_ph, action_ph, next_state_ph = self._setup_placeholders()
+        reuse = False
+        next_state_pred = self._dynamics_func(state_ph, action_ph, reuse)
+        loss, optimizer = self._setup_training(state_ph, next_state_ph, next_state_pred)
+
         ### PROBLEM 2
         ### YOUR CODE HERE
         best_action = None
@@ -155,7 +181,12 @@ class ModelBasedPolicy(object):
         """
         ### PROBLEM 1
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        _, loss = self._sess.run([self._optimizer, self._loss], feed_dict={
+            self._state_ph: states,
+            self._action_ph: actions,
+            self._next_state_ph: next_states
+        })
 
         return loss
 
@@ -174,7 +205,11 @@ class ModelBasedPolicy(object):
 
         ### PROBLEM 1
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        next_state_pred = self._sess.run(next_state_pred, feed_dict={
+            self._state_ph: state,
+            self._action_ph: action
+        })
 
         assert np.shape(next_state_pred) == (self._state_dim,)
         return next_state_pred
