@@ -183,9 +183,9 @@ class ModelBasedPolicy(object):
         ### YOUR CODE HERE
         # raise NotImplementedError
         _, loss = self._sess.run([self._optimizer, self._loss], feed_dict={
-            self._state_ph: states,
-            self._action_ph: actions,
-            self._next_state_ph: next_states
+            self._state_ph: np.array(states).reshape(-1, self._state_dim),
+            self._action_ph: np.array(actions).reshape(-1, self._action_dim),
+            self._next_state_ph: np.array(next_states).reshape(-1, self._state_dim)
         })
 
         return loss
@@ -206,10 +206,11 @@ class ModelBasedPolicy(object):
         ### PROBLEM 1
         ### YOUR CODE HERE
         # raise NotImplementedError
-        next_state_pred = self._sess.run(next_state_pred, feed_dict={
-            self._state_ph: state,
-            self._action_ph: action
-        })
+        # refer to https://stackoverflow.com/questions/18200052/how-to-convert-ndarray-to-array
+        next_state_pred = self._sess.run(self._next_state_pred, feed_dict={
+            self._state_ph: np.array(state).reshape(-1, self._state_dim),
+            self._action_ph: np.array(action).reshape(-1, self._action_dim)
+        }).ravel()
 
         assert np.shape(next_state_pred) == (self._state_dim,)
         return next_state_pred
