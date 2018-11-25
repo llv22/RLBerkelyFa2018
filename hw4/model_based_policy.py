@@ -4,6 +4,44 @@ import numpy as np
 import utils
 
 
+
+def f(tuple_data):
+    """
+    extract data from tuple_data
+    """
+    i, actions_sequences, action_slice_size, _action_dim, _reuse, _dynamics_func, _cost_fn, _horizon, state_ph = tuple_data
+    cost = 0
+    for j in range(_horizon):
+        # issue 1: slice api begin+size array
+        # issue 2: in order to make state_ph (?,20) and action_for_state_i (6) has the same shape, need to make tf.reshape(action_for_state_i, shape=[-1,6])
+        action_for_state_i = tf.reshape(tf.squeeze(tf.slice(actions_sequences, [i,j,0], action_slice_size)), shape=[-1, _action_dim])
+        if j == 0:
+            next_state_pred = _dynamics_func(state_ph, action_for_state_i, _reuse)
+            cost += _cost_fn(state_ph, action_for_state_i, next_state_pred)
+        else:
+            s0 = next_state_pred
+            next_state_pred = _dynamics_func(s0, action_for_state_i, _reuse)
+            cost += _cost_fn(s0, action_for_state_i, next_state_pred)
+    return cost
+
+def threadf(i, actions_sequences, action_slice_size, _action_dim, _reuse, _dynamics_func, _cost_fn, _horizon, state_ph):
+    """
+    extract data for ThreadPoolExecutor
+    """
+    cost = 0
+    for j in range(_horizon):
+        # issue 1: slice api begin+size array
+        # issue 2: in order to make state_ph (?,20) and action_for_state_i (6) has the same shape, need to make tf.reshape(action_for_state_i, shape=[-1,6])
+        action_for_state_i = tf.reshape(tf.squeeze(tf.slice(actions_sequences, [i,j,0], action_slice_size)), shape=[-1, _action_dim])
+        if j == 0:
+            next_state_pred = _dynamics_func(state_ph, action_for_state_i, _reuse)
+            cost += _cost_fn(state_ph, action_for_state_i, next_state_pred)
+        else:
+            s0 = next_state_pred
+            next_state_pred = _dynamics_func(s0, action_for_state_i, _reuse)
+            cost += _cost_fn(s0, action_for_state_i, next_state_pred)
+    return cost
+
 class ModelBasedPolicy(object):
 
     def __init__(self,
@@ -22,6 +60,8 @@ class ModelBasedPolicy(object):
         self._num_random_action_selection = num_random_action_selection
         self._nn_layers = nn_layers
         self._learning_rate = 1e-3
+        # only the first time is False, then using True for next time
+        self._reuse = True
 
         self._sess, self._state_ph, self._action_ph, self._next_state_ph,\
             self._next_state_pred, self._loss, self._optimizer, self._best_action = self._setup_graph()
@@ -143,8 +183,50 @@ class ModelBasedPolicy(object):
         """
         ### PROBLEM 2
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        ## (b) Randomly sample action sequences = [self._num_random_action_selection, self._horizon]
+        actions_sequences = tf.random_uniform([self._num_random_action_selection, self._horizon, self._action_dim], self._action_space_low, self._action_space_high, tf.float32)
+        action_slice_size = [1,1,self._action_dim]
 
+        ## 1. Parallel Model for cost_actions_decision : Not yest tested
+        # Result: Can't be implemented easily, as processing isn't easy for tensorflow model for copyied
+        # import multiprocessing
+        # from tqdm import tqdm
+        # cost_actions_decision = [None] * self._num_random_action_selection
+        # with multiprocessing.Pool(12) as pool:
+        #     # merge parameter as tuple
+        #     args = [(i, actions_sequences, action_slice_size, self._action_dim, self._reuse, self._dynamics_func, self._cost_fn, self._horizon, state_ph) for i in range(self._num_random_action_selection)]
+        #     with tqdm(pool.imap_unordered(f, args), total=self._num_random_action_selection) as pbar:
+        #         for i, cost in pbar:
+        #             cost_actions_decision[i] = cost
+
+        ## 2. ThreadPool for cost_actions_decision
+        # from concurrent.futures import ThreadPoolExecutor
+        # cost_actions_decision = [None] * self._num_random_action_selection
+        # with ThreadPoolExecutor(max_workers=12) as executor:
+        #     for i in range(self._num_random_action_selection):
+        #         future = executor.submit(threadf, i, actions_sequences, action_slice_size, self._action_dim, self._reuse, self._dynamics_func, self._cost_fn, self._horizon, state_ph)
+        #         cost_actions_decision[i] = future.result()
+
+        ## 3. Sequential Model for cost_actions_decision
+        cost_actions_decision = []
+        for i in range(self._num_random_action_selection):
+            cost = 0
+            for j in range(self._horizon):
+                # issue 1: slice api begin+size array
+                # issue 2: in order to make state_ph (?,20) and action_for_state_i (6) has the same shape, need to make tf.reshape(action_for_state_i, shape=[-1,6])
+                action_for_state_i = tf.reshape(tf.squeeze(tf.slice(actions_sequences, [i,j,0], action_slice_size)), shape=[-1, self._action_dim])
+                if j == 0:
+                    next_state_pred = self._dynamics_func(state_ph, action_for_state_i, self._reuse)
+                    cost += self._cost_fn(state_ph, action_for_state_i, next_state_pred)
+                else:
+                    s0 = next_state_pred
+                    next_state_pred = self._dynamics_func(s0, action_for_state_i, self._reuse)
+                    cost += self._cost_fn(s0, action_for_state_i, next_state_pred)
+            cost_actions_decision.append(cost)
+        
+        best_action_index = tf.argmin(tf.convert_to_tensor(cost_actions_decision))
+        best_action = tf.squeeze(tf.slice(actions_sequences, [best_action_index[0], 0, 0], action_slice_size))
         return best_action
 
     def _setup_graph(self):
@@ -159,13 +241,13 @@ class ModelBasedPolicy(object):
         ### YOUR CODE HERE
         # raise NotImplementedError
         state_ph, action_ph, next_state_ph = self._setup_placeholders()
-        reuse = False
-        next_state_pred = self._dynamics_func(state_ph, action_ph, reuse)
+        # for the first time to call reuse=False?
+        next_state_pred = self._dynamics_func(state_ph, action_ph, not self._reuse)
         loss, optimizer = self._setup_training(state_ph, next_state_ph, next_state_pred)
 
         ### PROBLEM 2
         ### YOUR CODE HERE
-        best_action = None
+        best_action = self._setup_action_selection(state_ph)
 
         sess.run(tf.global_variables_initializer())
 
@@ -226,7 +308,10 @@ class ModelBasedPolicy(object):
 
         ### PROBLEM 2
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        best_action = self._sess.run(self._best_action, feed_dict={
+            self._state_ph: np.array(state).reshape(-1, self._state_dim)
+        }).ravel()
 
         assert np.shape(best_action) == (self._action_dim,)
         return best_action
