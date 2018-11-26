@@ -179,7 +179,7 @@ class ModelBasedRL(object):
         # 2. select action and evaluate returns
         eval_dataset = self._gather_rollouts(self._policy, self._num_onpolicy_rollouts)
         eval_returns = []
-        for _, _, _, rewards, _ in _mlrl_dataset.rollout_iterator():
+        for _, _, _, rewards, _ in eval_dataset.rollout_iterator():
             eval_returns.extend(rewards)
         logger.info('MLRL Policy Generation: ReturnAvg=%s, ReturnStd=%s' % (np.mean(eval_returns), np.std(eval_returns)))
 
