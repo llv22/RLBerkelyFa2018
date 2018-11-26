@@ -49,7 +49,8 @@ class ModelBasedPolicy(object):
                  init_dataset,
                  horizon=15,
                  num_random_action_selection=4096,
-                 nn_layers=1):
+                 nn_layers=1,
+                 use_cross_entropy=False):
         self._cost_fn = env.cost_fn
         self._state_dim = env.observation_space.shape[0]
         self._action_dim = env.action_space.shape[0]
@@ -60,6 +61,8 @@ class ModelBasedPolicy(object):
         self._num_random_action_selection = num_random_action_selection
         self._nn_layers = nn_layers
         self._learning_rate = 1e-3
+        # if we can use cross-entropy method for action sampling
+        self._use_cross_entropy = use_cross_entropy
         # only the first time is False, then using True for next time
         self._reuse = True
 
@@ -163,7 +166,7 @@ class ModelBasedPolicy(object):
             returns:
                 best_action: the action that minimizes the cost function (tensor with shape [self._action_dim])
 
-            implementation details (in order):
+            PROBLEM 2 implementation details (in order):
                 (a) We will assume state_ph has a batch size of 1 whenever action selection is performed
                 (b) Randomly sample uniformly self._num_random_action_selection number of action sequences,
                     each of length self._horizon
@@ -179,68 +182,94 @@ class ModelBasedPolicy(object):
                     state or action size
                 (ii) You should call self._dynamics_func and self._cost_fn a total of self._horizon times
                 (iii) Use tf.random_uniform(...) to generate the random action sequences
-
+            
+            Extra Credit implementation details:
+                (a) Use cross-entropy method to sample action, instead of pure random_uniform
+                (b) Still retrieve the best action for returning reference
         """
-        ### PROBLEM 2
-        ### YOUR CODE HERE
-        # raise NotImplementedError
-        ## (b) Randomly sample action sequences = [self._num_random_action_selection, self._horizon]
-        actions_sequences = tf.random_uniform([self._num_random_action_selection, self._horizon, self._action_dim], self._action_space_low, self._action_space_high, tf.float32)
-        action_slice_size = [1,1,self._action_dim]
+        if not self._use_cross_entropy:
+            ### PROBLEM 2
+            ### YOUR CODE HERE
+            # raise NotImplementedError
+            ## (b) Randomly sample action sequences = [self._num_random_action_selection, self._horizon]
+            actions_sequences = tf.random_uniform([self._num_random_action_selection, self._horizon, self._action_dim], self._action_space_low, self._action_space_high, tf.float32)
+            action_slice_size = [1,1,self._action_dim]
 
-        ## 1. Parallel Model for cost_actions_decision : Not yest tested
-        # Result: Can't be implemented easily, as processing isn't easy for tensorflow model for copyied
-        # import multiprocessing
-        # from tqdm import tqdm
-        # cost_actions_decision = [None] * self._num_random_action_selection
-        # with multiprocessing.Pool(12) as pool:
-        #     # merge parameter as tuple
-        #     args = [(i, actions_sequences, action_slice_size, self._action_dim, self._reuse, self._dynamics_func, self._cost_fn, self._horizon, state_ph) for i in range(self._num_random_action_selection)]
-        #     with tqdm(pool.imap_unordered(f, args), total=self._num_random_action_selection) as pbar:
-        #         for i, cost in pbar:
-        #             cost_actions_decision[i] = cost
+            ## 1. Parallel Model for cost_actions_decision : Not yest tested
+            # Result: Can't be implemented easily, as processing isn't easy for tensorflow model for copyied
+            # import multiprocessing
+            # from tqdm import tqdm
+            # cost_actions_decision = [None] * self._num_random_action_selection
+            # with multiprocessing.Pool(12) as pool:
+            #     # merge parameter as tuple
+            #     args = [(i, actions_sequences, action_slice_size, self._action_dim, self._reuse, self._dynamics_func, self._cost_fn, self._horizon, state_ph) for i in range(self._num_random_action_selection)]
+            #     with tqdm(pool.imap_unordered(f, args), total=self._num_random_action_selection) as pbar:
+            #         for i, cost in pbar:
+            #             cost_actions_decision[i] = cost
 
-        ## 2. ThreadPool for cost_actions_decision
-        # from concurrent.futures import ThreadPoolExecutor
-        # cost_actions_decision = [None] * self._num_random_action_selection
-        # with ThreadPoolExecutor(max_workers=12) as executor:
-        #     for i in range(self._num_random_action_selection):
-        #         future = executor.submit(threadf, i, actions_sequences, action_slice_size, self._action_dim, self._reuse, self._dynamics_func, self._cost_fn, self._horizon, state_ph)
-        #         cost_actions_decision[i] = future.result()
+            ## 2. ThreadPool for cost_actions_decision
+            # from concurrent.futures import ThreadPoolExecutor
+            # cost_actions_decision = [None] * self._num_random_action_selection
+            # with ThreadPoolExecutor(max_workers=12) as executor:
+            #     for i in range(self._num_random_action_selection):
+            #         future = executor.submit(threadf, i, actions_sequences, action_slice_size, self._action_dim, self._reuse, self._dynamics_func, self._cost_fn, self._horizon, state_ph)
+            #         cost_actions_decision[i] = future.result()
 
-        ## 3.1 Sequential Model for cost_actions_decision
-        # Status: quite slow to run, as loop will be repeated for about self._num_random_action_selection times
-        # Comments: will try to parallelize for [state_ph] * self._num_random_action_selection
-        # cost_actions_decision = []
-        # for i in range(self._num_random_action_selection):
-        #     cost = 0
-        #     for j in range(self._horizon):
-        #         # issue 1: slice api begin+size array
-        #         # issue 2: in order to make state_ph (?,20) and action_for_state_i (6) has the same shape, need to make tf.reshape(action_for_state_i, shape=[-1,6])
-        #         action_for_state_i = tf.reshape(tf.squeeze(tf.slice(actions_sequences, [i,j,0], action_slice_size)), shape=[-1, self._action_dim])
-        #         if j == 0:
-        #             next_state_pred = self._dynamics_func(state_ph, action_for_state_i, self._reuse)
-        #             cost += self._cost_fn(state_ph, action_for_state_i, next_state_pred)
-        #         else:
-        #             s0 = next_state_pred
-        #             next_state_pred = self._dynamics_func(s0, action_for_state_i, self._reuse)
-        #             cost += self._cost_fn(s0, action_for_state_i, next_state_pred)
-        #     cost_actions_decision.append(cost)
+            ## 3.1 Sequential Model for cost_actions_decision
+            # Status: quite slow to run, as loop will be repeated for about self._num_random_action_selection times
+            # Comments: will try to parallelize for [state_ph] * self._num_random_action_selection
+            # cost_actions_decision = []
+            # for i in range(self._num_random_action_selection):
+            #     cost = 0
+            #     for j in range(self._horizon):
+            #         # issue 1: slice api begin+size array
+            #         # issue 2: in order to make state_ph (?,20) and action_for_state_i (6) has the same shape, need to make tf.reshape(action_for_state_i, shape=[-1,6])
+            #         action_for_state_i = tf.reshape(tf.squeeze(tf.slice(actions_sequences, [i,j,0], action_slice_size)), shape=[-1, self._action_dim])
+            #         if j == 0:
+            #             next_state_pred = self._dynamics_func(state_ph, action_for_state_i, self._reuse)
+            #             cost += self._cost_fn(state_ph, action_for_state_i, next_state_pred)
+            #         else:
+            #             s0 = next_state_pred
+            #             next_state_pred = self._dynamics_func(s0, action_for_state_i, self._reuse)
+            #             cost += self._cost_fn(s0, action_for_state_i, next_state_pred)
+            #     cost_actions_decision.append(cost)
 
-        ## 3.2 Parallel rollout for [state_ph] * self._num_random_action_selection about self._horizon time for each rollout
-        # Status: passed
-        state_ph_sequences = tf.reshape([state_ph] * self._num_random_action_selection, shape=[-1, self._state_dim])
-        cost_actions_decision = [] * self._num_random_action_selection
-        for i in range(self._horizon):
-            # vectorized, now only self._horizon = 10 will be sufficient
-            next_state_pred_ph_sequences = self._dynamics_func(state_ph_sequences, actions_sequences[:,i], self._reuse)
-            if i == 0:
-                cost_actions_decision = self._cost_fn(state_ph_sequences, actions_sequences[:,i], next_state_pred_ph_sequences)
-            else:
-                cost_actions_decision = cost_actions_decision + self._cost_fn(state_ph_sequences, actions_sequences[:,i], next_state_pred_ph_sequences)
-            state_ph_sequences = next_state_pred_ph_sequences
-        best_action_index = tf.argmin(tf.convert_to_tensor(cost_actions_decision))
-        best_action = tf.squeeze(tf.slice(actions_sequences, [best_action_index, 0, 0], action_slice_size))
+            ## 3.2 Parallel rollout for [state_ph] * self._num_random_action_selection about self._horizon time for each rollout
+            # Status: passed
+            state_ph_sequences = tf.reshape([state_ph] * self._num_random_action_selection, shape=[-1, self._state_dim])
+            cost_actions_decision = [] * self._num_random_action_selection
+            for i in range(self._horizon):
+                # vectorized, now only self._horizon = 10 will be sufficient
+                next_state_pred_ph_sequences = self._dynamics_func(state_ph_sequences, actions_sequences[:,i], self._reuse)
+                if i == 0:
+                    cost_actions_decision = self._cost_fn(state_ph_sequences, actions_sequences[:,i], next_state_pred_ph_sequences)
+                else:
+                    cost_actions_decision = cost_actions_decision + self._cost_fn(state_ph_sequences, actions_sequences[:,i], next_state_pred_ph_sequences)
+                state_ph_sequences = next_state_pred_ph_sequences
+            best_action_index = tf.argmin(tf.convert_to_tensor(cost_actions_decision))
+            best_action = tf.squeeze(tf.slice(actions_sequences, [best_action_index, 0, 0], action_slice_size))
+        else:
+            ### PROBLEM Extra Credit (i)
+            ### YOUR CODE HERE
+            # raise NotImplementedError
+            # In order to simplify logic, just use uniform distribution for sampling data, continue to estimate lower and upper bound via top 80% data for the lower bound and upper bound
+            action0_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim], self._action_space_low, self._action_space_high, tf.float32)
+            current_action_sequences = action0_sequences
+            action_slice_size = [1,self._action_dim]
+            state_ph_sequences = tf.reshape([state_ph] * self._num_random_action_selection, shape=[-1, self._state_dim])
+            cost_actions_decision = [] * self._num_random_action_selection
+            for i in range(self._horizon):
+                next_state_pred_ph_sequences = self._dynamics_func(state_ph_sequences, current_action_sequences, self._reuse)
+                1step_rewards = self._cost_fn(state_ph_sequences, current_action_sequences, next_state_pred_ph_sequences)
+                if i == 0:
+                    cost_actions_decision = 1step_rewards
+                else:
+                    cost_actions_decision += 1step_rewards
+                # use cross-entropy method to update action0_sequences
+                top80_values, top80_indices = tf.math.top_k(1step_rewards, int(self._num_random_action_selection * 0.8))
+                current_action_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim], top80_values[-1], top80_values[0], tf.float32)
+            best_action_index = tf.argmin(tf.convert_to_tensor(cost_actions_decision))
+            best_action = tf.squeeze(tf.slice(action0_sequences, [best_action_index, 0], action_slice_size))
         return best_action
 
     def _setup_graph(self):

@@ -15,6 +15,7 @@ parser.add_argument('--mpc_horizon', type=int, default=15)
 parser.add_argument('--num_random_action_selection', type=int, default=4096)
 parser.add_argument('--nn_layers', type=int, default=1)
 parser.add_argument('--training_epochs', type=int, default=60)
+parser.add_argument('--use_cross_entropy', type=lambda x: (str(x).lower() == 'true'), default=False, help="If using cross entropy method to sample action")
 args = parser.parse_args()
 
 data_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
@@ -36,7 +37,8 @@ mbrl = ModelBasedRL(env=env,
                     mpc_horizon=args.mpc_horizon,
                     training_epochs=args.training_epochs,
                     num_random_action_selection=args.num_random_action_selection,
-                    nn_layers=args.nn_layers)
+                    nn_layers=args.nn_layers,
+                    use_cross_entropy=args.use_cross_entropy)
 
 run_func = {
     'q1': mbrl.run_q1,
