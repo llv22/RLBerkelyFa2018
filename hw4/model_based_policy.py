@@ -258,6 +258,8 @@ class ModelBasedPolicy(object):
             ### PROBLEM Extra Credit (i)
             ### YOUR CODE HERE
             # raise NotImplementedError
+            ## Theory in https://en.wikipedia.org/wiki/Cross-entropy_method 
+            ## refer to implementation of CEM in https://github.com/udacity/deep-reinforcement-learning/blob/master/cross-entropy/CEM.ipynb
             # In order to simplify logic, just use uniform distribution for sampling data, continue to estimate lower and upper bound via top 80% data for the lower bound and upper bound
             action0_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim], self._action_space_low, self._action_space_high, tf.float32)
             current_action_sequences = action0_sequences
@@ -266,13 +268,13 @@ class ModelBasedPolicy(object):
             cost_actions_decision = [] * self._num_random_action_selection
             for i in range(self._horizon):
                 next_state_pred_ph_sequences = self._dynamics_func(state_ph_sequences, current_action_sequences, self._reuse)
-                1step_rewards = self._cost_fn(state_ph_sequences, current_action_sequences, next_state_pred_ph_sequences)
+                one_step_rewards = self._cost_fn(state_ph_sequences, current_action_sequences, next_state_pred_ph_sequences)
                 if i == 0:
-                    cost_actions_decision = 1step_rewards
+                    cost_actions_decision = one_step_rewards
                 else:
-                    cost_actions_decision += 1step_rewards
+                    cost_actions_decision += one_step_rewards
                 # use cross-entropy method to update action0_sequences
-                top80_values, top80_indices = tf.math.top_k(1step_rewards, int(self._num_random_action_selection * 0.8))
+                top80_values, top80_indices = tf.math.top_k(one_step_rewards, int(self._num_random_action_selection * 0.8))
                 current_action_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim], top80_values[-1], top80_values[0], tf.float32)
             best_action_index = tf.argmin(tf.convert_to_tensor(cost_actions_decision))
             best_action = tf.squeeze(tf.slice(action0_sequences, [best_action_index, 0], action_slice_size))
