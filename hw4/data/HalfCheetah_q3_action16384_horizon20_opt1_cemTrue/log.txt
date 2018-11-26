@@ -15,3 +15,220 @@
 11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 0
 11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
 11-26 22:29:01 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -----------
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   0
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -159.554
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax          -105.107
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -222.718
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            37.869
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.113705
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart    12.8159
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -----------
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      215.3 (100.0%)
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 212.7 (98.8%)
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 1.6 (0.8%)
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.4%)
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 1
+11-26 22:32:34 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:32:37 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  ------------
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   1
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -152.57
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax          -116.383
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -198.852
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            27.6191
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.0155971
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.12219
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  ------------
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      220.4 (100.0%)
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 216.9 (98.4%)
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 2.5 (1.1%)
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.4%)
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 2
+11-26 22:36:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:36:18 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   2
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -167.434
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax          -110.665
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -215.886
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            36.4366
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00596777
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.0152687
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      221.5 (100.0%)
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 216.8 (97.9%)
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 3.7 (1.7%)
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.4%)
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 3
+11-26 22:39:56 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:40:01 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   3
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -150.11
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax           -80.0333
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -194.171
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            28.9258
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00633976
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.00597529
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      222.3 (100.0%)
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 216.4 (97.3%)
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 5.0 (2.2%)
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.4%)
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 4
+11-26 22:43:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:43:45 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   4
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -156.391
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax           -99.7365
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -225.407
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            35.4679
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00310308
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.00472141
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      223.2 (100.0%)
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 216.1 (96.8%)
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 6.1 (2.7%)
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.3%)
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 5
+11-26 22:47:22 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:47:29 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   5
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -156.456
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax          -124.311
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -194.423
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            22.7488
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00235544
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.00389457
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      224.2 (100.0%)
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 216.0 (96.3%)
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 7.3 (3.3%)
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.3%)
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 6
+11-26 22:51:06 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:51:14 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   6
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -144.315
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax           -92.7626
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -178.418
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            26.9482
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00252425
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.00337481
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      225.3 (100.0%)
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 215.8 (95.8%)
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 8.6 (3.8%)
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.3%)
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 7
+11-26 22:54:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:55:01 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   7
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -134.108
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax           -80.1024
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -165.066
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            23.6864
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00239564
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.00262776
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      226.6 (100.0%)
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 215.7 (95.2%)
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 10.0 (4.4%)
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.3%)
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 8
+11-26 22:58:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:58:49 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   8
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -160.635
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax           -65.1367
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -240.807
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            42.2252
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00242118
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.00317555
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      228.1 (100.0%)
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 215.9 (94.6%)
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 11.3 (5.0%)
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.3%)
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 9
+11-26 23:02:26 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 23:02:38 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                   9
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -148.307
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax          -126.693
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -199.796
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            22.2606
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00222373
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.00220088
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      229.0 (100.0%)
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 215.6 (94.2%)
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 12.4 (5.4%)
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.3%)
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 10
+11-26 23:06:15 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 23:06:29 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Appending dataset...
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr                  10
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg          -134.871
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax           -75.1315
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin          -211.339
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd            48.2529
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossFinal     0.00231642
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     TrainingLossStart     0.0022746
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     -----------------  -------------
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      230.2 (100.0%)
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : get action 215.6 (93.6%)
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : train policy 13.7 (6.0%)
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : env step   0.8 (0.3%)
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.2 (0.1%)
+11-26 23:10:05 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
