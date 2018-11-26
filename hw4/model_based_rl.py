@@ -22,7 +22,9 @@ class ModelBasedRL(object):
                  render=False,
                  mpc_horizon=15,
                  num_random_action_selection=4096,
-                 nn_layers=1):
+                 nn_layers=1,
+                 use_cross_entropy=False,
+                 steps_for_loss_train=1):
         self._env = env
         self._max_rollout_length = max_rollout_length
         self._num_onpolicy_iters = num_onplicy_iters
@@ -40,7 +42,9 @@ class ModelBasedRL(object):
         self._policy = ModelBasedPolicy(env,
                                         self._random_dataset,
                                         horizon=mpc_horizon,
-                                        num_random_action_selection=num_random_action_selection)
+                                        num_random_action_selection=num_random_action_selection,
+                                        use_cross_entropy=use_cross_entropy,
+                                        steps_for_loss_train=steps_for_loss_train)
 
         timeit.reset()
         timeit.start('total')
