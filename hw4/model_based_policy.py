@@ -50,7 +50,8 @@ class ModelBasedPolicy(object):
                  horizon=15,
                  num_random_action_selection=4096,
                  nn_layers=1,
-                 use_cross_entropy=False):
+                 use_cross_entropy=False,
+                 steps_for_loss_train=1):
         self._cost_fn = env.cost_fn
         self._state_dim = env.observation_space.shape[0]
         self._action_dim = env.action_space.shape[0]
@@ -63,6 +64,8 @@ class ModelBasedPolicy(object):
         self._learning_rate = 1e-3
         # if we can use cross-entropy method for action sampling
         self._use_cross_entropy = use_cross_entropy
+        # loss steps for training
+        self._steps_for_loss_train = steps_for_loss_train
         # only the first time is False, then using True for next time
         self._reuse = True
 
@@ -86,8 +89,11 @@ class ModelBasedPolicy(object):
         ### YOUR CODE HERE
         # raise NotImplementedError
         state_ph = tf.placeholder(tf.float32, shape=[None, self._state_dim])
-        action_ph = tf.placeholder(tf.float32, shape=[None, self._action_dim])
         next_state_ph = tf.placeholder(tf.float32, shape=[None, self._state_dim])
+        if self._setup_training == 1:
+            action_ph = tf.placeholder(tf.float32, shape=[None, self._action_dim])
+        else:
+            action_ph = tf.placeholder(tf.float32, shape=[None, self._setup_training, self._action_dim])
 
         return state_ph, action_ph, next_state_ph
 
@@ -279,14 +285,21 @@ class ModelBasedPolicy(object):
         The variables returned will be set as class attributes (see __init__)
         """
         sess = tf.Session()
-
-        ### PROBLEM 1
-        ### YOUR CODE HERE
-        # raise NotImplementedError
         state_ph, action_ph, next_state_ph = self._setup_placeholders()
-        # for the first time to call reuse=False?
-        next_state_pred = self._dynamics_func(state_ph, action_ph, not self._reuse)
-        loss, optimizer = self._setup_training(state_ph, next_state_ph, next_state_pred)
+        
+        if self._setup_training == 1:
+            ### PROBLEM 1
+            ### YOUR CODE HERE
+            # raise NotImplementedError
+            ## Just 1 step for loss training, action_ph is 1-actions
+            # for the first time to call reuse=False?
+            next_state_pred = self._dynamics_func(state_ph, action_ph, not self._reuse)
+            loss, optimizer = self._setup_training(state_ph, next_state_ph, next_state_pred)
+        else:
+            ### PROBLEM Extra Credit (ii)
+            ### YOUR CODE HERE
+            ### For multiple step for loss training, for multiple step (N-actions estimation), action_ph is N-actions
+            raise NotImplementedError
 
         ### PROBLEM 2
         ### YOUR CODE HERE
