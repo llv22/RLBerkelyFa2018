@@ -159,6 +159,10 @@ class ModelBasedRL(object):
         """
         logger.info('Random policy')
         self._log(self._random_dataset)
+        rand_returns = []
+        for _, _, _, rewards, _ in self._random_dataset.rollout_iterator():
+            rand_returns.extend(rewards)
+        logger.info('Random policy Generation: ReturnAvg=%s, ReturnStd=%s' % (np.mean(rand_returns), np.std(rand_returns)))
 
         logger.info('Training policy....')
         ### PROBLEM 2
@@ -171,10 +175,10 @@ class ModelBasedRL(object):
         ### YOUR CODE HERE
         # raise NotImplementedError
         # 1. returns via random policy
-        random_returns = []
-        for _, _, _, rewards, _ in self._random_dataset.rollout_iterator():
-            random_returns.extend(rewards)
-        logger.info('Random Policy Generation: ReturnAvg=%s, ReturnStd=%s' % (np.mean(random_returns), np.std(random_returns)))
+        # random_returns = []
+        # for _, _, _, rewards, _ in self._random_dataset.rollout_iterator():
+        #     random_returns.extend(rewards)
+        # logger.info('Random Policy Generation: ReturnAvg=%s, ReturnStd=%s' % (np.mean(random_returns), np.std(random_returns)))
 
         # 2. select action and evaluate returns
         eval_dataset = self._gather_rollouts(self._policy, self._num_onpolicy_rollouts)
@@ -205,16 +209,19 @@ class ModelBasedRL(object):
             ### PROBLEM 3
             ### YOUR CODE HERE
             logger.info('Training policy...')
-            raise NotImplementedError
+            # raise NotImplementedError
+            self._train_policy(dataset)
 
             ### PROBLEM 3
             ### YOUR CODE HERE
             logger.info('Gathering rollouts...')
-            raise NotImplementedError
+            # raise NotImplementedError
+            new_dataset = self._gather_rollouts(self._policy, self._num_onpolicy_rollouts)
 
             ### PROBLEM 3
             ### YOUR CODE HERE
             logger.info('Appending dataset...')
-            raise NotImplementedError
+            # raise NotImplementedError
+            dataset.extend(new_dataset)
 
             self._log(new_dataset)
