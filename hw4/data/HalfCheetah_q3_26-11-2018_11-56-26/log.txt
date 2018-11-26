@@ -1,0 +1,245 @@
+11-26 11:56:26 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering random dataset
+11-26 11:56:27 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Creating policy
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration -1
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ---------  ---------
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr          -1
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg  -165.701
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax  -100.356
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin  -251.715
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd    40.0086
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ---------  ---------
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      0.0 (100.0%)
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.0 (100.0%)
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 0
+11-26 11:56:31 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 11:56:33 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                   0
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg          -428.212
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax          -201.184
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin          -676.766
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           139.89
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal     0.138428
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    15.3872
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      396.4 (100.0%)
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 393.9 (99.4%)
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 1.8 (0.5%)
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.5 (0.1%)
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.1 (0.0%)
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 1 Iteration: ReturnAvg=-0.5927267599397276, ReturnStd=0.7617426248372613
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 1
+11-26 12:03:08 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:03:11 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                   1
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg          -164.579
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax           -51.8852
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin          -235.913
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd            54.1503
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal     0.0483128
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    10.6781
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      396.5 (100.0%)
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 392.4 (99.0%)
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 3.4 (0.9%)
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.5 (0.1%)
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.0%)
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 2 Iteration: ReturnAvg=-0.5046513388964088, ReturnStd=0.6831145391674736
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 2
+11-26 12:09:44 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:09:49 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ----------
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                  2
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg          -55.1829
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax           -4.91212
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin          -85.8679
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           24.5437
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.027925
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.117184
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ----------
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      398.6 (100.0%)
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 392.8 (98.5%)
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 5.2 (1.3%)
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.6 (0.1%)
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.0%)
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 3 Iteration: ReturnAvg=-0.40602489476140247, ReturnStd=0.6322364538175551
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 3
+11-26 12:16:23 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:16:30 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                  3
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg           -8.50087
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax           72.6801
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin          -59.5294
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           37.3017
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.0105538
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.0311635
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      399.8 (100.0%)
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 391.8 (98.0%)
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 7.2 (1.8%)
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.6 (0.1%)
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.0%)
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 4 Iteration: ReturnAvg=-0.3282134755828657, ReturnStd=0.6033534306626983
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 4
+11-26 12:23:03 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:23:12 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                  4
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg          134.678
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax          165.812
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin           86.319
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           26.9499
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.0150783
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.0205029
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      402.7 (100.0%)
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 393.0 (97.6%)
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 9.0 (2.2%)
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.5 (0.1%)
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.0%)
+11-26 12:29:45 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:29:46 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 5 Iteration: ReturnAvg=-0.22870801863052326, ReturnStd=0.6179487665545015
+11-26 12:29:46 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 5
+11-26 12:29:46 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:29:56 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                  5
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg           87.0784
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax          151.88
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin           34.0495
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           38.664
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.0119572
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.0138166
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      403.5 (100.0%)
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 392.6 (97.3%)
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 10.1 (2.5%)
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.6 (0.1%)
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.0%)
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 6 Iteration: ReturnAvg=-0.17120556739501017, ReturnStd=0.6061033177710566
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 6
+11-26 12:36:29 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:36:41 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                  6
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg           97.5437
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax          142.318
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin           34.092
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           36.8305
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.00731635
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.00984825
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      404.6 (100.0%)
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 392.1 (96.9%)
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 11.7 (2.9%)
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.6 (0.1%)
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.0%)
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 7 Iteration: ReturnAvg=-0.12546761016310212, ReturnStd=0.5957293315917688
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 7
+11-26 12:43:14 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:43:27 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                  7
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg          196.651
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax          287.769
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin          147.639
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           41.2997
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.00441465
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.0113398
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      408.0 (100.0%)
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 393.6 (96.5%)
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 13.7 (3.3%)
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.5 (0.1%)
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.1%)
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 8 Iteration: ReturnAvg=-0.06791381577106723, ReturnStd=0.6050986891686391
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 8
+11-26 12:50:02 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:50:17 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                  8
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg          269.991
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax          344.61
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin          186.121
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           44.3921
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.00932107
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.00657853
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      413.3 (100.0%)
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 396.9 (96.0%)
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 15.6 (3.8%)
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.5 (0.1%)
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.1%)
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 9 Iteration: ReturnAvg=-0.007231918536121099, ReturnStd=0.6278635064185585
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 9
+11-26 12:56:55 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 12:57:13 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                  9
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg          237.728
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax          350.821
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin          127.231
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           68.8229
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.0079026
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.0080862
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  -----------
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      417.6 (100.0%)
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 398.9 (95.5%)
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 17.9 (4.3%)
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.6 (0.1%)
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.2 (0.1%)
+11-26 13:03:52 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 13:03:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 10 Iteration: ReturnAvg=0.036562581063363506, ReturnStd=0.6299013504853621
+11-26 13:03:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Iteration 10
+11-26 13:03:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Training policy...
+11-26 13:04:13 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Gathering rollouts...
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Appending dataset...
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     Itr                 10
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnAvg          248.767
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMax          327.469
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnMin           97.0671
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     ReturnStd           63.2444
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossFinal    0.00746769
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     TrainingLossStart    0.00623914
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     -----------------  ------------
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : total      420.4 (100.0%)
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : get action 399.6 (95.0%)
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : train policy 20.0 (4.8%)
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : env step   0.6 (0.1%)
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    : other      0.3 (0.1%)
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 DEBUG    
+11-26 13:10:53 HalfCheetah_q3_26-11-2018_11-56-26 INFO     MLRL On-Policy Generation 11 Iteration: ReturnAvg=0.07489407336159398, ReturnStd=0.6325930695689306
