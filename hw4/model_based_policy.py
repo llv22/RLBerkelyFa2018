@@ -90,10 +90,10 @@ class ModelBasedPolicy(object):
         # raise NotImplementedError
         state_ph = tf.placeholder(tf.float32, shape=[None, self._state_dim])
         next_state_ph = tf.placeholder(tf.float32, shape=[None, self._state_dim])
-        if self._setup_training == 1:
+        if self._steps_for_loss_train == 1:
             action_ph = tf.placeholder(tf.float32, shape=[None, self._action_dim])
         else:
-            action_ph = tf.placeholder(tf.float32, shape=[None, self._setup_training, self._action_dim])
+            action_ph = tf.placeholder(tf.float32, shape=[None, self._steps_for_loss_train, self._action_dim])
 
         return state_ph, action_ph, next_state_ph
 
@@ -289,7 +289,7 @@ class ModelBasedPolicy(object):
         sess = tf.Session()
         state_ph, action_ph, next_state_ph = self._setup_placeholders()
         
-        if self._setup_training == 1:
+        if self._steps_for_loss_train == 1:
             ### PROBLEM 1
             ### YOUR CODE HERE
             # raise NotImplementedError

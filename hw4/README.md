@@ -133,13 +133,13 @@ python main.py q3
     ```bash
     python main.py q3 --exp_name action128 --num_random_action_selection 128 
     python main.py q3 --exp_name action4096 --num_random_action_selection 4096 
-    python main.py q3 --exp_name action16384 --num_random_action_selection 16384 [Not Finished]
+    python main.py q3 --exp_name action16384 --num_random_action_selection 16384 [Started]
     python plot.py --exps HalfCheetah_q3_action128 HalfCheetah_q3_action4096 HalfCheetah_q3_action16384 --save HalfCheetah_q3_actions
     ```
     **Result**:     
     1. "python main.py q3 --exp_name action128 --num_random_action_selection 128" result in HalfCheetah_q3_action128
     2. "python main.py q3 --exp_name action4096 --num_random_action_selection 4096" result in HalfCheetah_q3_action4096
-    3. "python main.py q3 --exp_name action16384 --num_random_action_selection 16384" result in HalfCheetah_q3_action16384 [Not Finished]
+    3. "python main.py q3 --exp_name action16384 --num_random_action_selection 16384" result in HalfCheetah_q3_action16384 [Started]
     4. plot result
 
 * MPC Horizon
