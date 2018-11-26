@@ -200,20 +200,20 @@ class ModelBasedRL(object):
 
             ### PROBLEM 3
             ### YOUR CODE HERE
-            logger.info('Training policy...')
             # raise NotImplementedError
+            logger.info('Training policy...')
             self._train_policy(dataset)
 
             ### PROBLEM 3
             ### YOUR CODE HERE
-            logger.info('Gathering rollouts...')
             # raise NotImplementedError
+            logger.info('Gathering rollouts...')
             new_dataset = self._gather_rollouts(self._policy, self._num_onpolicy_rollouts)
 
             ### PROBLEM 3
             ### YOUR CODE HERE
-            logger.info('Appending dataset...')
             # raise NotImplementedError
+            logger.info('Appending dataset...')
             dataset.append(new_dataset)
 
             self._log(new_dataset)

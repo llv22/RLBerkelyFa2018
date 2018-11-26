@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/i058959/miniconda3/bin/python"
+    "python.pythonPath": "~/miniconda3/bin/python",
+    "python.linting.pylintEnabled": true
 }

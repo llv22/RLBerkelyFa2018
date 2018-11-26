@@ -94,7 +94,6 @@ class ModelBasedPolicy(object):
             action_ph = tf.placeholder(tf.float32, shape=[None, self._action_dim])
         else:
             action_ph = tf.placeholder(tf.float32, shape=[None, self._steps_for_loss_train, self._action_dim])
-
         return state_ph, action_ph, next_state_ph
 
     def _dynamics_func(self, state, action, reuse):
@@ -121,10 +120,12 @@ class ModelBasedPolicy(object):
         ## (a) normalize state and action
         normalized_state = utils.normalize(state, self._init_dataset.state_mean, self._init_dataset.state_std)
         normalized_action = utils.normalize(action, self._init_dataset.action_mean, self._init_dataset.action_std)
-        ## output: Tensor("truediv:0", shape=(?, 20), dtype=float32) Tensor("truediv_1:0", shape=(?, 6), dtype=float32)
-        # print(normalized_state, normalized_action)
         ## (b) concatenate for normalized state and action
-        normalized_state_action = tf.concat([normalized_state, normalized_action], axis=-1)
+        if self._steps_for_loss_train == 1:
+            normalized_state_action = tf.concat([normalized_state, normalized_action], axis=-1)
+        else:
+            reshape_normalized_action = tf.reshape(normalized_action, shape=[-1, self._steps_for_loss_train * self._action_dim])
+            normalized_state_action = tf.concat([normalized_state, reshape_normalized_action], axis=-1)
         ## (c) via neural network to build the normalized predicted difference between the next state and the current state
         normalized_next_state_diff_pred = utils.build_mlp(normalized_state_action, self._state_dim, scope="f_func", reuse=reuse)
         ## (d) Unnormalize the delta state prediction, add to current state to get next_state_pred
