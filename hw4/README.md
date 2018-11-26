@@ -181,12 +181,17 @@ About CEM, refer to [wiki defintion of Cross-entropy method](https://en.wikipedi
     ```
 * CEM
     ```bash
+    # linear uniform for changing the boundary
     python main.py q3 --exp_name action16384_horizon20_cemTrue --num_random_action_selection 16384 --mpc_horizon 20 --use_cross_entropy True
+    # for optimization of next step
+    python main.py q3 --exp_name action16384_horizon20_opt1_cemTrue --num_random_action_selection 16384 --mpc_horizon 20 --use_cross_entropy True
+    python plot.py --exps HalfCheetah_q3_action16384_horizon20 HalfCheetah_q3_action16384_horizon20_cemTrue HalfCheetah_q3_action16384_horizon20_opt1_cemTrue --save HalfCheetah_q3_cem_
     ```
 **result**:     
 1. "python main.py q3 --exp_name action16384_horizon20 --num_random_action_selection 16384 --mpc_horizon 20" result in HalfCheetah_q3_action16384_horizon20
 2. "python main.py q3 --exp_name action16384_horizon20_cemTrue --num_random_action_selection 16384 --mpc_horizon 20 --use_cross_entropy True" result in action16384_horizon20_cemTrue
-3. plot result
+3. "python main.py q3 --exp_name action16384_horizon20_opt1_cemTrue --num_random_action_selection 16384 --mpc_horizon 20 --use_cross_entropy True" result in action16384_horizon20_opt1_cemTrue
+4. plot result
 
 
 #### 2.5.2 Multi-step Loss

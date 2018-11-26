@@ -1,0 +1,17 @@
+11-26 22:28:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering random dataset
+11-26 22:28:51 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Creating policy
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration -1
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ---------  --------
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Itr          -1
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnAvg  -148.278
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMax  -125.427
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnMin  -194.541
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ReturnStd    23.073
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     ---------  --------
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : total      0.0 (100.0%)
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    : other      0.0 (100.0%)
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue DEBUG    
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Iteration 0
+11-26 22:28:59 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Training policy...
+11-26 22:29:01 HalfCheetah_q3_action16384_horizon20_opt1_cemTrue INFO     Gathering rollouts...
