@@ -133,20 +133,21 @@ python main.py q3
     ```bash
     python main.py q3 --exp_name action128 --num_random_action_selection 128 
     python main.py q3 --exp_name action4096 --num_random_action_selection 4096 
-    python main.py q3 --exp_name action16384 --num_random_action_selection 16384 [Started]
+    python main.py q3 --exp_name action16384 --num_random_action_selection 16384
     python plot.py --exps HalfCheetah_q3_action128 HalfCheetah_q3_action4096 HalfCheetah_q3_action16384 --save HalfCheetah_q3_actions
     ```
     **Result**:     
     1. "python main.py q3 --exp_name action128 --num_random_action_selection 128" result in HalfCheetah_q3_action128
     2. "python main.py q3 --exp_name action4096 --num_random_action_selection 4096" result in HalfCheetah_q3_action4096
-    3. "python main.py q3 --exp_name action16384 --num_random_action_selection 16384" result in HalfCheetah_q3_action16384 [Started]
+    3. "python main.py q3 --exp_name action16384 --num_random_action_selection 16384" result in HalfCheetah_q3_action16384
     4. plot result
+    <img src="plots/HalfCheetah_q3_actions.jpg" width="75%"/>
 
 * MPC Horizon
     ```bash
     python main.py q3 --exp_name horizon10 --mpc_horizon 10
     python main.py q3 --exp_name horizon15 --mpc_horizon 15
-    python main.py q3 --exp_name horizon20 --mpc_horizon 20  [Not Started]
+    python main.py q3 --exp_name horizon20 --mpc_horizon 20
     python plot.py --exps HalfCheetah_q3_horizon10 HalfCheetah_q3_horizon15 HalfCheetah_q3_horizon20 --save HalfCheetah_q3_mpc_horizon
     ```
     **result**:     
@@ -154,6 +155,7 @@ python main.py q3
     2. "python main.py q3 --exp_name horizon15 --mpc_horizon 15" result in HalfCheetah_q3_horizon15
     3. "python main.py q3 --exp_name horizon20 --mpc_horizon 20" result in HalfCheetah_q3_horizon20
     4. plot result
+    <img src="plots/HalfCheetah_q3_mpc_horizon.jpg" width="75%"/>
 
 * Neural Network Layer Number
     ```bash
@@ -167,10 +169,24 @@ python main.py q3
     2. "python main.py q3 --exp_name layers2 --nn_layers 2" result in HalfCheetah_q3_layers2
     3. "python main.py q3 --exp_name layers3 --nn_layers 3" result in HalfCheetah_q3_layers3
     4. plot result
+    <img src="plots/HalfCheetah_q3_nn_layers.jpg" width="75%"/>
 
 ### 2.5 Extra Credit
 #### 2.5.1 Cross Entropy Method (CEM)
 About CEM, refer to [wiki defintion of Cross-entropy method](https://en.wikipedia.org/wiki/Cross-entropy_method).
+
+* Standard method
+    ```bash
+    python main.py q3 --exp_name action16384_horizon20 --num_random_action_selection 16384 --mpc_horizon 20
+    ```
+* CEM
+    ```bash
+    python main.py q3 --exp_name action16384_horizon20_cemTrue --num_random_action_selection 16384 --mpc_horizon 20 --use_cross_entropy True
+    ```
+**result**:     
+1. "python main.py q3 --exp_name action16384_horizon20 --num_random_action_selection 16384 --mpc_horizon 20" result in HalfCheetah_q3_action16384_horizon20
+2. "python main.py q3 --exp_name action16384_horizon20_cemTrue --num_random_action_selection 16384 --mpc_horizon 20 --use_cross_entropy True" result in action16384_horizon20_cemTrue
+3. plot result
 
 
 #### 2.5.2 Multi-step Loss
