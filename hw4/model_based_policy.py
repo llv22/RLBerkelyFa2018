@@ -273,8 +273,8 @@ class ModelBasedPolicy(object):
                     cost_actions_decision = one_step_rewards
                 else:
                     cost_actions_decision += one_step_rewards
-                # use cross-entropy method to update action0_sequences
-                top80_values, top80_indices = tf.math.top_k(one_step_rewards, int(self._num_random_action_selection * 0.8))
+                # use cross-entropy method to update action0_sequences, tf.math.top_k doesn't exist => tf.nn.top_k
+                top80_values, top80_indices = tf.nn.top_k(one_step_rewards, int(self._num_random_action_selection * 0.8))
                 current_action_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim], top80_values[-1], top80_values[0], tf.float32)
             best_action_index = tf.argmin(tf.convert_to_tensor(cost_actions_decision))
             best_action = tf.squeeze(tf.slice(action0_sequences, [best_action_index, 0], action_slice_size))
