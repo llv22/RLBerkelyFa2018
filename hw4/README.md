@@ -197,19 +197,20 @@ About CEM, refer to [wiki defintion of Cross-entropy method](https://en.wikipedi
     <img src="plots/HalfCheetah_q3_cem.jpg" width="75%"/>
 
 #### 2.5.2 Multi-step Loss
-* Standard method
+* Standard method   
     ```bash
     python main.py q3 --exp_name standard_action4096_horizon20 --num_random_action_selection 4096 --mpc_horizon 20
     ```
-* Multiple action method
+* Multiple action method   
     ```bash
     python main.py q3 --exp_name multiple_steps_action4096_horizon20_multisteps5 --num_random_action_selection 4096 --mpc_horizon 20 --steps_for_loss_train 5
-    # Status: [Started]
     python main.py q3 --exp_name multiple_steps_action4096_horizon50_multisteps10 --num_random_action_selection 4096 --mpc_horizon 50 --steps_for_loss_train 10
+    python main.py q3 --exp_name multiple_steps_action4096_horizon100_multisteps10 --num_random_action_selection 4096 --mpc_horizon 100 --steps_for_loss_train 10
+    python main.py q3 --exp_name multiple_steps_action16384_horizon100_multisteps10 --num_random_action_selection 16384 --mpc_horizon 100 --steps_for_loss_train 10
     ```
-* Analyze result
+* Analyze result   
     ```bash
-    python plot.py --exps HalfCheetah_q3_standard_action4096_horizon20 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 HalfCheetah_q3_multiple_steps_action4096_horizon50_multisteps10 --save HalfCheetah_q3_multisteps
+    python plot.py --exps HalfCheetah_q3_standard_action4096_horizon20 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 HalfCheetah_q3_multiple_steps_action4096_horizon50_multisteps10 HalfCheetah_q3_multiple_steps_action4096_horizon100_multisteps10 HalfCheetah_q3_multiple_steps_action16384_horizon100_multisteps10 --save HalfCheetah_q3_multisteps
     ```
-plot result
+* plot result   
     <img src="plots/HalfCheetah_q3_multisteps.jpg" width="75%"/>
