@@ -1,0 +1,234 @@
+11-27 15:49:02 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering random dataset
+11-27 15:49:02 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Creating policy
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration -1
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ---------  --------
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr          -1
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg  -154.053
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax  -107.452
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin  -199.706
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd    27.191
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ---------  --------
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      0.0 (100.0%)
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (100.0%)
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 0
+11-27 15:49:08 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 15:49:13 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   0
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -153.091
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax          -114.844
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -207.255
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            26.6558
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.00808
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart    17.3125
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      102.6 (100.0%)
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 96.6 (94.1%)
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 5.6 (5.4%)
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.4 (0.4%)
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 1
+11-27 15:50:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 15:51:02 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   1
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -149.821
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax           -89.8592
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -229.517
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            43.4685
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.01981
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.07939
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      108.4 (100.0%)
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 96.0 (88.5%)
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 12.0 (11.1%)
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.4 (0.4%)
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 2
+11-27 15:52:39 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 15:52:58 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  -----------
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   2
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -202.507
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax          -131.149
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -251.121
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            36.6239
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     0.988977
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.01962
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  -----------
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      115.0 (100.0%)
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 95.8 (83.3%)
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 18.8 (16.3%)
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.4 (0.4%)
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 3
+11-27 15:54:34 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 15:54:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   3
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -171.931
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax          -138.285
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -209.504
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            25.4059
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.08631
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.05041
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      122.0 (100.0%)
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 96.0 (78.7%)
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 25.6 (21.0%)
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.4 (0.4%)
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 4
+11-27 15:56:36 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 15:57:07 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   4
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -150.9
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax           -78.1635
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -226.045
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            35.9256
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.05249
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.05839
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      127.6 (100.0%)
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 95.6 (75.0%)
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 31.5 (24.7%)
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.4 (0.3%)
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 5
+11-27 15:58:43 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 15:59:21 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   5
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -183.136
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax          -137.499
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -228.689
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            29.7393
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.03482
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.02532
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      142.2 (100.0%)
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 103.8 (73.0%)
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 38.0 (26.7%)
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.5 (0.3%)
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 6
+11-27 16:01:06 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 16:01:53 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  -----------
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   6
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -173.07
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax          -131.526
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -244.095
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            31.1695
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     0.993902
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.04031
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  -----------
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      151.3 (100.0%)
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 103.7 (68.6%)
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 47.1 (31.1%)
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.5 (0.3%)
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 7
+11-27 16:03:37 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 16:04:31 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   7
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -142.295
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax          -104.89
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -205.995
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            33.0838
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.03487
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.02969
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      159.3 (100.0%)
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 104.7 (65.7%)
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 54.1 (33.9%)
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.5 (0.3%)
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 8
+11-27 16:06:16 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 16:07:17 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   8
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -135.565
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax          -102.415
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -189.925
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            31.6764
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.05615
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.05913
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      163.0 (100.0%)
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 102.1 (62.6%)
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 60.4 (37.1%)
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.5 (0.3%)
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 9
+11-27 16:08:59 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 16:10:07 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                   9
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -173.919
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax          -106.246
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -243.649
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            37.4701
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.02842
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.03203
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      168.4 (100.0%)
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 100.3 (59.6%)
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 67.6 (40.1%)
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.5 (0.3%)
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Iteration 10
+11-27 16:11:48 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Training policy...
+11-27 16:13:03 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Gathering rollouts...
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Appending dataset...
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     Itr                  10
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnAvg          -157.341
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMax           -79.7333
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnMin          -221.535
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     ReturnStd            36.3789
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossFinal     1.01282
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     TrainingLossStart     1.05893
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 INFO     -----------------  ----------
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : total      182.2 (100.0%)
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : get action 105.9 (58.1%)
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : train policy 75.8 (41.6%)
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : env step   0.5 (0.3%)
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    : other      0.0 (0.0%)
+11-27 16:14:50 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 DEBUG    

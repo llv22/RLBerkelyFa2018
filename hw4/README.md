@@ -204,10 +204,12 @@ About CEM, refer to [wiki defintion of Cross-entropy method](https://en.wikipedi
 * Multiple action method
     ```bash
     python main.py q3 --exp_name multiple_steps_action4096_horizon20_multisteps5 --num_random_action_selection 4096 --mpc_horizon 20 --steps_for_loss_train 5
+    # Status: [Started]
+    python main.py q3 --exp_name multiple_steps_action4096_horizon50_multisteps10 --num_random_action_selection 4096 --mpc_horizon 50 --steps_for_loss_train 10
     ```
 * Analyze result
     ```bash
-    python plot.py --exps HalfCheetah_q3_standard_action4096_horizon20  --save HalfCheetah_q3_multisteps
+    python plot.py --exps HalfCheetah_q3_standard_action4096_horizon20 HalfCheetah_q3_multiple_steps_action4096_horizon20_multisteps5 HalfCheetah_q3_multiple_steps_action4096_horizon50_multisteps10 --save HalfCheetah_q3_multisteps
     ```
 plot result
     <img src="plots/HalfCheetah_q3_multisteps.jpg" width="75%"/>
