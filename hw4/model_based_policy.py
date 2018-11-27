@@ -90,10 +90,10 @@ class ModelBasedPolicy(object):
         # raise NotImplementedError
         state_ph = tf.placeholder(tf.float32, shape=[None, self._state_dim])
         next_state_ph = tf.placeholder(tf.float32, shape=[None, self._state_dim])
-        if self._steps_for_loss_train == 1:
-            action_ph = tf.placeholder(tf.float32, shape=[None, self._action_dim])
-        else:
-            action_ph = tf.placeholder(tf.float32, shape=[None, self._steps_for_loss_train, self._action_dim])
+        ### Extra Credit(ii)
+        # raise NotImplementedError
+        # reformat action for At to At, ..., At+n-1
+        action_ph = tf.placeholder(tf.float32, shape=[None, self._action_dim * self._steps_for_loss_train])
         return state_ph, action_ph, next_state_ph
 
     def _dynamics_func(self, state, action, reuse):
@@ -113,6 +113,9 @@ class ModelBasedPolicy(object):
                 (d) Unnormalize the delta state prediction, and add it to the current state in order to produce
                     the predicted next state
 
+            Extra Credit(ii):
+                (a) St, At, ..., At+n-1, St+n, just change At to At, ..., At+n-1
+                (b) need to reorganize the source code
         """
         ### PROBLEM 1
         ### YOUR CODE HERE
@@ -120,12 +123,10 @@ class ModelBasedPolicy(object):
         ## (a) normalize state and action
         normalized_state = utils.normalize(state, self._init_dataset.state_mean, self._init_dataset.state_std)
         normalized_action = utils.normalize(action, self._init_dataset.action_mean, self._init_dataset.action_std)
-        ## (b) concatenate for normalized state and action
-        if self._steps_for_loss_train == 1:
-            normalized_state_action = tf.concat([normalized_state, normalized_action], axis=-1)
-        else:
-            reshape_normalized_action = tf.reshape(normalized_action, shape=[-1, self._steps_for_loss_train * self._action_dim])
-            normalized_state_action = tf.concat([normalized_state, reshape_normalized_action], axis=-1)
+        ## (b) concatenate for normalized state and action and 
+        ### Extra Credit(ii)
+        # raise NotImplementedError
+        normalized_state_action = tf.concat([normalized_state, normalized_action], axis=-1)
         ## (c) via neural network to build the normalized predicted difference between the next state and the current state
         normalized_next_state_diff_pred = utils.build_mlp(normalized_state_action, self._state_dim, scope="f_func", reuse=reuse)
         ## (d) Unnormalize the delta state prediction, add to current state to get next_state_pred
@@ -150,6 +151,8 @@ class ModelBasedPolicy(object):
                     normalized predicted state difference
                 (d) Create the optimizer by minimizing the loss using the Adam optimizer with self._learning_rate
 
+            Extra Credit(ii):
+                (a) state_ph = St, next_state_ph=St+n
         """
         ### PROBLEM 1
         ### YOUR CODE HERE
@@ -190,17 +193,20 @@ class ModelBasedPolicy(object):
                 (ii) You should call self._dynamics_func and self._cost_fn a total of self._horizon times
                 (iii) Use tf.random_uniform(...) to generate the random action sequences
             
-            Extra Credit implementation details:
+            Extra Credit (i) implementation details:
                 (a) Use cross-entropy method to sample action, instead of pure random_uniform
                 (b) Still retrieve the best action for returning reference
+
+            Extra Credit (ii) implementation details:
+                (a) action convert to different dimension - self._action_dim to self._action_dim * self._steps_for_loss_train
         """
         if not self._use_cross_entropy:
             ### PROBLEM 2
             ### YOUR CODE HERE
             # raise NotImplementedError
             ## (b) Randomly sample action sequences = [self._num_random_action_selection, self._horizon]
-            actions_sequences = tf.random_uniform([self._num_random_action_selection, self._horizon, self._action_dim], self._action_space_low, self._action_space_high, tf.float32)
-            action_slice_size = [1,1,self._action_dim]
+            actions_sequences = tf.random_uniform([self._num_random_action_selection, self._horizon, self._action_dim * self._steps_for_loss_train], np.tile(self._action_space_low, self._steps_for_loss_train), np.tile(self._action_space_high, self._steps_for_loss_train), tf.float32)
+            action_slice_size = [1,1,self._action_dim * self._steps_for_loss_train]
 
             ## 1. Parallel Model for cost_actions_decision : Not yest tested
             # Result: Can't be implemented easily, as processing isn't easy for tensorflow model for copyied
@@ -262,9 +268,9 @@ class ModelBasedPolicy(object):
             ## Theory in https://en.wikipedia.org/wiki/Cross-entropy_method 
             ## refer to implementation of CEM in https://github.com/udacity/deep-reinforcement-learning/blob/master/cross-entropy/CEM.ipynb
             # In order to simplify logic, just use uniform distribution for sampling data, continue to estimate lower and upper bound via top 80% data for the lower bound and upper bound
-            action0_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim], self._action_space_low, self._action_space_high, tf.float32)
+            action0_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim * self._steps_for_loss_train], np.tile(self._action_space_low, self._steps_for_loss_train), np.tile(self._action_space_high, self._steps_for_loss_train), tf.float32)
             current_action_sequences = action0_sequences
-            action_slice_size = [1,self._action_dim]
+            action_slice_size = [1,self._action_dim * self._steps_for_loss_train]
             state_ph_sequences = tf.reshape([state_ph] * self._num_random_action_selection, shape=[-1, self._state_dim])
             cost_actions_decision = [] * self._num_random_action_selection
             for i in range(self._horizon):
@@ -276,7 +282,7 @@ class ModelBasedPolicy(object):
                     cost_actions_decision += one_step_rewards
                 # use cross-entropy method to update action0_sequences, tf.math.top_k doesn't exist => tf.nn.top_k
                 top80_values, top80_indices = tf.nn.top_k(one_step_rewards, int(self._num_random_action_selection * 0.95))
-                current_action_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim], tf.minimum(self._action_space_low, top80_values[-1]), tf.maximum(self._action_space_high, top80_values[0]), tf.float32)
+                current_action_sequences = tf.random_uniform([self._num_random_action_selection, self._action_dim * self._steps_for_loss_train], tf.minimum(np.tile(self._action_space_low, self._steps_for_loss_train), top80_values[-1]), tf.maximum(np.tile(self._action_space_high, self._steps_for_loss_train), top80_values[0]), tf.float32)
             best_action_index = tf.argmin(tf.convert_to_tensor(cost_actions_decision))
             best_action = tf.squeeze(tf.slice(action0_sequences, [best_action_index, 0], action_slice_size))
         return best_action
@@ -289,20 +295,19 @@ class ModelBasedPolicy(object):
         """
         sess = tf.Session()
         state_ph, action_ph, next_state_ph = self._setup_placeholders()
-        
-        if self._steps_for_loss_train == 1:
-            ### PROBLEM 1
-            ### YOUR CODE HERE
-            # raise NotImplementedError
-            ## Just 1 step for loss training, action_ph is 1-actions
-            # for the first time to call reuse=False?
-            next_state_pred = self._dynamics_func(state_ph, action_ph, not self._reuse)
-            loss, optimizer = self._setup_training(state_ph, next_state_ph, next_state_pred)
-        else:
-            ### PROBLEM Extra Credit (ii)
-            ### YOUR CODE HERE
-            ### For multiple step for loss training, for multiple step (N-actions estimation), action_ph is N-actions
-            raise NotImplementedError
+
+        ### PROBLEM 1
+        ### YOUR CODE HERE
+        # raise NotImplementedError
+        ## Just 1 step for loss training, action_ph is 1-actions
+        # for the first time to call reuse=False?
+        # 
+        ### PROBLEM Extra Credit (ii)
+        ### YOUR CODE HERE
+        #   We naturally convert At to At, At+1, ..., At+n-1 from input data part
+        ### For multiple step for loss training, for multiple step (N-actions estimation), action_ph is N-actions
+        next_state_pred = self._dynamics_func(state_ph, action_ph, not self._reuse)
+        loss, optimizer = self._setup_training(state_ph, next_state_ph, next_state_pred)
 
         ### PROBLEM 2
         ### YOUR CODE HERE
@@ -323,9 +328,12 @@ class ModelBasedPolicy(object):
         ### PROBLEM 1
         ### YOUR CODE HERE
         # raise NotImplementedError
+        ### PROBLEM Extra Credit (ii)
+        ### YOUR CODE HERE
+        #   We naturally convert At to At, At+1, ..., At+n-1 from input data part
         _, loss = self._sess.run([self._optimizer, self._loss], feed_dict={
             self._state_ph: np.array(states).reshape(-1, self._state_dim),
-            self._action_ph: np.array(actions).reshape(-1, self._action_dim),
+            self._action_ph: np.array(actions).reshape(-1, self._action_dim * self._steps_for_loss_train),
             self._next_state_ph: np.array(next_states).reshape(-1, self._state_dim)
         })
 
@@ -348,9 +356,12 @@ class ModelBasedPolicy(object):
         ### YOUR CODE HERE
         # raise NotImplementedError
         # refer to https://stackoverflow.com/questions/18200052/how-to-convert-ndarray-to-array
+        ### PROBLEM Extra Credit (ii)
+        ### YOUR CODE HERE
+        #   We naturally convert At to At, At+1, ..., At+n-1 from input data part
         next_state_pred = self._sess.run(self._next_state_pred, feed_dict={
             self._state_ph: np.array(state).reshape(-1, self._state_dim),
-            self._action_ph: np.array(action).reshape(-1, self._action_dim)
+            self._action_ph: np.array(action).reshape(-1, self._action_dim * self._steps_for_loss_train)
         }).ravel()
 
         assert np.shape(next_state_pred) == (self._state_dim,)
@@ -372,5 +383,5 @@ class ModelBasedPolicy(object):
             self._state_ph: np.array(state).reshape(-1, self._state_dim)
         }).ravel()
 
-        assert np.shape(best_action) == (self._action_dim,)
+        assert np.shape(best_action) == (self._action_dim * self._steps_for_loss_train,)
         return best_action

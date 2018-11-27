@@ -196,6 +196,18 @@ About CEM, refer to [wiki defintion of Cross-entropy method](https://en.wikipedi
 4. plot result
     <img src="plots/HalfCheetah_q3_cem.jpg" width="75%"/>
 
-
 #### 2.5.2 Multi-step Loss
-
+* Standard method
+    ```bash
+    python main.py q3 --exp_name standard_action4096_horizon20 --num_random_action_selection 4096 --mpc_horizon 20
+    ```
+* Multiple action method
+    ```bash
+    python main.py q3 --exp_name multiple_steps_action4096_horizon20_multisteps5 --num_random_action_selection 4096 --mpc_horizon 20 --steps_for_loss_train 5
+    ```
+* Analyze result
+    ```bash
+    python plot.py --exps HalfCheetah_q3_standard_action4096_horizon20  --save HalfCheetah_q3_multisteps
+    ```
+plot result
+    <img src="plots/HalfCheetah_q3_multisteps.jpg" width="75%"/>

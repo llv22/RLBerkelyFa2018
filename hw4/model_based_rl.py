@@ -33,10 +33,15 @@ class ModelBasedRL(object):
         self._training_batch_size = training_batch_size
         self._render = render
         self._num_init_random_rollouts = num_init_random_rollouts
+        ### PROBLEM Extra Credit (ii)
+        ### YOUR CODE HERE
+        #   We naturally convert At to At, At+1, ..., At+n-1 from input data part
+        self._steps_for_loss_train = steps_for_loss_train
 
         logger.info('Gathering random dataset')
-        self._random_dataset = self._gather_rollouts(utils.RandomPolicy(env),
-                                                     num_init_random_rollouts)
+        self._random_dataset = self._gather_rollouts(utils.RandomPolicy(env, steps_for_loss_train=self._steps_for_loss_train),
+                                                     num_init_random_rollouts, 
+                                                     steps_for_loss_train=self._steps_for_loss_train)
 
         logger.info('Creating policy')
         self._policy = ModelBasedPolicy(env,
@@ -49,8 +54,8 @@ class ModelBasedRL(object):
         timeit.reset()
         timeit.start('total')
 
-    def _gather_rollouts(self, policy, num_rollouts):
-        dataset = utils.Dataset()
+    def _gather_rollouts(self, policy, num_rollouts, steps_for_loss_train=1):
+        dataset = utils.Dataset(steps_for_loss_train)
 
         for _ in range(num_rollouts):
             state = self._env.reset()
@@ -65,14 +70,26 @@ class ModelBasedRL(object):
                 action = policy.get_action(state)
                 timeit.stop('get action')
                 timeit.start('env step')
-                next_state, reward, done, _ = self._env.step(action)
-                timeit.stop('env step')
-                done = done or (t >= self._max_rollout_length)
-                dataset.add(state, action, next_state, reward, done)
-
-                state = next_state
-                t += 1
-
+                ### PROBLEM Extra Credit (ii)
+                ### YOUR CODE HERE
+                #   We naturally convert At to At, At+1, ..., At+n-1 from input data part
+                action_dim = self._env.action_space.shape[0]
+                # for Random policy, action is consistent with action_dim; for ModelBasedPolicy, action is action_dim * steps_for_loss_train
+                loop_time = 1 if len(action) == action_dim else len(action) // action_dim
+                for i in range(loop_time):
+                    # In order to handle with action_dim * self._steps_for_loss_train case
+                    sub_action_with_correct_dim = action[i * action_dim: (i+1) * action_dim]
+                    next_state, reward, done, _ = self._env.step(sub_action_with_correct_dim)
+                    done = done or (t >= self._max_rollout_length)
+                    dataset.add(state, sub_action_with_correct_dim, next_state, reward, done)
+                    state = next_state
+                    t += 1
+                    if done:
+                        # if already reach the end, back to while not done for quiting from loop
+                        timeit.stop('env step')
+                        break
+                else:
+                    timeit.stop('env step')
         return dataset
 
     def _train_policy(self, dataset):

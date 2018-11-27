@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python: (Hopper-v2)",
             "type": "python",
@@ -40,6 +41,27 @@
                 "1",
                 "--expert_data",
                 "hw1/expert_data"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: (HalfCheetah-v2) multiple_steps_action4096_horizon20_multisteps5",
+            "type": "python",
+            "request": "launch",
+            "program": "/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw4/main.py",
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-10.0/lib:/usr/local/nccl/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
+            },
+            "args": [
+                "q3",
+                "--exp_name",
+                "multiple_steps_action4096_horizon20_multisteps5",
+                "--num_random_action_selection",
+                "4096",
+                "--mpc_horizon",
+                "20",
+                "--steps_for_loss_train",
+                "5"
             ],
             "console": "integratedTerminal"
         },
