@@ -9,7 +9,7 @@
             "name": "Python: (Hopper-v2)",
             "type": "python",
             "request": "launch",
-            "program": "/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw1/run_expert.py",
+            "program": "${workspaceFolder}/hw1/run_expert.py",
             "env": {
                 "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-10.0/lib:/usr/local/nccl/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
             },
@@ -29,7 +29,7 @@
             "name": "Python: (HalfCheetah-v2)",
             "type": "python",
             "request": "launch",
-            "program": "/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw1/run_expert.py",
+            "program": "${workspaceFolder}/hw1/run_expert.py",
             "env": {
                 "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-10.0/lib:/usr/local/nccl/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
             },
@@ -48,7 +48,7 @@
             "name": "Python: (HalfCheetah-v2) multiple_steps_action4096_horizon20_multisteps5",
             "type": "python",
             "request": "launch",
-            "program": "/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw4/main.py",
+            "program": "${workspaceFolder}/hw4/main.py",
             "env": {
                 "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-10.0/lib:/usr/local/nccl/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
             },
