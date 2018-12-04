@@ -621,6 +621,7 @@ def main():
     parser.add_argument('--density_hiddim', '-dh', type=int, default=32)
     parser.add_argument('--replay_size', '-rs', type=int, default=int(1e6))
     parser.add_argument('--sigma', '-sig', type=float, default=0.2)
+    parser.add_argument('--process_in_parallel', '-p', type=int, default=0)
     ########################################################################
 
     args = parser.parse_args()
@@ -679,10 +680,15 @@ def main():
         processes.append(p)
         # if you comment in the line below, then the loop will block 
         # until this process finishes
-        # p.join()
+        if not args.process_in_parallel:
+            # if not run in parallel for processes, just run in sequence
+            p.join()
 
-    for p in processes:
-        p.join()
+
+    # otherwise, run in parallel; only finished, back to main process
+    if args.process_in_parallel:
+        for p in processes:
+            p.join()
         
 
 if __name__ == "__main__":
