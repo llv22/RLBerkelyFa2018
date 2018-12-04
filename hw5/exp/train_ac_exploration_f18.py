@@ -6,7 +6,11 @@ Adapted for CS294-112 Fall 2018 with <3 by Michael Chang, some experiments by Gr
 """
 import numpy as np
 import tensorflow as tf
-import tensorflow_probability as tfp
+## as tensorflow tf it's not ready
+# import tensorflow_probability as tfp
+## Issue: as tfp isn't include in tensorflow 1.10.0, just workaround it! Orlando
+# import tensorflow_probability as tfp
+tfp = tf.contrib
 import gym
 import logz
 import os
@@ -540,14 +544,16 @@ def train_AC(
             elif dm == 'hist' or dm == 'rbf':
                 ### PROBLEM 1
                 ### YOUR CODE HERE
-                raise NotImplementedError
+                # raise NotImplementedError
+                exploration.fit_density_model(ob_no)
             else:
                 assert False
 
             # 2. Modify the reward
             ### PROBLEM 1
             ### YOUR CODE HERE
-            raise NotImplementedError
+            # raise NotImplementedError
+            re_n = exploration.modify_reward(re_n, ob_no)
 
             print('average state', np.mean(ob_no, axis=0))
             print('average action', np.mean(ac_na, axis=0))

@@ -58,3 +58,31 @@ See the hw5a.pdf in this folder for further instructions.
    ```bash
    python pointmass.py test_pointmass
    ```
+
+
+## 2. Implementation
+### 2.1 Problem 1
+* Run program
+```bash
+python train_ac_exploration_f18.py PointMass-v0 -n 100 -b 1000 -e 3 --density_model none -s 8 --exp_name PM_bc0_s8
+# result folder: data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03
+python train_ac_exploration_f18.py PointMass-v0 -n 100 -b 1000 -e 3 --density_model hist -bc 0.01 -s 8 --exp_name PM_hist_bc0.01_s8
+# result folder: data/ac_PM_hist_bc0.01_s8_PointMass-v0_04-12-2018_23-27-47
+```
+* Plot result
+```bash
+python plot.py data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03 data/ac_PM_hist_bc0.01_s8_PointMass-v0_04-12-2018_23-27-47 --legend noexp_PointMass hist_PointMass --value AverageReturn StdReturn EpLenMean
+```
+1. AverageReturn Figure:  
+
+<img src="data/problem1/AverageReturn.png" width="60%"/>
+
+2. StdReturn Mean:   
+
+<img src="data/problem1/StdReturn.png" width="60%"/>
+
+3. EpLenMean Mean:   
+
+<img src="data/problem1/EpLenMean.png" width="60%"/>
+
+

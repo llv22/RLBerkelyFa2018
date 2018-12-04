@@ -97,6 +97,9 @@ def main():
     args = parser.parse_args()
 
     use_legend = False
+    print(args.logdir)
+    print(args.legend)
+    print(args.value)
     if args.legend is not None:
         assert len(args.legend) == len(args.logdir), \
             "Must give a legend title for each set of experiments."
