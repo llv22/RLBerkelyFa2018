@@ -85,4 +85,24 @@ python plot.py data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03 data/ac_PM_his
 
 <img src="data/problem1/EpLenMean.png" width="60%"/>
 
+### 2.2 Problem 2
+* Run program
+```bash
+python train_ac_exploration_f18.py PointMass-v0 -n 100 -b 1000 -e 3 --density_model rbf -bc 0.01 -s 8 -sig 0.2 --exp_name PM_rbf_bc0.01_s8_sig0.2
+# result folder: data/ac_PM_rbf_bc0.01_s8_sig0.2_PointMass-v0_05-12-2018_11-33-36
+```
+* Plot result
+```bash
+python plot.py data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03 data/ac_PM_rbf_bc0.01_s8_sig0.2_PointMass-v0_05-12-2018_11-33-36 --legend noexp_PointMass rbf_PointMass --value AverageReturn StdReturn EpLenMean
+```
+1. AverageReturn Figure:  
 
+<img src="data/problem2/AverageReturn.png" width="60%"/>
+
+2. StdReturn Mean:   
+
+<img src="data/problem2/StdReturn.png" width="60%"/>
+
+3. EpLenMean Mean:   
+
+<img src="data/problem2/EpLenMean.png" width="60%"/>

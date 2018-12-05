@@ -109,7 +109,7 @@ class RBF(Density_Model):
                 self.means: np array (B, ob_dim)
         """
         B, ob_dim = len(data), len(data[0])
-        raise NotImplementedError
+        # raise NotImplementedError
         self.means = np.asarray(data)
         assert self.means.shape == (B, ob_dim)
 
@@ -155,17 +155,17 @@ class RBF(Density_Model):
 
             # 2. Euclidean distance
             # raise NotImplementedError
-            euc_dists = np.sum(deltas ** 2, axis=-1)
+            euc_dists = np.sum(np.exp(-deltas ** 2 / (2 * self.sigma)), axis=-1)
             assert euc_dists.shape == (b, B)
 
-            # 3. Gaussian
-            raise NotImplementedError
-            gaussians = None
+            # 3. Gaussian ? => using unnormalized ||s-s`|| to eliminiate ob_dim => Dicussed with Liang, Li for KDE's calculation
+            # raise NotImplementedError
+            gaussians = euc_dists / ob_dim
             assert gaussians.shape == (b, B)
 
             # 4. Average
-            raise NotImplementedError
-            densities = None
+            # raise NotImplementedError
+            densities = np.mean(gaussians, axis=-1)
             assert densities.shape == (b,)
 
             return densities
