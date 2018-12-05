@@ -243,9 +243,10 @@ class Exemplar(Density_Model):
 
             Hint: use build_mlp
         """
-        raise NotImplementedError
-        z_mean = None
-        z_logstd = None
+        # raise NotImplementedError
+        ## Orlando's trial, just take tf.nn.relu as output activation layer
+        z_mean = build_mlp(state, z_size, scope, n_layers, hid_size, output_activation=tf.nn.relu)
+        z_logstd = tf.get_variable(shape=[z_size,], dtype=tf.float32, name="z_logstd", initializer=tf.zeros_initializer())
         return tfp.distributions.MultivariateNormalDiag(loc=z_mean, scale_diag=tf.exp(z_logstd))
 
     def make_prior(self, z_size):

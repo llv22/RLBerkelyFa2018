@@ -11,7 +11,7 @@ def build_mlp(input_placeholder, output_size, scope, n_layers, size, activation=
             n_layers: number of hidden layers
             size: dimension of the hidden layer
             activation: activation of the hidden layers
-            output_activation: activation of the ouput layers
+            output_activation: activation of the output layers
 
         returns:
             output placeholder of the network (the result of a forward pass) 
