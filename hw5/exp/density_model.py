@@ -261,9 +261,11 @@ class Exemplar(Density_Model):
                 prior_mean and prior_logstd are for a standard normal distribution
                     both have dimension z_size
         """
-        raise NotImplementedError
-        prior_mean = None
-        prior_logstd = None
+        # raise NotImplementedError
+        ## for prior estimation, just use variable to generate prior value
+        ## in order to fit for standard normal distribution, prior_mean and prior_logstd should be (0, exp(0)) -> (0, 1); Prior is just to add noise for regularization, so tf.constant will be sufficient
+        prior_mean = tf.constant(0., shape=[z_size,], dtype=tf.float32, name="prior_mean")
+        prior_logstd = tf.constant(0., shape=[z_size,], dtype=tf.float32, name="prior_logstd")
         return tfp.distributions.MultivariateNormalDiag(loc=prior_mean, scale_diag=tf.exp(prior_logstd))
 
     def make_discriminator(self, z, output_size, scope, n_layers, hid_size):
@@ -285,8 +287,9 @@ class Exemplar(Density_Model):
 
             Hint: use build_mlp
         """
-        raise NotImplementedError
-        logit = None
+        # raise NotImplementedError
+        ## logit in [0, +infinity), in order to make derivative stable, use tf.nn.relu for trial
+        logit = build_mlp(z, output_size, scope, n_layers, hid_size, output_activation=tf.nn.relu)
         return tfp.distributions.Bernoulli(logit)
 
     def forward_pass(self, state1, state2):
@@ -324,10 +327,12 @@ class Exemplar(Density_Model):
         prior = self.make_prior(self.hid_dim/2)
 
         # Sampled Latent
-        raise NotImplementedError
-        z1 = None
-        z2 = None
-        z = None
+        # raise NotImplementedError
+        ## sample delta(x) = z1 * prior, P(x) = z2 * prior
+        z1 = encoder1 * prior
+        z2 = encoder2 * prior
+        # concatnate z1, z2 to shape=[self.hid_dim,]
+        z = tf.concat([z1, z2], axis=0)
 
         # Discriminator
         discriminator = make_discriminator(z, 1, 'discriminator', n_layers=2, hid_size=self.hid_dim)
