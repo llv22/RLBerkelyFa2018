@@ -182,6 +182,10 @@ class Exemplar(Density_Model):
         """
             ### PROBLEM 3
             ### YOUR CODE HERE
+            ### Equation refactoring: 
+            ###     e1: p(y|z) = D(z)^{y} * (1 − D(z))^{1−y}
+            ###     e2: log(p(y|z)) = y * log(D(z)) + (1-y) * log(1-D(z))
+            ###     e3: D_{KL}(q(z|x)||p(z)) =  D_{KL}(q(z1|x)||p(z1)) +  D_{KL}(q(z2|x)||p(z2))
 
             TODO:
                 1. self.log_likelihood. shape: (batch_size)
@@ -207,15 +211,18 @@ class Exemplar(Density_Model):
         self.encoder1, self.encoder2, self.prior, self.discriminator = self.forward_pass(self.state1, self.state2)
         self.discrim_target = tf.placeholder(shape=[None, 1], name="discrim_target", dtype=tf.float32)
 
-        raise NotImplementedError
-        self.log_likelihood = None
-        self.likelihood = None
-        self.kl = None
+        # raise NotImplementedError
+        ## equation 2
+        self.log_likelihood = tf.squeeze(self.discrim_target) * tf.log(self.discriminator) + (1 - tf.squeeze(self.discrim_target)) * tf.log(1 - self.discriminator)
+        ## equation 1, can directly from self.log_likelihood
+        self.likelihood = tf.exp(self.log_likelihood)
+        self.kl = tf.distributions.kl_divergence(self.encoder1, self.prior) + tf.distributions.kl_divergence(self.encoder2, self.prior)
         assert len(self.log_likelihood.shape) == len(self.likelihood.shape) == len(self.kl.shape) == 1
 
-        raise NotImplementedError
-        self.elbo = None
-        self.update_op = None
+        # raise NotImplementedError
+        self.elbo = self.log_likelihood - self.kl_weight * self.kl
+        ## minimize(val) if equal with maximize(-val)
+        self.update_op = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(-self.elbo)
 
     def define_placeholders(self):
         state1 = tf.placeholder(shape=[None, self.ob_dim], name="s1", dtype=tf.float32)
@@ -329,8 +336,8 @@ class Exemplar(Density_Model):
         # Sampled Latent
         # raise NotImplementedError
         ## sample delta(x) = z1 * prior, P(x) = z2 * prior
-        z1 = encoder1 * prior
-        z2 = encoder2 * prior
+        z1 = encoder1.sample() * prior.sample()
+        z2 = encoder2.sample() * prior.sample()
         # concatnate z1, z2 to shape=[self.hid_dim,]
         z = tf.concat([z1, z2], axis=0)
 
@@ -357,7 +364,13 @@ class Exemplar(Density_Model):
         assert state1.ndim == state2.ndim == target.ndim
         assert state1.shape[1] == state2.shape[1] == self.ob_dim
         assert state1.shape[0] == state2.shape[0] == target.shape[0]
-        raise NotImplementedError
+        # raise NotImplementedError
+        ## training for maximize likelihood - kl
+        _, ll, kl, elbo = self.sess.run([self.update_op, self.log_likelihood, self.kl, self.elbo], feed_dict={
+            self.state1: state1,
+            self.state2: state2,
+            self.discrim_target: target
+        })
         return ll, kl, elbo
 
     def get_likelihood(self, state1, state2):
@@ -378,7 +391,12 @@ class Exemplar(Density_Model):
         assert state1.ndim == state2.ndim
         assert state1.shape[1] == state2.shape[1] == self.ob_dim
         assert state1.shape[0] == state2.shape[0]
-        raise NotImplementedError
+        # raise NotImplementedError
+        ## infer for likelihood
+        likelihood = self.sess.run(self.likelihood, feed_dict={
+            self.state1: state1,
+            self.state2: state2
+        })
         return likelihood
 
     def get_prob(self, state):
@@ -396,10 +414,10 @@ class Exemplar(Density_Model):
                     compute the probability density of x from the discriminator
                     likelihood (see homework doc)
         """
-        raise NotImplementedError
-        likelihood = None
+        # raise NotImplementedError
+        likelihood = self.get_likelihood(state, state)
         # avoid divide by 0 and log(0)
         likelihood = np.clip(np.squeeze(likelihood), 1e-5, 1-1e-5)
         raise NotImplementedError
-        prob = None
+        prob = (1 - likelihood) / likelihood
         return prob
