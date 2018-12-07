@@ -10,7 +10,7 @@
 "gamma"	:	1.0,
 "kl_weight"	:	0.01,
 "learning_rate"	:	0.005,
-"logdir"	:	"/Users/llv23/Documents/05_machine_learning/deepRL/RLBerkelyFa2018/hw5/exp/data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03/1",
+"logdir"	:	"/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw5/exp/data/ac_PM_bc0_s8_PointMass-v0_07-12-2018_21-10-21/21",
 "max_path_length"	:	null,
 "min_timesteps_per_batch"	:	1000,
 "n_iter"	:	100,
@@ -19,6 +19,6 @@
 "num_grad_steps_per_target_update"	:	10,
 "num_target_updates"	:	10,
 "replay_size"	:	1000000,
-"seed"	:	1,
+"seed"	:	21,
 "sigma"	:	0.2,
 "size"	:	8}
