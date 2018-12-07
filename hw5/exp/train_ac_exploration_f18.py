@@ -687,13 +687,13 @@ def main():
         processes.append(p)
         # if you comment in the line below, then the loop will block 
         # until this process finishes
-        if not args.process_in_parallel:
+        if args.process_in_parallel == 0:
             # if not run in parallel for processes, just run in sequence
             p.join()
 
 
     # otherwise, run in parallel; only finished, back to main process
-    if args.process_in_parallel:
+    if args.process_in_parallel != 0:
         for p in processes:
             p.join()
         

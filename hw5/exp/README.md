@@ -16,19 +16,21 @@ See the hw5a.pdf in this folder for further instructions.
 <!--See the [HW5 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw5a.pdf) for further instructions-->
 
 ## 1. Preparaion of "sparse_half_cheetah.py" for SparseHalfCheetah-v1
-   1) Customize ~/miniconda3/lib/python3.6/site-packages/gym/envs/__init__.py
+   1) Customize ~/miniconda3/lib/python3.6/site-packages/gym/envs/__init__.py or ~/anaconda3/lib/python3.6/site-packages/gym/envs/__init__.py
    ```python
    ## Orlando's adding for hw5a of CS-Berkeley
    register(
-       id='SparseHalfCheetah-v1',
-       entry_point='gym.envs.mujoco:SparseHalfCheetahEnv',
-       max_episode_steps=1000,
-       reward_threshold=4800.0,
-    )
+      id='SparseHalfCheetah-v1',
+      entry_point='gym.envs.mujoco:SparseHalfCheetahEnv',
+      max_episode_steps=1000,
+      reward_threshold=4800.0,
+   )
    ```
    2) prepare 'SparseHalfCheetah-v1' and assert
    ```bash
    cp hw5/exp/sparse_half_cheetah.py ~/miniconda3/lib/python3.6/site-packages/gym/envs/mujoco/
+   or 
+   cp sparse_half_cheetah.py ~/anaconda3/lib/python3.6/site-packages/gym/envs/mujoco/
    ```
    ```python
    # customize sparse_half_cheetah.py
@@ -41,7 +43,7 @@ See the hw5a.pdf in this folder for further instructions.
    cp assets/half_cheetah.xml assets/sparse_half_cheetah.xml
    ```
    ```python
-   # customize ~/miniconda3/lib/python3.6/site-packages/gym/envs/mujoco/__init__.py
+   # customize ~/miniconda3/lib/python3.6/site-packages/gym/envs/mujoco/__init__.py or ~/anaconda3/lib/python3.6/site-packages/gym/envs/mujoco/__init__.py
     from gym.envs.mujoco.mujoco_env import MujocoEnv
     # ^^^^^ so that user gets the correct error
     # message if mujoco is not installed correctly
@@ -111,11 +113,11 @@ python plot.py data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03 data/ac_PM_rbf
 * Run program
 ```bash
 python train_ac_exploration_f18.py PointMass-v0 -n 100 -b 1000 -e 3 --density_model ex2 -s 8 -bc 0.05 -kl 0.1 -dlr 0.001 -dh 8 -dti 1000 --exp_name PM_ex2_s8_bc0.05_kl0.1_dlr0.001_dh8_dti1000
-# result folder: 
+# result folder: data/ac_PM_ex2_s8_bc0.05_kl0.1_dlr0.001_dh8_dti1000_PointMass-v0_07-12-2018_17-13-11
 ```
-* Plot result
+* Plot result [noexp_PointMass not uploaded]
 ```bash
-python plot.py data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03  --legend noexp_PointMass --value AverageReturn StdReturn EpLenMean
+python plot.py data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03 data/ac_PM_ex2_s8_bc0.05_kl0.1_dlr0.001_dh8_dti1000_PointMass-v0_07-12-2018_17-13-11 --legend noexp_PointMass ex2_PointMass --value AverageReturn StdReturn EpLenMean
 ```
 1. AverageReturn Figure:  
 
@@ -133,7 +135,9 @@ python plot.py data/ac_PM_bc0_s8_PointMass-v0_04-12-2018_23-24-03  --legend noex
 * Run program
 ```bash
 python train_ac_exploration_f18.py SparseHalfCheetah-v1 -ep 150 --discount 0.9 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --density_model none --exp_name HC_bc0
+# result folder: data/ac_HC_bc0_SparseHalfCheetah-v1_07-12-2018_17-37-01
 python train_ac_exploration_f18.py SparseHalfCheetah-v1 -ep 150 --discount 0.9 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --density_model ex2 -bc 0.001 -kl 0.1 -dlr 0.005 -dti 1000 --exp_name HC_bc0.001_kl0.1_dlr0.005_dti1000
+# result folder: 
 python train_ac_exploration_f18.py SparseHalfCheetah-v1 -ep 150 --discount 0.9 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --density_model ex2 -bc 0.0001 -kl 0.1 -dlr 0.005 -dti 10000 --exp_name HC_bc0.0001_kl0.1_dlr0.005_dti10000
 # result folder: 
 ```

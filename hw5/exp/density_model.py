@@ -1,5 +1,7 @@
 import numpy as np
 import tensorflow as tf
+# Disable unnecessary tfp warning, refer to https://stackoverflow.com/questions/35911252/disable-tensorflow-debugging-information
+tf.logging.set_verbosity(tf.logging.INFO)
 ## Issue: as tfp isn't include in tensorflow 1.10.0, just workaround it! Orlando
 # import tensorflow_probability as tfp
 tfp = tf.contrib
@@ -213,14 +215,14 @@ class Exemplar(Density_Model):
 
         # raise NotImplementedError
         ## equation 2
-        self.log_likelihood = tf.squeeze(self.discrim_target) * tf.log(self.discriminator) + (1 - tf.squeeze(self.discrim_target)) * tf.log(1 - self.discriminator)
+        self.log_likelihood = tf.squeeze(self.discriminator.log_prob(self.discrim_target), axis=-1)
         ## equation 1, can directly from self.log_likelihood
-        self.likelihood = tf.exp(self.log_likelihood)
+        self.likelihood = tf.squeeze(self.discriminator.prob(self.discrim_target), axis=-1)
         self.kl = tf.distributions.kl_divergence(self.encoder1, self.prior) + tf.distributions.kl_divergence(self.encoder2, self.prior)
         assert len(self.log_likelihood.shape) == len(self.likelihood.shape) == len(self.kl.shape) == 1
 
         # raise NotImplementedError
-        self.elbo = self.log_likelihood - self.kl_weight * self.kl
+        self.elbo = tf.reduce_mean(self.log_likelihood - self.kl_weight * self.kl)
         ## minimize(val) if equal with maximize(-val)
         self.update_op = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(-self.elbo)
 
@@ -332,14 +334,20 @@ class Exemplar(Density_Model):
 
         # Prior
         prior = self.make_prior(self.hid_dim/2)
+        # print("self.hid_dim/2 = ", self.hid_dim/2)
 
         # Sampled Latent
         # raise NotImplementedError
-        ## sample delta(x) = z1 * prior, P(x) = z2 * prior
-        z1 = encoder1.sample() * prior.sample()
-        z2 = encoder2.sample() * prior.sample()
-        # concatnate z1, z2 to shape=[self.hid_dim,]
-        z = tf.concat([z1, z2], axis=0)
+        ## sample delta(x) = z1 * prior, P(x) = z2 * prior ?
+        # z1 = encoder1.sample() * prior.sample()
+        # z2 = encoder2.sample() * prior.sample()
+        ## z1 is positive
+        z1 = encoder1.sample()
+        ## z2 is negative
+        z2 = encoder2.sample()
+        # concatnate z1, z2 to shape=[, self.hid_dim] in order to get better for log_prob and prob
+        z = tf.concat([z1, z2], axis=-1)
+        # print("z.shape = ", z.shape)
 
         # Discriminator
         discriminator = make_discriminator(z, 1, 'discriminator', n_layers=2, hid_size=self.hid_dim)
@@ -395,7 +403,8 @@ class Exemplar(Density_Model):
         ## infer for likelihood
         likelihood = self.sess.run(self.likelihood, feed_dict={
             self.state1: state1,
-            self.state2: state2
+            self.state2: state2,
+            self.discrim_target: np.asarray([0.5] * state1.shape[0]).reshape(-1, 1)
         })
         return likelihood
 
@@ -418,6 +427,6 @@ class Exemplar(Density_Model):
         likelihood = self.get_likelihood(state, state)
         # avoid divide by 0 and log(0)
         likelihood = np.clip(np.squeeze(likelihood), 1e-5, 1-1e-5)
-        raise NotImplementedError
+        # raise NotImplementedError
         prob = (1 - likelihood) / likelihood
         return prob
