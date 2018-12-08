@@ -135,15 +135,15 @@ python plot.py data/ac_PM_bc0_s8_PointMass-v0_07-12-2018_21-10-21 data/ac_PM_ex2
 * Run program
 ```bash
 python train_ac_exploration_f18.py SparseHalfCheetah-v1 -ep 150 --discount 0.9 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --density_model none --exp_name HC_bc0
-# result folder: data/ac_HC_bc0_SparseHalfCheetah-v1_07-12-2018_21-23-22
+# result folder: data/ac_HC_bc0_SparseHalfCheetah-v1_08-12-2018_17-27-08
 python train_ac_exploration_f18.py SparseHalfCheetah-v1 -ep 150 --discount 0.9 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --density_model ex2 -bc 0.001 -kl 0.1 -dlr 0.005 -dti 1000 --exp_name HC_bc0.001_kl0.1_dlr0.005_dti1000
-# result folder: 
+# result folder: data/ac_HC_bc0.001_kl0.1_dlr0.005_dti1000_SparseHalfCheetah-v1_07-12-2018_23-15-14
 python train_ac_exploration_f18.py SparseHalfCheetah-v1 -ep 150 --discount 0.9 -n 100 -e 3 -l 2 -s 32 -b 30000 -lr 0.02 --density_model ex2 -bc 0.0001 -kl 0.1 -dlr 0.005 -dti 10000 --exp_name HC_bc0.0001_kl0.1_dlr0.005_dti10000
-# result folder: 
+# result folder: data/ac_HC_bc0.0001_kl0.1_dlr0.005_dti10000_SparseHalfCheetah-v1_08-12-2018_09-33-35
 ```
 * Plot result
 ```bash
-python plot.py  --legend --value AverageReturn StdReturn EpLenMean
+python plot.py  data/ac_HC_bc0_SparseHalfCheetah-v1_08-12-2018_17-27-08 data/ac_HC_bc0.001_kl0.1_dlr0.005_dti1000_SparseHalfCheetah-v1_07-12-2018_23-15-14 data/ac_HC_bc0.0001_kl0.1_dlr0.005_dti10000_SparseHalfCheetah-v1_08-12-2018_09-33-35 --legend noexp_SparseHalfCheetah ex2_SparseHalfCheetah_bc0.001dt1000        ex2_SparseHalfCheetah_bc0.0001dt10000 --value AverageReturn StdReturn EpLenMean
 ```
 1. AverageReturn Figure:  
 
