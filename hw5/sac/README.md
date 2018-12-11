@@ -14,7 +14,9 @@ You will implement `sac.py`, and `nn.py`.
 
 See the [HW5 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw5b.pdf) for further instructions.
 
-## 1. Loss Function
-### 1.1 Q-Function Loss
+## Problem 1: Loss Function
+## Problem 2: Squashing
+## Problem 3: SAC with Two Q-Functions
+## Problem 4: Experiments
 
 
