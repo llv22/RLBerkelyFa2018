@@ -120,7 +120,11 @@ class SAC:
     def _q_function_loss_for(self, q_function, target_value_function):
         ### Problem 1.1.A
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        q_values = q_function((self._observations_ph, self._actions_ph))
+        target_values = self._rewards_ph + self._discount * (1 - self._terminals_ph) * target_value_function((self._next_observations_ph))
+        return tf.losses.mean_squared_error(q_values, target_values)
+
 
     def _create_target_update(self, source, target):
         """Create tensorflow operations for updating target value function."""

@@ -13,3 +13,8 @@ Dependencies:
 You will implement `sac.py`, and `nn.py`.
 
 See the [HW5 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw5b.pdf) for further instructions.
+
+## 1. Loss Function
+### 1.1 Q-Function Loss
+
+
