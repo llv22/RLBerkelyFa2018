@@ -74,7 +74,10 @@ class GaussianPolicy(Network):
             if not self._reparameterize:
                 ### Problem 1.3.A
                 ### YOUR CODE HERE
-                raise NotImplementedError
+                # raise NotImplementedError
+                ### As reusing in non-reparameterized case, we need to stop gradient to avoid parameter BP
+                raw_actions = tf.stop_gradient(raw_actions)
+                
             log_probs = distribution.log_prob(raw_actions)
             log_probs -= self._squash_correction(raw_actions)
 
