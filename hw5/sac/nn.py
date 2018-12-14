@@ -84,7 +84,8 @@ class GaussianPolicy(Network):
             actions = None
             ### Problem 2.A
             ### YOUR CODE HERE
-            raise NotImplementedError
+            # raise NotImplementedError
+            actions = tf.tanh(raw_actions)
 
             return actions, log_probs
 
@@ -97,7 +98,9 @@ class GaussianPolicy(Network):
     def _squash_correction(self, raw_actions):
         ### Problem 2.B
         ### YOUR CODE HERE
-        raise NotImplementedError
+        # raise NotImplementedError
+        ## \sum_{i=1}{|A|} log(1 - tanh^2(z_i)) + 1e-8 to avoid numerical instabilities, tf.reduce_sum by axis=-1, then get logprob fixed-bias for each action
+        return tf.reduce_sum(tf.log(1 - tf.tanh(raw_actions) * tf.tanh(raw_actions)) + 1e-8, axis=-1)
 
     def eval(self, observation):
         assert self.built and observation.ndim == 1
