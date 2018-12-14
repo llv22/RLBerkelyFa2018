@@ -29,13 +29,13 @@ $$ \nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \lbrace \matho
 
 ### 1.2 Bonus Task - Questions for Problem 1
 
-    1. In Task A, what was your choice of baseline, and why did you choose it?
+1. In Task A, what was your choice of baseline, and why did you choose it?
 
-    2. What are the pros and cons of the two types of gradient estimators?
+2. What are the pros and cons of the two types of gradient estimators?
 
-    3. Why can we not use the reparameterization trick with policy gradients?
+3. Why can we not use the reparameterization trick with policy gradients?
 
-    4. We can minimize the policy loss in Equation 9 using oﬀ-policy data. Why is this not the case for standard actor-critic methods based on policy gradients, which require on-policy data?
+4. We can minimize the policy loss in Equation 9 using oﬀ-policy data. Why is this not the case for standard actor-critic methods based on policy gradients, which require on-policy data?
 
 ## Problem 2: Squashing
 
