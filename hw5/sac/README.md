@@ -51,6 +51,10 @@ where $\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}$ is Jacobian of $f_i$,
 
 $$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \triangleq b(s) + A(s) \epsilon, a = f_2(z) \triangleq \tanh(z) $$
 
+or 
+
+$$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \equiv b(s) + A(s) \epsilon, a = f_2(z) \equiv \tanh(z) $$
+
 As making f=$\tanh$, we have the Jacobian is a diagonal matrix with $\frac{\partial \tanh(z_i)}{\partial z_i} = 1 - \tanh ^2(z_i)$, finally we get
 
 $$ \log \left|  det(\frac{\partial f_2(z)}{\partial z}) \right| = \sum_{i=1}^{|A|} \log \left(1 - \tanh^2(z_i)\right)$$
