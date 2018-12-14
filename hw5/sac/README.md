@@ -40,6 +40,21 @@ See the [HW5 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw
     gradients, which require on-policy data?
 
 ## Problem 2: Squashing
+
+* **Invertible functions' chain rule**
+
+$$ Z^{(N)} = (f_N \circ \cdots \circ f_1)(z^0) \iff \log p(z^{(N)}) = log(p(z^{(0)})) - \sum_{i=1}^{N} \left| \det(\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}) \right|$$ 
+
+where $\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}$ is Jacobian of $f_i$, and $\det$ is the determinant.
+
+* **Squashing via tanh for action A**
+
+$$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \triangleq b(s) + A(s) \epsilon, a = f_2(z) \triangleq \tanh(z) $$
+
+As making f=$\tanh$, we have the Jacobian is a diagonal matrix with $\frac{\partial \tanh(z_i)}{\partial z_i} = 1 - \tanh ^2(z_i)$, finally we get
+
+$$ \log \left|  det(\frac{\partial f_2(z)}{\partial z}) \right| = \sum_{i=1}^{|A|} \log \left(1 - \tanh^2(z_i)\right)$$
+
 ## Problem 3: SAC with Two Q-Functions
 ## Problem 4: Experiments
 
