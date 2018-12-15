@@ -39,7 +39,9 @@ $$ \nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \lbrace \matho
 
 ## Problem 2: Squashing
 
-### 2.1 Math Reasoning
+### 2.1 Math Reasoning  
+Reference: https://tex.stackexchange.com/questions/74125/how-do-i-put-text-over-symbols
+
 * **Invertible functions' chain rule**
 
 $$ Z^{(N)} = (f_N \circ \cdots \circ f_1)(z^0) \iff \log p(z^{(N)}) = log(p(z^{(0)})) - \sum_{i=1}^{N} \left| \det(\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}) \right|$$ 
@@ -48,15 +50,24 @@ where $\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}$ is Jacobian of $f_i$,
 
 * **Squashing via tanh for action A**
 
+
 $$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \triangleq b(s) + A(s) \epsilon, a = f_2(z) \triangleq \tanh(z) $$
 
 or 
 
 $$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \equiv b(s) + A(s) \epsilon, a = f_2(z) \equiv \tanh(z) $$
 
+or 
+
+$$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \stackrel{\text{def}}{=} b(s) + A(s) \epsilon, a = f_2(z) \stackrel{\text{def}}{=}\tanh(z) $$
+
 As making f=$\tanh$, we have the Jacobian is a diagonal matrix with $\frac{\partial \tanh(z_i)}{\partial z_i} = 1 - \tanh ^2(z_i)$, finally we get
 
 $$ \log \left|  det(\frac{\partial f_2(z)}{\partial z}) \right| = \sum_{i=1}^{|A|} \log \left(1 - \tanh^2(z_i)\right)$$
+
+Bonus Task:
+
+$$ \log \left(1 - \tanh^2(z_i)\right) = 2 \log 2 + 2 z_i - softplus(2z_i)$$
 
 ## Problem 3: SAC with Two Q-Functions
 ## Problem 4: Experiments

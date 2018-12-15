@@ -99,8 +99,15 @@ class GaussianPolicy(Network):
         ### Problem 2.B
         ### YOUR CODE HERE
         # raise NotImplementedError
+        ###
+        # Need to verify if eq 1 == eq 2, from numeric stability perspective
+        ##
+        ### eq 1
         ## \sum_{i=1}{|A|} log(1 - tanh^2(z_i)) + 1e-8 to avoid numerical instabilities, tf.reduce_sum by axis=-1, then get logprob fixed-bias for each action
-        return tf.reduce_sum(tf.log(1 - tf.tanh(raw_actions) * tf.tanh(raw_actions)) + 1e-8, axis=-1)
+        # return tf.reduce_sum(tf.log(1 - tf.tanh(raw_actions) * tf.tanh(raw_actions)) + 1e-8, axis=-1)
+        ### eq 2
+        ## \sum_{i=1}{|A|} { 2 \log 2 + 2 z_i - softplus(2z_i) } OK, now only multiplicaation, addition and softplus, should be OK for numeric stability
+        return tf.reduce_sum(2. * tf.log(2.) + 2. * raw_actions - tf.nn.softplus(2. * raw_actions), axis=-1)
 
     def eval(self, observation):
         assert self.built and observation.ndim == 1
