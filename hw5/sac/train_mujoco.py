@@ -33,7 +33,7 @@ def train_SAC(env_name, exp_name, seed, logdir, algorithm_set_params):
         'two_qf': False,
     }
     # override if key and value in algorithm_set_params isn't None
-    for key, value in algorithm_set_params:
+    for key, value in algorithm_set_params.items():
         if key and value and algorithm_params[key] != value:
             algorithm_params[key] = value
 

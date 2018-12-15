@@ -109,14 +109,14 @@ class SAC:
                 ### YOUR CODE HERE
                 # raise NotImplementedError
                 ###  J_pi = E_{s \in D}[ E_{a \sim \pi_{\phi}(a|S) [ \nabla_{\phi} log \pi(a|s) (\alpha log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s ] ]
-                actions, log_pis = policy(self._observations_ph)
+                actions, log_pis = policy((self._observations_ph))
                 E_sa = tf.reduce_mean(tf.stop_gradient(self._alpha * log_pis - q_function((self._observations_ph, self._actions_ph))) + value_function((self._observations_ph)), axis=-1)
                 J_pi = tf.reduce_mean(E_sa)
             else:
                 ### Problem 1.3.B
                 ### YOUR CODE HERE
                 # raise NotImplementedError
-                actions, log_pis = policy(self._observations_ph)
+                actions, log_pis = policy((self._observations_ph))
                 E_ea = tf.reduce_mean(self._alpha * policy((self._observations_ph, actions)) - q_function((self._observations_ph, actions)), axis=-1)
                 J_pi = tf.reduce_mean(E_ea)
             return J_pi
@@ -124,7 +124,7 @@ class SAC:
             ### Problem 3
             ### YOUR CODE HERE
             # raise NotImplementedError
-            actions, log_pis = policy(self._observations_ph)
+            actions, log_pis = policy((self._observations_ph))
             if not self._reparameterize:
                 E_sa = tf.reduce_mean(tf.stop_gradient(self._alpha * log_pis - tf.minimum(q_function((self._observations_ph, self._actions_ph)), q_function2((self._observations_ph, self._actions_ph)))) + value_function((self._observations_ph)), axis=-1)
                 J_pi = tf.reduce_mean(E_sa)
@@ -142,7 +142,7 @@ class SAC:
             ### e2: Jv(\phi) = E_{s \in D} [V(s) - E_sa ]
             # raise NotImplementedError
             ## 1. Sample actions from policy in internal expection in e1
-            actions, log_pis = policy(self._observations_ph)
+            actions, log_pis = policy((self._observations_ph))
             ## 2. Calculate Jv(\phi) = E_{s \in D} [V(s) - E_sa], taking care state in D
             ## (q_funcion((self._observations_ph, self._actions_ph)) - self._alpha * log_pis).shape = |S| * |A|
             ## E_sa.shape = |S|
@@ -153,7 +153,7 @@ class SAC:
             ### Problem 3
             ### YOUR CODE HERE
             # raise NotImplementedError
-            actions, log_pis = policy(self._observations_ph)
+            actions, log_pis = policy((self._observations_ph))
             # return Q(s, a) from tf.minimum(Q1(s,a), Q2(s,a))
             E_sa = tf.reduce_mean(tf.minimum(q_funcion((self._observations_ph, self._actions_ph)), q_funcion2((self._observations_ph, self._actions_ph))) - self._alpha * log_pis, axis=-1)
             Jv_s = tf.losses.mean_squared_error(E_sa, value_function(self._observations_ph))

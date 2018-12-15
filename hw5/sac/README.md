@@ -21,11 +21,11 @@ See the [HW5 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw
 
 * Case 1: **Reinforcement Learning Loss**
 
-$$ \nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right] $$
+$$\nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$$
 
 * Case 2: **Reparameter Trick**
 
-$$ \nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{\epsilon \sim N(0, I)} [\alpha \cdot \log \pi_{\phi}(f_{\phi}(\epsilon;s)|s) - Q_{\theta}(s, f_{\phi}(\epsilon; s)) | s] \right] $$
+$$\nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{\epsilon \sim N(0, I)} [\alpha \cdot \log \pi_{\phi}(f_{\phi}(\epsilon;s)|s) - Q_{\theta}(s, f_{\phi}(\epsilon; s)) | s] \right]$$
 
 ### 1.2 Bonus Task - Questions for Problem 1
 
@@ -44,7 +44,7 @@ Reference: https://tex.stackexchange.com/questions/74125/how-do-i-put-text-over-
 
 * **Invertible functions' chain rule**
 
-$$ Z^{(N)} = (f_N \circ \cdots \circ f_1)(z^0) \iff \log p(z^{(N)}) = log(p(z^{(0)})) - \sum_{i=1}^{N} \left| \det(\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}) \right|$$
+$$Z^{(N)} = (f_N \circ \cdots \circ f_1)(z^0) \iff \log p(z^{(N)}) = log(p(z^{(0)})) - \sum_{i=1}^{N} \left| \det(\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}) \right|$$
 
 where $\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}$ is Jacobian of $f_i$, and $\det$ is the determinant.
 
@@ -60,15 +60,15 @@ $$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon
 or 
 -->
 
-$$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \stackrel{\text{def}}{=} b(s) + A(s) \epsilon, a = f_2(z) \stackrel{\text{def}}{=}\tanh(z) $$
+$$a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \stackrel{\text{def}}{=} b(s) + A(s) \epsilon, a = f_2(z) \stackrel{\text{def}}{=}\tanh(z) $$
 
 As making f=$\tanh$, we have the Jacobian is a diagonal matrix with $\frac{\partial \tanh(z_i)}{\partial z_i} = 1 - \tanh ^2(z_i)$, finally we get
 
-$$ \log \left|  det(\frac{\partial f_2(z)}{\partial z}) \right| = \sum_{i=1}^{|A|} \log \left(1 - \tanh^2(z_i)\right)$$
+$$\log \left|  det(\frac{\partial f_2(z)}{\partial z}) \right| = \sum_{i=1}^{|A|} \log \left(1 - \tanh^2(z_i)\right)$$
 
 Bonus Task:
 
-$$ \log \left(1 - \tanh^2(z_i)\right) = 2 \log 2 + 2 z_i - softplus(2z_i), \text{where } softplus(x) = \log(1+e^x)$$
+$$\log \left(1 - \tanh^2(z_i)\right) = 2 \log 2 + 2 z_i - softplus(2z_i), \text{where } softplus(x) = \log(1+e^x)$$
 
 ## Problem 3: SAC with Two Q-Functions
 
