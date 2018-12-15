@@ -50,7 +50,7 @@ where $\frac{\partial f_i(z^{(i-1)})}{\partial z^{(i-1)}}$ is Jacobian of $f_i$,
 
 * **Squashing via tanh for action A**
 
-
+<!--
 $$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \triangleq b(s) + A(s) \epsilon, a = f_2(z) \triangleq \tanh(z) $$
 
 or 
@@ -58,6 +58,7 @@ or
 $$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \equiv b(s) + A(s) \epsilon, a = f_2(z) \equiv \tanh(z) $$
 
 or 
+-->
 
 $$ a = \tanh \left(b_{\phi}(s) + A_{\phi}(s)\epsilon \right) \iff z=f_1(\epsilon) \stackrel{\text{def}}{=} b(s) + A(s) \epsilon, a = f_2(z) \stackrel{\text{def}}{=}\tanh(z) $$
 
@@ -67,7 +68,7 @@ $$ \log \left|  det(\frac{\partial f_2(z)}{\partial z}) \right| = \sum_{i=1}^{|A
 
 Bonus Task:
 
-$$ \log \left(1 - \tanh^2(z_i)\right) = 2 \log 2 + 2 z_i - softplus(2z_i)$$
+$$ \log \left(1 - \tanh^2(z_i)\right) = 2 \log 2 + 2 z_i - softplus(2z_i), \text{where } softplus(x) = \log(1+e^x)$$
 
 ## Problem 3: SAC with Two Q-Functions
 ## Problem 4: Experiments
