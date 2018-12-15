@@ -4,14 +4,31 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
+        {
+            "name": "Python: (hw5b-train_mujoco)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/hw5/sac/train_mujoco.py",
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-9.2/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
+            },
+            "args": [
+                "--env_name",
+                "HalfCheetah-v2",
+                "--exp_name",
+                "reinf",
+                "-e", 
+                "3"
+            ],
+            "console": "integratedTerminal"
+        },
         {
             "name": "Python: (Hopper-v2)",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/hw1/run_expert.py",
             "env": {
-                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-10.0/lib:/usr/local/nccl/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
+                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-9.2/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
             },
             "args": [
                 "hw1/experts/Hopper-v2.pkl",
@@ -31,7 +48,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/hw1/run_expert.py",
             "env": {
-                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-10.0/lib:/usr/local/nccl/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
+                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-9.2/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
             },
             "args": [
                 "hw1/experts/HalfCheetah-v2.pkl",
@@ -50,7 +67,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/hw4/main.py",
             "env": {
-                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-10.0/lib:/usr/local/nccl/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
+                "LD_LIBRARY_PATH": "/usr/local/cuda/lib:/Developer/NVIDIA/CUDA-9.2/lib:/usr/local/cuda/extras/CUPTI/lib:/usr/local/lib"
             },
             "args": [
                 "q3",

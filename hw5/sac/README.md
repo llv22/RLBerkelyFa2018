@@ -83,3 +83,32 @@ python train_mujoco.py --env_name HalfCheetah-v2 --exp_name reinf -e 3
 # case 2: reparameterize = True
 python train_mujoco.py --env_name HalfCheetah-v2 -re True --exp_name reparam -e 3
 ```
+
+* Fix-warning:   
+1. Find root reason to find warning trace   
+```bash
+PYTHONWARNINGS='error::ImportWarning' python train_mujoco.py --env_name HalfCheetah-v2 --exp_name reinf -e 3
+Traceback (most recent call last):
+  File "train_mujoco.py", line 5, in <module>
+    import logz
+  File "/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw5/sac/logz.py", line 20, in <module>
+    import tensorflow as tf
+  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/__init__.py", line 22, in <module>
+    from tensorflow.python import pywrap_tensorflow  # pylint: disable=unused-import
+  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/python/__init__.py", line 63, in <module>
+    from tensorflow.python.framework.framework_lib import *  # pylint: disable=redefined-builtin
+  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/python/framework/framework_lib.py", line 30, in <module>
+    from tensorflow.python.framework.sparse_tensor import SparseTensor
+  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/python/framework/sparse_tensor.py", line 26, in <module>
+    from tensorflow.python.framework import tensor_util
+  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/python/framework/tensor_util.py", line 32, in <module>
+    from tensorflow.python.framework import fast_tensor_util
+  File "tensorflow/python/framework/fast_tensor_util.pyx", line 4, in init tensorflow.python.framework.fast_tensor_util
+ImportWarning: can't resolve package from __spec__ or __package__, falling back on __name__ and __path__
+```
+2. warnings filter   
+Add following logic in sac.py (the first model, which is loaded for tensorflow)
+```python
+import warnings
+warnings.filterwarnings('ignore', message="can't resolve package from __spec__ or __package__, falling back on __name__ and __path__", category=ImportWarning, lineno=219)
+```
