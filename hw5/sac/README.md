@@ -71,6 +71,15 @@ Bonus Task:
 $$ \log \left(1 - \tanh^2(z_i)\right) = 2 \log 2 + 2 z_i - softplus(2z_i), \text{where } softplus(x) = \log(1+e^x)$$
 
 ## Problem 3: SAC with Two Q-Functions
+
+* Key points: using Q1 and Q2 with different parameter $\theta_1$ and $\theta_2$, then use $Q(s,a)=\min(Q_1(s,a), Q_2(s,a))$ to restrict the sampling upper bound.
+
 ## Problem 4: Experiments
 
-
+### 4.1 Task A - REINFORCE and preparameterized policy gradient on HalfCheetah
+```bash
+# case 1: reparameterize = False
+python train_mujoco.py --env_name HalfCheetah-v2 --exp_name reinf -e 3
+# case 2: reparameterize = True
+python train_mujoco.py --env_name HalfCheetah-v2 -re True --exp_name reparam -e 3
+```

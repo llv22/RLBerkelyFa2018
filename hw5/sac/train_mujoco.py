@@ -12,7 +12,7 @@ import utils
 
 from multiprocessing import Process
 
-def train_SAC(env_name, exp_name, seed, logdir):
+def train_SAC(env_name, exp_name, seed, logdir, algorithm_set_params):
     alpha = {
         'Ant-v2': 0.1,
         'HalfCheetah-v2': 0.2,
@@ -32,6 +32,11 @@ def train_SAC(env_name, exp_name, seed, logdir):
         'n_epochs': 500,
         'two_qf': False,
     }
+    # override if key and value in algorithm_set_params isn't None
+    for key, value in algorithm_set_params:
+        if key and value and algorithm_params[key] != value:
+            algorithm_params[key] = value
+
     sampler_params = {
         'max_episode_length': 1000,
         'prefill_steps': 1000,
@@ -122,6 +127,10 @@ def main():
     parser.add_argument('--exp_name', type=str, default=None)
     parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--n_experiments', '-e', type=int, default=1)
+    ### process control
+    parser.add_argument('--process_in_parallel', '-p', type=int, default=0)
+    ### add reparameterize as additional parameter
+    parser.add_argument('--reparameterize', '-re', type=lambda x: str(x).lower() == 'true', default=False, help="If using reparameterize to sample action")
     args = parser.parse_args()
 
     data_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
@@ -143,18 +152,25 @@ def main():
                 exp_name=args.exp_name,
                 seed=seed,
                 logdir=os.path.join(logdir, '%d' % seed),
+                algorithm_set_params={
+                    'reparameterize': args.reparameterize,
+                }
             )
         # # Awkward hacky process runs, because Tensorflow does not like
         # # repeatedly calling train_AC in the same thread.
         p = Process(target=train_func, args=tuple())
         p.start()
         processes.append(p)
-        # if you comment in the line below, then the loop will block
+        # if you comment in the line below, then the loop will block 
         # until this process finishes
-        # p.join()
+        if not args.process_in_parallel:
+            # if not run in parallel for processes, just run in sequence
+            p.join()
 
-    for p in processes:
-        p.join()
+    # otherwise, run in parallel; only finished, back to main process
+    if args.process_in_parallel:
+        for p in processes:
+            p.join()
 
 if __name__ == '__main__':
     main()
