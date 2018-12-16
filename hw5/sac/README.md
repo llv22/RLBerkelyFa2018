@@ -47,6 +47,7 @@ $$\nabla_{\phi} J_{\pi}(\phi) = \mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{\m
 
 3. Why can we not use the reparameterization trick with policy gradients?   
     $\nabla_{\phi} J_{\pi}(\phi) = \mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$
+    
     Answer:
     As inner expection is based on a single-action for the policy, outer expectation is bbase don data in replay buffer. And action isn't dependent on the policy parameter $\phi$, so without the same model parameter $\phi$, we can't do reparameter trick
 
