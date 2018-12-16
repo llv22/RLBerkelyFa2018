@@ -71,6 +71,8 @@ def build_rnn(x, h, output_size, scope, n_layers, size, gru_size, activation=tf.
     #                           ----------PROBLEM 2----------
     #====================================================================================#
     # YOUR CODE HERE
+    with tf.variable_scope(scope, reuse=TF.AUTO_REUSE):
+        raise NotImplementedError
 
 def build_policy(x, h, output_size, scope, n_layers, size, gru_size, recurrent=True, activation=tf.tanh, output_activation=None):
     """
