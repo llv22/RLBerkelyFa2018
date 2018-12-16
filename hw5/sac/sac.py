@@ -107,7 +107,7 @@ class SAC:
 
     def _policy_loss_for(self, policy, q_function, q_function2, value_function):
         ### Essential part: 
-        # 1) inner expectation from all states in Replay buffer, but from sampled actions
+        # 1) inner expectation from all states in Replay buffer, but from sampled actions. \int of state in replay buffer
         # 2) outer expectation for value expectation difference based on sample from replay buffer
         if not q_function2:
             actions, log_pis = policy(self._observations_ph)
