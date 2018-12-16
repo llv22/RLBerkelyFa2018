@@ -107,20 +107,19 @@ class SAC:
 
     def _policy_loss_for(self, policy, q_function, q_function2, value_function):
         if not q_function2:
+            actions, log_pis = policy(self._observations_ph)
             if not self._reparameterize:
                 ### Problem 1.3.A
                 ### YOUR CODE HERE
                 # raise NotImplementedError
                 ###  J_pi = E_{s \in D}[ E_{a \sim \pi_{\phi}(a|S) [ \nabla_{\phi} log \pi(a|s) (\alpha log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s ] ]
-                actions, log_pis = policy(self._observations_ph)
-                E_sa = tf.reduce_mean(log_pis * tf.stop_gradient( self._alpha * log_pis - q_function([self._observations_ph, self._actions_ph]) ) + value_function(self._observations_ph) , axis=-1)
+                E_sa = tf.reduce_mean( log_pis * tf.stop_gradient( self._alpha * log_pis - q_function([self._observations_ph, self._actions_ph]) ) + value_function(self._observations_ph) , axis=-1 )
                 J_pi = tf.reduce_mean(E_sa)
             else:
                 ### Problem 1.3.B
                 ### YOUR CODE HERE
                 # raise NotImplementedError
-                actions, log_pis = policy(self._observations_ph)
-                E_ea = tf.reduce_mean(log_pis * ( self._alpha * policy(self._observations_ph) - q_function([self._observations_ph, actions]) ), axis=-1)
+                E_ea = tf.reduce_mean( self._alpha * log_pis - q_function([self._observations_ph, actions]) , axis=-1)
                 J_pi = tf.reduce_mean(E_ea)
             return J_pi
         else:
@@ -129,10 +128,10 @@ class SAC:
             # raise NotImplementedError
             actions, log_pis = policy(self._observations_ph)
             if not self._reparameterize:
-                E_sa = tf.reduce_mean(log_pis * tf.stop_gradient( self._alpha * log_pis - tf.minimum( q_function([self._observations_ph, self._actions_ph]), q_function2([self._observations_ph, self._actions_ph]) ) ) + value_function(self._observations_ph), axis=-1)
+                E_sa = tf.reduce_mean( log_pis * tf.stop_gradient( self._alpha * log_pis - tf.minimum( q_function([self._observations_ph, self._actions_ph]), q_function2([self._observations_ph, self._actions_ph]) ) ) + value_function(self._observations_ph), axis=-1 )
                 J_pi = tf.reduce_mean(E_sa)
             else:
-                E_ea = tf.reduce_mean(self._alpha * policy(self._observations_ph) - tf.minimum( q_function([self._observations_ph, actions]), q_function2([self._observations_ph, actions]) ), axis=-1)
+                E_ea = tf.reduce_mean( self._alpha * log_pis - tf.minimum( q_function([self._observations_ph, actions]), q_function2([self._observations_ph, actions]) ), axis=-1 )
                 J_pi = tf.reduce_mean(E_ea)
             return J_pi
 
