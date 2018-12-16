@@ -131,6 +131,8 @@ def main():
     parser.add_argument('--process_in_parallel', '-p', type=lambda x: str(x).lower() == 'true', default=False, help='If trigger to parallel in process of experiment')
     ### add reparameterize as additional parameter
     parser.add_argument('--reparameterize', '-re', type=lambda x: str(x).lower() == 'true', default=False, help="If using reparameterize to sample action")
+    ### add reparameterize as additional parameter
+    parser.add_argument('--two_q_functions', '-two_qf', type=lambda x: str(x).lower() == 'true', default=False, help="If using two Q Net to evaluate upper bound")
     args = parser.parse_args()
 
     data_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
@@ -145,6 +147,7 @@ def main():
     for e in range(args.n_experiments):
         seed = args.seed + 10*e
         print('Running experiment with seed %d'%seed)
+        print('args.two_q_functions:', args.two_q_functions)
 
         def train_func():
             train_SAC(
@@ -154,6 +157,7 @@ def main():
                 logdir=os.path.join(logdir, '%d' % seed),
                 algorithm_set_params={
                     'reparameterize': args.reparameterize,
+                    'two_qf': args.two_q_functions,
                 }
             )
         # # Awkward hacky process runs, because Tensorflow does not like

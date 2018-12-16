@@ -93,9 +93,7 @@ $$\log \left(1 - \tanh^2(z_i)\right) = 2 \log 2 + 2 z_i - softplus(2z_i), \text{
 * Key points: using Q1 and Q2 with different parameter $\theta_1$ and $\theta_2$, then use $Q(s,a)=\min(Q_1(s,a), Q_2(s,a))$ to restrict the sampling upper bound.
 
 ## Problem 4: Experiments
-
-### 4.1 Task A - REINFORCE and preparameterized policy gradient on HalfCheetah
-* Fix-warning:   
+### 4.1 Fix-warning of Tensorflow
 1. Find root reason to find warning trace   
 ```bash
 PYTHONWARNINGS='error::ImportWarning' python train_mujoco.py --env_name HalfCheetah-v2 --exp_name reinf -e 3
@@ -104,13 +102,7 @@ Traceback (most recent call last):
     import logz
   File "/Users/i058959/Documents/algorithm/machine_learning/DL_RL/RLCS294_by_ucberkeley/homework/RLBerkelyFa2018/hw5/sac/logz.py", line 20, in <module>
     import tensorflow as tf
-  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/__init__.py", line 22, in <module>
-    from tensorflow.python import pywrap_tensorflow  # pylint: disable=unused-import
-  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/python/__init__.py", line 63, in <module>
-    from tensorflow.python.framework.framework_lib import *  # pylint: disable=redefined-builtin
-  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/python/framework/framework_lib.py", line 30, in <module>
-    from tensorflow.python.framework.sparse_tensor import SparseTensor
-  File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/python/framework/sparse_tensor.py", line 26, in <module>
+  ......
     from tensorflow.python.framework import tensor_util
   File "/Users/i058959/miniconda3/lib/python3.6/site-packages/tensorflow/python/framework/tensor_util.py", line 32, in <module>
     from tensorflow.python.framework import fast_tensor_util
@@ -124,11 +116,61 @@ import warnings
 warnings.filterwarnings('ignore', message="can't resolve package from __spec__ or __package__, falling back on __name__ and __path__", category=ImportWarning, lineno=219)
 ```
 
-* Experiment  
-As current gpu consumption isn't so big, just use process parallelization
+### 4.2 Task A - REINFORCE and preparameterized policy gradient on HalfCheetah
+* As current gpu consumption isn't so big, just use process parallelization
 ```bash
+##
 # case 1: reparameterize = False
+##
 python train_mujoco.py --env_name HalfCheetah-v2 --exp_name reinf -e 3 -p True
+# result in data/sac_HalfCheetah-v2_reinf_16-12-2018_15-18-40/
+
+##
 # case 2: reparameterize = True
+##
 python train_mujoco.py --env_name HalfCheetah-v2 -re True --exp_name reparam -e 3 -p True
+# result in data/sac_HalfCheetah-v2_reparam_16-12-2018_17-05-50/
 ```
+* Result analysis
+```bash
+python plot.py data/sac_HalfCheetah-v2_reinf_16-12-2018_15-18-40/ data/sac_HalfCheetah-v2_reparam_16-12-2018_17-05-50/ --legend reinf reparam_reinf --value MaxEpReturn LastEpReturn
+```
+1. MaxEpReturn Figure:  
+
+<img src="data/taskA/MaxEpReturn.png" width="60%"/>
+
+2. LastEpReturn Mean:   
+
+<img src="data/taskA/LastEpReturn.png" width="60%"/>
+
+### 4.3 Task B - 2Q function via 1Q function
+* As current gpu consumption isn't so big, just use process parallelization
+```bash
+##
+# case 1: reparameterize = True with twoqf = False
+##
+python train_mujoco.py --env_name Ant-v2 --exp_name reparam_1qf -e 3 -p True -re True
+# result in data/sac_Ant-v2_reparam_1qf_16-12-2018_19-01-49
+
+##
+# case 2: reparameterize = True with twoqf = True
+##
+python train_mujoco.py --env_name Ant-v2 --exp_name reparam_2qf -e 3 -p True -re True -two_qf True
+# result in data/sac_Ant-v2_reparam_2qf_16-12-2018_20-58-06
+```
+* Result analysis
+```bash
+python plot.py data/sac_Ant-v2_reparam_1qf_16-12-2018_19-01-49 data/sac_Ant-v2_reparam_2qf_16-12-2018_20-58-06 --legend reparam_1qf reparam_2qf --value MaxEpReturn LastEpReturn
+```
+1. MaxEpReturn Figure:  
+
+<img src="data/taskB/MaxEpReturn.png" width="60%"/>
+
+2. LastEpReturn Mean:   
+
+<img src="data/taskB/LastEpReturn.png" width="60%"/>
+
+
+### 4.4 Bonus Problem: Hyperparameter tuning
+* Hyperparameter candidates
+  1. Temperature of the policy $\alpha$

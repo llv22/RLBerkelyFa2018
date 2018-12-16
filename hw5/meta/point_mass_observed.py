@@ -18,14 +18,20 @@ class ObservedPointEnv(Env):
     # YOUR CODE SOMEWHERE HERE
     def __init__(self, num_tasks=1):
         self.tasks = [0, 1, 2, 3][:num_tasks]
+        # record current task num
+        self._num_tasks = num_tasks
         self.reset_task()
         self.reset()
 
-        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(2,))
+        ## Problem 1
+        # Your Code
+        # change the dimension of the observation space => state keep the same, but obs = [state, onehot for task ID]
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(2+self._num_tasks,))
         self.action_space = spaces.Box(low=-0.1, high=0.1, shape=(2,))
 
     def reset_task(self, is_evaluation=False):
         idx = np.random.choice(len(self.tasks))
+        # task id from target scope
         self._task = self.tasks[idx]
         goals = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
         self._goal = np.array(goals[idx])*10
@@ -35,6 +41,11 @@ class ObservedPointEnv(Env):
         return self._get_obs()
 
     def _get_obs(self):
+        """[return current obs space, [2+self._num_tasks] just for encoding obs space]
+        
+        Returns:
+            [np.array] -- [concatnate state+onehot for task ID]
+        """
         return np.copy(self._state)
 
     def step(self, action):

@@ -150,6 +150,7 @@ class Agent(object):
         self.reward_dim = 1
         self.terminal_dim = 1
 
+        # meta_ob_dim concatnate ob_dim, ac_dim, reward_dim and terminal_dim together
         self.meta_ob_dim = self.ob_dim + self.ac_dim + self.reward_dim + self.terminal_dim
         self.scope  = 'continuous_logits'
         self.size = computation_graph_args['size']
@@ -778,6 +779,8 @@ def main():
     parser.add_argument('--history', '-ho', type=int, default=1)
     parser.add_argument('--l2reg', '-reg', action='store_true')
     parser.add_argument('--recurrent', '-rec', action='store_true')
+    ### process control
+    parser.add_argument('--process_in_parallel', '-p', type=lambda x: str(x).lower() == 'true', default=False, help='If trigger to parallel in process of experiment')
     args = parser.parse_args()
 
     if not(os.path.exists('data')):
@@ -825,12 +828,16 @@ def main():
         p = Process(target=train_func, args=tuple())
         p.start()
         processes.append(p)
-        # if you comment in the line below, then the loop will block
+        # if you comment in the line below, then the loop will block 
         # until this process finishes
-        # p.join()
+        if not args.process_in_parallel:
+            # if not run in parallel for processes, just run in sequence
+            p.join()
 
-    for p in processes:
-        p.join()
+    # otherwise, run in parallel; only finished, back to main process
+    if args.process_in_parallel:
+        for p in processes:
+            p.join()
 
 
 if __name__ == "__main__":

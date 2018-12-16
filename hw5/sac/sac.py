@@ -165,7 +165,7 @@ class SAC:
             # raise NotImplementedError
             ## E_sa.shape = (|batch|, 1), in order to keep aligned with value_function(self._observations_ph) is also (|batch|, 1)
             # return Q(s, a) from tf.minimum(Q1(s,a), Q2(s,a))
-            E_sa = tf.reduce_mean(tf.minimum(q_funcion([self._observations_ph, actions]), q_funcion2([self._observations_ph, actions])) - self._alpha * log_pis, keepdims=True, axis=-1)
+            E_sa = tf.reduce_mean(tf.minimum(q_function([self._observations_ph, actions]), q_function2([self._observations_ph, actions])) - self._alpha * log_pis, keepdims=True, axis=-1)
         
         ### Problem 1.2.A and Problem 3
         ### YOUR CODE HERE

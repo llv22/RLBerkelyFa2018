@@ -18,7 +18,9 @@
                 "--exp_name",
                 "reinf",
                 "-e", 
-                "3"
+                "3",
+                "-two_qf",
+                "True"
             ],
             "console": "integratedTerminal"
         },
