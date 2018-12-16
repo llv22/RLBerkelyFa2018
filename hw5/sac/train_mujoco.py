@@ -128,7 +128,7 @@ def main():
     parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--n_experiments', '-e', type=int, default=1)
     ### process control
-    parser.add_argument('--process_in_parallel', '-p', type=int, default=0)
+    parser.add_argument('--process_in_parallel', '-p', type=lambda x: str(x).lower() == 'true', default=False, help='If trigger to parallel in process of experiment')
     ### add reparameterize as additional parameter
     parser.add_argument('--reparameterize', '-re', type=lambda x: str(x).lower() == 'true', default=False, help="If using reparameterize to sample action")
     args = parser.parse_args()

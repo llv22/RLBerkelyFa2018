@@ -81,7 +81,7 @@ class GaussianPolicy(Network):
             log_probs = distribution.log_prob(raw_actions)
             log_probs -= self._squash_correction(raw_actions)
 
-            actions = None
+            # actions = None
             ### Problem 2.A
             ### YOUR CODE HERE
             # raise NotImplementedError
@@ -90,9 +90,9 @@ class GaussianPolicy(Network):
             ## issue: for solving with tuple and return into https://github.com/llv22/tensorflow_daily/blob/master/07_stop_gradient_rl/nn.py#L120. As keras in tensorflow need to split output into list, otherwise, can't find tensor. check demo in https://github.com/llv22/tensorflow_daily/blob/master/07_stop_gradient_rl/train_mujoco.ipynb
             return [actions, log_probs]
 
-        [samples, log_probs] = layers.Lambda(create_distribution_layer)(mean_and_log_std)
+        samples, log_probs = layers.Lambda(create_distribution_layer)(mean_and_log_std)
 
-        self._init_graph_network(inputs=inputs, outputs=[samples, log_probs])
+        self._init_graph_network(inputs=inputs, outputs=(samples, log_probs))
         super(GaussianPolicy, self).build(input_shape)
 
     def _squash_correction(self, raw_actions):

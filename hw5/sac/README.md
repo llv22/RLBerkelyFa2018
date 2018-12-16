@@ -77,13 +77,6 @@ $$\log \left(1 - \tanh^2(z_i)\right) = 2 \log 2 + 2 z_i - softplus(2z_i), \text{
 ## Problem 4: Experiments
 
 ### 4.1 Task A - REINFORCE and preparameterized policy gradient on HalfCheetah
-```bash
-# case 1: reparameterize = False
-python train_mujoco.py --env_name HalfCheetah-v2 --exp_name reinf -e 3
-# case 2: reparameterize = True
-python train_mujoco.py --env_name HalfCheetah-v2 -re True --exp_name reparam -e 3
-```
-
 * Fix-warning:   
 1. Find root reason to find warning trace   
 ```bash
@@ -111,4 +104,13 @@ Add following logic in sac.py (the first model, which is loaded for tensorflow)
 ```python
 import warnings
 warnings.filterwarnings('ignore', message="can't resolve package from __spec__ or __package__, falling back on __name__ and __path__", category=ImportWarning, lineno=219)
+```
+
+* Experiment  
+As current gpu consumption isn't so big, just use process parallelization
+```bash
+# case 1: reparameterize = False
+python train_mujoco.py --env_name HalfCheetah-v2 --exp_name reinf -e 3 -p True
+# case 2: reparameterize = True
+python train_mujoco.py --env_name HalfCheetah-v2 -re True --exp_name reparam -e 3 -p True
 ```
