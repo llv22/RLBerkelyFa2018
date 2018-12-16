@@ -46,8 +46,8 @@ $$\nabla_{\phi} J_{\pi}(\phi) = \mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{\m
       * cons: Without baseline b(s), it's a kind of hardmax, so Q value will fluctuate as policy improve, also high bias without b(s). (see also A(s) in policy graident)
 
 3. Why can we not use the reparameterization trick with policy gradients?   
-   Answer:  
-   As inner expection $\mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$ is based on a single-action for the policy, outer expectation is bbase don data in replay buffer. And action isn't dependent on the policy parameter $\phi$, so without **the same model parameter $\phi$**, we can't do reparameter trick
+   Answer:   
+   As inner expection $\mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$  is based on a single-action for the policy, outer expectation is bbase don data in replay buffer. And action isn't dependent on the policy parameter $\phi$, so without **the same model parameter $\phi$**, we can't do reparameter trick
 
 4. We can minimize the policy loss in Equation 9 using oﬀ-policy data. Why is this not the case for standard actor-critic methods based on policy gradients, which require on-policy data?   
    Answer:  
