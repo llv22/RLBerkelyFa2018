@@ -30,9 +30,21 @@ class ObservedPointEnv(Env):
         self.action_space = spaces.Box(low=-0.1, high=0.1, shape=(2,))
 
     def reset_task(self, is_evaluation=False):
+        def onehot(num_task, task_id):
+            """[using num_tasks and task_id to generate onehot vector for task identifier]
+            
+            Arguments:
+                num_task {[int]} -- [number of task]
+                task_id {[int]} -- [task identifier]
+            """
+            onehot_vector = np.zeros(num_task)
+            onehot_vector[task_id] = 1
+            return onehot_vector
+
         idx = np.random.choice(len(self.tasks))
         # task id from target scope
         self._task = self.tasks[idx]
+        self._task_onehot = onehot(self._num_tasks, self._task)
         goals = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
         self._goal = np.array(goals[idx])*10
 
@@ -46,7 +58,7 @@ class ObservedPointEnv(Env):
         Returns:
             [np.array] -- [concatnate state+onehot for task ID]
         """
-        return np.copy(self._state)
+        return np.concatenate(np.copy(self._state), self._task_onehot)
 
     def step(self, action):
         x, y = self._state

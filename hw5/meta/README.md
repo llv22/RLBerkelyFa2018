@@ -10,3 +10,37 @@ Dependencies:
  * Box2D==2.3.2
 
 See the [HW5c PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw5c.pdf) for further instructions.
+
+## Problem 1: Context as Task ID
+In point_mass_observed.py, state is fixed. In order to **augment the observation with a one-hot vector encoding the task ID**, do as follow:
+* Change the dimension of the observation space, Line 29
+```python
+# Line 29
+self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(2+self._num_tasks,))
+```
+* Augment the observation with a one-hot vector that encodes the task ID, Line 61 and Line 33
+```python
+## Line 33
+def onehot(num_task, task_id):
+    """[using num_tasks and task_id to generate onehot vector for task identifier]
+    
+    Arguments:
+        num_task {[int]} -- [number of task]
+        task_id {[int]} -- [task identifier]
+    """
+    onehot_vector = np.zeros(num_task)
+    onehot_vector[task_id] = 1
+    return onehot_vector
+
+idx = np.random.choice(len(self.tasks))
+# task id from target scope
+self._task = self.tasks[idx]
+self._task_onehot = onehot(self._num_tasks, self._task)
+
+## Line 61
+return np.concatenate(np.copy(self._state), self._task_onehot)
+```
+
+## Problem 2: Meta-Learned Context
+
+## Problem 3: Generalization
