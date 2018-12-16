@@ -106,6 +106,9 @@ class SAC:
         )
 
     def _policy_loss_for(self, policy, q_function, q_function2, value_function):
+        ### Essential part: 
+        # 1) inner expectation from all states in Replay buffer, but from sampled actions
+        # 2) outer expectation for value expectation difference based on sample from replay buffer
         if not q_function2:
             actions, log_pis = policy(self._observations_ph)
             if not self._reparameterize:
@@ -113,7 +116,7 @@ class SAC:
                 ### YOUR CODE HERE
                 # raise NotImplementedError
                 ###  J_pi = E_{s \in D}[ E_{a \sim \pi_{\phi}(a|S) [ \nabla_{\phi} log \pi(a|s) (\alpha log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s ] ]
-                E_sa = tf.reduce_mean( log_pis * tf.stop_gradient( self._alpha * log_pis - q_function([self._observations_ph, self._actions_ph]) ) + value_function(self._observations_ph) , axis=-1 )
+                E_sa = tf.reduce_mean( log_pis * tf.stop_gradient( self._alpha * log_pis - q_function([self._observations_ph, actions]) ) + value_function(self._observations_ph) , axis=-1 )
                 J_pi = tf.reduce_mean(E_sa)
             else:
                 ### Problem 1.3.B
@@ -128,7 +131,7 @@ class SAC:
             # raise NotImplementedError
             actions, log_pis = policy(self._observations_ph)
             if not self._reparameterize:
-                E_sa = tf.reduce_mean( log_pis * tf.stop_gradient( self._alpha * log_pis - tf.minimum( q_function([self._observations_ph, self._actions_ph]), q_function2([self._observations_ph, self._actions_ph]) ) ) + value_function(self._observations_ph), axis=-1 )
+                E_sa = tf.reduce_mean( log_pis * tf.stop_gradient( self._alpha * log_pis - tf.minimum( q_function([self._observations_ph, actions]), q_function2([self._observations_ph, actions]) ) ) + value_function(self._observations_ph), axis=-1 )
                 J_pi = tf.reduce_mean(E_sa)
             else:
                 E_ea = tf.reduce_mean( self._alpha * log_pis - tf.minimum( q_function([self._observations_ph, actions]), q_function2([self._observations_ph, actions]) ), axis=-1 )
@@ -139,6 +142,9 @@ class SAC:
         ### Problem 1.2.A and Problem 3
         ### YOUR CODE HERE
         # raise NotImplementedError
+        ### Essential part: 
+        # 1) inner expectation from all states in Replay buffer, but from sampled actions
+        # 2) outer expectation for value expectation difference based on sample from replay buffer
         ## 1. Sample actions from policy in internal expection in e1
         actions, log_pis = policy(self._observations_ph)
 
@@ -150,16 +156,16 @@ class SAC:
             ### e2: Jv(\phi) = E_{s \in D} [V(s) - E_sa ]
             # raise NotImplementedError
             ## 2. Calculate Jv(\phi) = E_{s \in D} [V(s) - E_sa], taking care state in D
-            ## (q_funcion((self._observations_ph, self._actions_ph)) - self._alpha * log_pis).shape = |S| * |A|
+            ## (q_funcion((self._observations_ph, actions)) - self._alpha * log_pis).shape = |S| * |A|
             ## E_sa.shape = (|batch|, 1), in order to keep aligned with value_function(self._observations_ph) is also (|batch|, 1)
-            E_sa = tf.reduce_mean(q_function([self._observations_ph, self._actions_ph]) - self._alpha * log_pis, keepdims=True, axis=-1)
+            E_sa = tf.reduce_mean(q_function([self._observations_ph, actions]) - self._alpha * log_pis, keepdims=True, axis=-1)
         else:
             ### Problem 3
             ### YOUR CODE HERE
             # raise NotImplementedError
             ## E_sa.shape = (|batch|, 1), in order to keep aligned with value_function(self._observations_ph) is also (|batch|, 1)
             # return Q(s, a) from tf.minimum(Q1(s,a), Q2(s,a))
-            E_sa = tf.reduce_mean(tf.minimum(q_funcion([self._observations_ph, self._actions_ph]), q_funcion2([self._observations_ph, self._actions_ph])) - self._alpha * log_pis, keepdims=True, axis=-1)
+            E_sa = tf.reduce_mean(tf.minimum(q_funcion([self._observations_ph, actions]), q_funcion2([self._observations_ph, actions])) - self._alpha * log_pis, keepdims=True, axis=-1)
         
         ### Problem 1.2.A and Problem 3
         ### YOUR CODE HERE
@@ -172,6 +178,7 @@ class SAC:
         ### Problem 1.1.A
         ### YOUR CODE HERE
         # raise NotImplementedError
+        ### Essential part: sample all from Replay buffer
         q_values = q_function([self._observations_ph, self._actions_ph])
         target_values = self._rewards_ph + self._discount * (1 - self._terminals_ph) * target_value_function((self._next_observations_ph))
         return tf.losses.mean_squared_error(q_values, target_values)
