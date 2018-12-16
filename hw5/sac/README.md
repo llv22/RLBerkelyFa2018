@@ -21,11 +21,11 @@ See the [HW5 PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw
 
 * Case 1: **Reinforcement Learning Loss**
 
-$$\nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$$
+$$\nabla_{\phi} J_{\pi}(\phi) = \mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$$
 
 * Case 2: **Reparameter Trick**
 
-$$\nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{\epsilon \sim N(0, I)} [\alpha \cdot \log \pi_{\phi}(f_{\phi}(\epsilon;s)|s) - Q_{\theta}(s, f_{\phi}(\epsilon; s)) | s] \right]$$
+$$\nabla_{\phi} J_{\pi}(\phi) = \mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{\mathbb{E}}_{\epsilon \sim N(0, I)} [\alpha \cdot \log \pi_{\phi}(f_{\phi}(\epsilon;s)|s) - Q_{\theta}(s, f_{\phi}(\epsilon; s)) | s] \right]$$
 
 ### 1.2 Bonus Task - Questions for Problem 1
 
@@ -36,22 +36,22 @@ $$\nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{
 
 2. What are the pros and cons of the two types of gradient estimators?   
    Answer:
-    - REINFORCE $\nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$
+    - REINFORCE $\nabla_{\phi} J_{\pi}(\phi) = \mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$
       * pros: use b(s) to guarantee value function NOT hardmax with Q-value learning(also pros of soft Q-learning)
       * cons:  
         I. Inner expectation require explicit sample action and stop gradient to external expectation, computation cost increased and expect avoid gradient backpropagation  
         II. NO prior assumpation of action sample distribution. (NOT obvious cons, but mabye have bigger sample-action cost)
-    - Reparameterize tricks $\nabla_{\phi} J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{\epsilon \sim N(0, I)} [\alpha \cdot \log \pi_{\phi}(f_{\phi}(\epsilon;s)|s) - Q_{\theta}(s, f_{\phi}(\epsilon; s)) | s] \right]$
+    - Reparameterize tricks $\nabla_{\phi} J_{\pi}(\phi) = \mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{\epsilon \sim N(0, I)} [\alpha \cdot \log \pi_{\phi}(f_{\phi}(\epsilon;s)|s) - Q_{\theta}(s, f_{\phi}(\epsilon; s)) | s] \right]$
       * pros: With prior assumption of action sample distribution, NO stop gradient and addtional computation cost
       * cons: Without baseline b(s), it's a kind of hardmax, so Q value will fluctuate as policy improve, also high bias without b(s). (see also A(s) in policy graident)
 
 3. Why can we not use the reparameterization trick with policy gradients?   
    Answer:  
-   As inner expection $\mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$ is based on a single-action for the policy, outer expectation is bbase don data in replay buffer. And action isn't dependent on the policy parameter $\phi$, so without **the same model parameter $\phi$**, we can't do reparameter trick
+   As inner expection $\mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$ is based on a single-action for the policy, outer expectation is bbase don data in replay buffer. And action isn't dependent on the policy parameter $\phi$, so without **the same model parameter $\phi$**, we can't do reparameter trick
 
 4. We can minimize the policy loss in Equation 9 using oﬀ-policy data. Why is this not the case for standard actor-critic methods based on policy gradients, which require on-policy data?   
    Answer:  
-    - Similar to 3, $J_{\pi}(\phi) = \mathop{{}\mathbb{E}}_{s \sim D} \left[ \mathop{{}\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$, inner expectation is sampled from given s by actions NOT based on policy
+    - Similar to 3, $J_{\pi}(\phi) = \mathop{\mathbb{E}}_{s \sim D} \left[ \mathop{\mathbb{E}}_{a \sim \pi_{\phi}(a|S)} [\nabla_{\phi} \log \pi(a|s) (\alpha \cdot log \pi_{\phi} (a|s) - Q_{\theta}(s, a)) + b(s) | s]  \right]$, inner expectation is sampled from given s by actions NOT based on policy
     - For standard AC based on policy gradient $J(\theta)=\log \pi_{\theta}(a|s)(Q^{\pi}(s_t, a_t) - V^{\pi}(s_t))$, if just minimize this $J(\theta)$, the $\theta$ is only used "on-policy" data, not good for generalized data.
 
 ## Problem 2: Squashing
