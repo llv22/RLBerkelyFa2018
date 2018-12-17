@@ -156,11 +156,11 @@ python train_mujoco.py --env_name Ant-v2 --exp_name reparam_1qf -e 3 -p True -re
 # case 2: reparameterize = True with twoqf = True
 ##
 python train_mujoco.py --env_name Ant-v2 --exp_name reparam_2qf -e 3 -p True -re True -two_qf True
-# result in data/sac_Ant-v2_reparam_2qf_16-12-2018_20-58-06
+# result in data/sac_Ant-v2_reparam_2qf_16-12-2018_23-00-07
 ```
 * Result analysis
 ```bash
-python plot.py data/sac_Ant-v2_reparam_1qf_16-12-2018_19-01-49 data/sac_Ant-v2_reparam_2qf_16-12-2018_20-58-06 --legend reparam_1qf reparam_2qf --value MaxEpReturn LastEpReturn
+python plot.py data/sac_Ant-v2_reparam_1qf_16-12-2018_19-01-49 data/sac_Ant-v2_reparam_2qf_16-12-2018_23-00-07 --legend reparam_1qf reparam_2qf --value MaxEpReturn LastEpReturn
 ```
 1. MaxEpReturn Figure:  
 
