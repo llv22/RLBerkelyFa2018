@@ -11,7 +11,8 @@ Dependencies:
 
 See the [HW5c PDF](http://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw5c.pdf) for further instructions.
 
-## Problem 1: Context as Task ID
+## 1. Implementation
+### Problem 1: Context as Task ID
 In point_mass_observed.py, state is fixed. In order to **augment the observation with a one-hot vector encoding the task ID**, do as follow:
 * Change the dimension of the observation space, Line 29
 ```python
@@ -41,6 +42,14 @@ self._task_onehot = onehot(self._num_tasks, self._task)
 return np.concatenate(np.copy(self._state), self._task_onehot)
 ```
 
-## Problem 2: Meta-Learned Context
+### Problem 2: Meta-Learned Context
 
-## Problem 3: Generalization
+### Problem 3: Generalization
+
+## 2. Deliverables
+### 2.1 Problem 1
+```bash
+python train_policy.py 'pm-obs' --exp_name pm_obs_average_return --history 1 -lr 5e-5 -n 100 --num_tasks 4
+```
+### 2.2 Problem 2
+### 2.3 Problem 3

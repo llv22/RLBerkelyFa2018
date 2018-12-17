@@ -4,11 +4,13 @@ Adapted for CS294-112 Fall 2017 by Abhishek Gupta and Joshua Achiam
 Adapted for CS294-112 Fall 2018 by Michael Chang and Soroush Nasiriany
 Adapted for use in CS294-112 Fall 2018 HW5 by Kate Rakelly and Michael Chang
 """
+import shutil
 import numpy as np
 import pdb
 import random
 import pickle
 import tensorflow as tf
+from tensorflow.python import debug as tf_debug
 import tensorflow_probability as tfp
 import gym
 import logz
@@ -60,19 +62,27 @@ def build_mlp(x, output_size, scope, n_layers, size, activation=tf.tanh, output_
 def build_rnn(x, h, output_size, scope, n_layers, size, gru_size, activation=tf.tanh, output_activation=None, regularizer=None):
     """
     builds a gated recurrent neural network
-    inputs are first embedded by an MLP then passed to a GRU cell
+    inputs are first embedded by an MLP then passed to a GRU cell (refer to http://deeplearning.net/tutorial/mlp.html)
 
     arguments:
         (see `build_policy()`)
 
     hint: use `build_mlp()`
+    example : https://r2rt.com/recurrent-neural-networks-in-tensorflow-ii.html
     """
     #====================================================================================#
     #                           ----------PROBLEM 2----------
     #====================================================================================#
     # YOUR CODE HERE
-    with tf.variable_scope(scope, reuse=TF.AUTO_REUSE):
-        raise NotImplementedError
+    # raise NotImplementedError
+    with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):
+        ## step 1 - inputs are first embedded by an MLP
+        x = build_mlp(x, output_size, scope, n_layers, size, activation=activation, output_activation=output_activation, regularizer=regularizer)
+        ## step 2 -  passed to a GRU cell
+        # as "sy_hidden = tf.placeholder(shape=[None, self.gru_size], name="hidden", dtype=tf.float32)" -> h, so we can only pass for 1 single GRUCell, if multiple CRUCell, hidden state will be agumented.
+        # as x is the size of (?, output_size) in output of build_mlp, the rnn must be equal with size
+        x, h = tf.nn.dynamic_rnn(tf.nn.rnn_cell.GRUCell(output_size, activation=activation), x, initial_state=h)
+    return x, h
 
 def build_policy(x, h, output_size, scope, n_layers, size, gru_size, recurrent=True, activation=tf.tanh, output_activation=None):
     """
@@ -138,13 +148,15 @@ def setup_logger(logdir, locals_):
     # Configure output directory for logging
     logz.configure_output_dir(logdir)
     # Log experimental parameters
-    args = inspect.getargspec(train_PG)[0]
+    ## warning: train_policy.py:148: DeprecationWarning: inspect.getargspec() is deprecated, use inspect.signature() or inspect.getfullargspec()
+    # args = inspect.getargspec(train_PG)[0]
+    args = inspect.getfullargspec(train_PG)[0]
     params = {k: locals_[k] if k in locals_ else None for k in args}
     logz.save_params(params)
 
 
 class Agent(object):
-    def __init__(self, computation_graph_args, sample_trajectory_args, estimate_return_args):
+    def __init__(self, computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args):
         super(Agent, self).__init__()
         self.ob_dim = computation_graph_args['ob_dim']
         self.ac_dim = computation_graph_args['ac_dim']
@@ -172,6 +184,8 @@ class Agent(object):
         self.nn_critic = estimate_return_args['nn_critic']
         self.normalize_advantages = estimate_return_args['normalize_advantages']
 
+        self.enable_debugger = debugger_args['enable_debugger']
+
         self.replay_buffer = ReplayBuffer(100000, [self.history, self.meta_ob_dim], [self.ac_dim], self.gru_size, self.task_dim)
         self.val_replay_buffer = ReplayBuffer(100000, [self.history, self.meta_ob_dim], [self.ac_dim], self.gru_size, self.task_dim)
 
@@ -179,6 +193,9 @@ class Agent(object):
         tf_config = tf.ConfigProto(inter_op_parallelism_threads=1, intra_op_parallelism_threads=1)
         tf_config.gpu_options.allow_growth = True # may need if using GPU
         self.sess = tf.Session(config=tf_config)
+        if self.enable_debugger:
+            # enable tf.Session to hook to tensorBoard
+            self.sess = tf_debug.TensorBoardDebugWrapperSession(self.sess, "10.130.200.107:70000")
         self.sess.__enter__() # equivalent to `with self.sess:`
         tf.global_variables_initializer().run() #pylint: disable=E1101
 
@@ -376,30 +393,48 @@ class Agent(object):
                 # first meta ob has only the observation
                 # set a, r, d to zero, construct first meta observation in meta_obs
                 # YOUR CODE HERE
-
+                ac = np.zeros(self.ac_dim); rew = np.zeros(self.reward_dim); done = np.zeros(self.terminal_dim)
+                meta_obs[steps, :] = np.concatenate((ob, ac, rew, done))
                 steps += 1
 
             # index into the meta_obs array to get the window that ends with the current timestep
             # YOUR CODE HERE
-
+            ob_last = meta_obs[ep_steps, :]
+            # need to clear hidden size, in order to avoid previous hidden state as it may be generated by the other totally different task (env setting may be changed)
             hidden = np.zeros((1, self.gru_size), dtype=np.float32)
 
             # get action from the policy
             # YOUR CODE HERE
+            # Tensor("ob:0", shape=(?, 1, 10), dtype=float32)
+            # print(self.sy_ob_no)
+            # Tensor("hidden:0", shape=(?, 32), dtype=float32)
+            # print(self.sy_hidden)
+            ac = self.sess.run(self.sy_sampled_ac, feed_dict={
+                self.sy_ob_no: ob_last.reshape(-1, 1, self.meta_ob_dim),
+                self.sy_hidden: hidden,
+            })
+            # print("ac:", ac)
+            # print("ac[0]:", ac[0])
+            ac = ac[0]
 
             # step the environment
             # YOUR CODE HERE
+            # change ac[None] to ac
+            ob, rew, done, _= env.step(ac)
 
             ep_steps += 1
 
             done = bool(done) or ep_steps == self.max_path_length
             # construct the meta-observation and add it to meta_obs
             # YOUR CODE HERE
+            # print("ob, ac, rew, done = ", ob, ac, rew, done)
+            meta_obs[steps, :] = np.concatenate((ob, ac, [rew], [done]))
 
             rewards.append(rew)
             steps += 1
 
             # add sample to replay buffer
+            in_ = meta_obs[steps, :]
             if is_evaluation:
                 self.val_replay_buffer.add_sample(in_, ac, rew, done, hidden, env._goal)
             else:
@@ -597,6 +632,7 @@ def train_PG(
         num_tasks,
         l2reg,
         recurrent,
+        enable_debugger,
         ):
 
     start = time.time()
@@ -659,7 +695,11 @@ def train_PG(
         'normalize_advantages': normalize_advantages,
     }
 
-    agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args)
+    debugger_args = {
+        'enable_debugger': enable_debugger,
+    }
+
+    agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args)
 
     # build computation graph
     agent.build_computation_graph()
@@ -718,7 +758,7 @@ def train_PG(
 
             log_probs = agent.sess.run(agent.sy_lp_n,
                 feed_dict={agent.sy_ob_no: ob_no, agent.sy_hidden: hidden, agent.sy_ac_na: ac_na})
-            print('new log prob', log_probs.shape)
+            # print('new log prob', log_probs.shape)
 
             agent.update_parameters(ob_no, hidden, ac_na, fixed_log_probs, q_n, adv_n)
 
@@ -783,14 +823,23 @@ def main():
     parser.add_argument('--recurrent', '-rec', action='store_true')
     ### process control
     parser.add_argument('--process_in_parallel', '-p', type=lambda x: str(x).lower() == 'true', default=False, help='If trigger to parallel in process of experiment')
+    ### enable debugger
+    parser.add_argument('--enable_debugger', '-debug', type=lambda x: str(x).lower() == 'true', default=False, help='If support for tensorboard debugging')
     args = parser.parse_args()
 
+    # create logdir
     if not(os.path.exists('data')):
         os.makedirs('data')
     logdir = args.exp_name + '_' + args.env_name + '_' + time.strftime("%d-%m-%Y_%H-%M-%S")
     logdir = os.path.join('data', logdir)
     if not(os.path.exists(logdir)):
         os.makedirs(logdir)
+
+    # create result folder. As output folder shouldn't be cleared locally to avoid remove unnecessary saved stuffings
+    if os.path.exists('output'):
+        shutil.rmtree('output')
+    os.makedirs('output')
+    
 
     max_path_length = args.ep_len if args.ep_len > 0 else None
 
@@ -824,6 +873,7 @@ def main():
                 num_tasks=args.num_tasks,
                 l2reg=args.l2reg,
                 recurrent=args.recurrent,
+                enable_debugger=args.enable_debugger
                 )
         # # Awkward hacky process runs, because Tensorflow does not like
         # # repeatedly calling train_PG in the same thread.

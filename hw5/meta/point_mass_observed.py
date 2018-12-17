@@ -37,14 +37,15 @@ class ObservedPointEnv(Env):
                 num_task {[int]} -- [number of task]
                 task_id {[int]} -- [task identifier]
             """
-            onehot_vector = np.zeros(num_task)
+            onehot_vector = np.zeros(num_task, dtype=np.float32)
             onehot_vector[task_id] = 1
             return onehot_vector
 
         idx = np.random.choice(len(self.tasks))
         # task id from target scope
         self._task = self.tasks[idx]
-        self._task_onehot = onehot(self._num_tasks, self._task)
+        # have to put here, as reset_task() will change idx of selected task
+        self._task_oneshot = onehot(self._num_tasks, self._task)
         goals = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
         self._goal = np.array(goals[idx])*10
 
@@ -58,7 +59,8 @@ class ObservedPointEnv(Env):
         Returns:
             [np.array] -- [concatnate state+onehot for task ID]
         """
-        return np.concatenate(np.copy(self._state), self._task_onehot)
+        # print(np.copy(self._state), np.copy(self._task_oneshot))
+        return np.concatenate((np.copy(self._state), np.copy(self._task_oneshot)))
 
     def step(self, action):
         x, y = self._state
@@ -70,6 +72,7 @@ class ObservedPointEnv(Env):
         done = abs(x) < 0.01 and abs(y) < 0.01
         # move to next state
         self._state = self._state + action
+        # print("self._state:", self._state)
         ob = self._get_obs()
         return ob, reward, done, dict()
 

@@ -14,7 +14,9 @@ A = np.genfromtxt('/tmp/expt_1468984536/log.txt',delimiter='\t',dtype=None, name
 A['EpRewMean']
 
 """
-
+## solution: to disable tf.tensorflow's import warning in "File "tensorflow/python/framework/fast_tensor_util.pyx", line 4, in init tensorflow.python.framework.fast_tensor_util"
+import warnings
+warnings.filterwarnings('ignore', message="can't resolve package from __spec__ or __package__, falling back on __name__ and __path__", category=ImportWarning, lineno=219)
 import os.path as osp, shutil, time, atexit, os, subprocess
 import pickle
 import tensorflow as tf

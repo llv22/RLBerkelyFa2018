@@ -27,8 +27,16 @@ class PointEnv(Env):
         #                           ----------PROBLEM 3----------
         #====================================================================================#
         # YOUR CODE HERE
-        x = np.random.uniform(-10, 10)
-        y = np.random.uniform(-10, 10)
+        low, high = -10, 10
+        cutoff = low + (high - low) // 2
+        if is_evaluation:
+            # for testing set : [0, 10)
+            x = np.random.uniform(cutoff, high)
+            y = np.random.uniform(cutoff, high)
+        else:
+            # for training set : [-10, 0)
+            x = np.random.uniform(low, cutoff)
+            y = np.random.uniform(low, cutoff)
         self._goal = np.array([x, y])
 
     def get_all_task_idx(self):

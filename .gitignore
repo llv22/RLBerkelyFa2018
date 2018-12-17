@@ -108,3 +108,6 @@ data/
 PyOpenGL-3.0.1/
 # for output pkl of "python run_dqn_atari.py -t 3 -n 10000000"
 b4e40c52-1f92-47a1-beca-eb847ead7d04.pkl
+
+# homework 5c
+hw5/meta/output
