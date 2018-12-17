@@ -50,6 +50,7 @@ return np.concatenate(np.copy(self._state), self._task_onehot)
 ### 2.1 Problem 1
 ```bash
 python train_policy.py 'pm-obs' --exp_name pm_obs_average_return --history 1 -lr 5e-5 -n 100 --num_tasks 4
+# result in data/pm_obs_average_return_pm-obs_17-12-2018_21-37-03
 ```
 * Debugging for issue of average reward not -50
 ```bash
@@ -57,6 +58,21 @@ python train_policy.py 'pm-obs' --exp_name pm_obs_average_return --history 1 -lr
 tensorboard --logdir /tmp/logdir --host localhost --port 50000 --debugger_port 8000
 python train_policy.py 'pm-obs' --exp_name pm_obs_average_return --history 1 -lr 5e-5 -n 100 --num_tasks 4 -debug True
 ```
+* Result analysis
+```bash
+python plot.py data/pm_obs_average_return_pm-obs_17-12-2018_21-37-03 --legend pm-obs --value AverageReturn FinalReward StdReturn
+```
+1. AverageReturn Figure:  
+
+<img src="data/Problem1/AverageReturn.png" width="60%"/>
+
+2. FinalReward Mean:   
+
+<img src="data/Problem1/FinalReward.png" width="60%"/>
+
+3. StdReturn Mean:   
+
+<img src="data/Problem1/StdReturn.png" width="60%"/>
 
 ### 2.2 Problem 2
 ### 2.3 Problem 3

@@ -18,6 +18,7 @@ class ObservedPointEnv(Env):
     # YOUR CODE SOMEWHERE HERE
     def __init__(self, num_tasks=1):
         self.tasks = [0, 1, 2, 3][:num_tasks]
+        self.task_idx = -1
         # record current task num
         self._num_tasks = num_tasks
         self.reset_task()
@@ -41,13 +42,19 @@ class ObservedPointEnv(Env):
             onehot_vector[task_id] = 1
             return onehot_vector
 
-        idx = np.random.choice(len(self.tasks))
+        ## see https://github.com/berkeleydeeprlcourse/homework/blob/master/hw5/meta/point_mass_observed.py#L29
+        # for evaluation, cycle deterministically through all tasks
+        if is_evaluation:
+            self.task_idx = (self.task_idx + 1) % len(self.tasks)
+        # during training, sample tasks randomly
+        else:
+            self.task_idx = np.random.randint(len(self.tasks))
         # task id from target scope
-        self._task = self.tasks[idx]
+        self._task = self.tasks[self.task_idx]
         # have to put here, as reset_task() will change idx of selected task
         self._task_oneshot = onehot(self._num_tasks, self._task)
         goals = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
-        self._goal = np.array(goals[idx])*10
+        self._goal = np.array(goals[self.task_idx])*10
 
     def reset(self):
         self._state = np.array([0, 0], dtype=np.float32)
