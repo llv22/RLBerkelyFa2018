@@ -195,7 +195,7 @@ class Agent(object):
         self.sess = tf.Session(config=tf_config)
         if self.enable_debugger:
             # enable tf.Session to hook to tensorBoard
-            self.sess = tf_debug.TensorBoardDebugWrapperSession(self.sess, "10.130.200.107:70000")
+            self.sess = tf_debug.TensorBoardDebugWrapperSession(self.sess, "localhost:8000")
         self.sess.__enter__() # equivalent to `with self.sess:`
         tf.global_variables_initializer().run() #pylint: disable=E1101
 

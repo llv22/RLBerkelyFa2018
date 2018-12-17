@@ -51,5 +51,12 @@ return np.concatenate(np.copy(self._state), self._task_onehot)
 ```bash
 python train_policy.py 'pm-obs' --exp_name pm_obs_average_return --history 1 -lr 5e-5 -n 100 --num_tasks 4
 ```
+* Debugging for issue of average reward not -50
+```bash
+# need to use debugger port not so big, 8000 will be OK
+tensorboard --logdir /tmp/logdir --host localhost --port 50000 --debugger_port 8000
+python train_policy.py 'pm-obs' --exp_name pm_obs_average_return --history 1 -lr 5e-5 -n 100 --num_tasks 4 -debug True
+```
+
 ### 2.2 Problem 2
 ### 2.3 Problem 3
