@@ -47,8 +47,9 @@ return np.concatenate(np.copy(self._state), self._task_onehot)
 ### Problem 3: Generalization
 
 ## 2. Deliverables
-### 2.1 Problem 1
+### 2.1 Problem 1 
 ```bash
+# training with only Multilayer Perceptron for predicting result
 python train_policy.py 'pm-obs' --exp_name pm_obs_average_return --history 1 -lr 5e-5 -n 100 --num_tasks 4
 # result in data/pm_obs_average_return_pm-obs_17-12-2018_21-37-03
 ```
@@ -75,4 +76,14 @@ python plot.py data/pm_obs_average_return_pm-obs_17-12-2018_21-37-03 --legend pm
 <img src="data/Problem1/StdReturn.png" width="60%"/>
 
 ### 2.2 Problem 2
+```bash
+## 1. recurrent neural network
+python train_policy.py 'pm' --exp_name pm_recurrent_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60
+# result in 
+
+## 2. feed-forward neural network
+python train_policy.py 'pm' --exp_name pm_mlp_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60 -rec
+# result in 
+```
+
 ### 2.3 Problem 3
