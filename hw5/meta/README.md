@@ -77,13 +77,29 @@ python plot.py data/pm_obs_average_return_pm-obs_17-12-2018_21-37-03 --legend pm
 
 ### 2.2 Problem 2
 ```bash
-## 1. recurrent neural network
-python train_policy.py 'pm' --exp_name pm_recurrent_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60
-# result in 
+## 1. feed-forward neural network
+python train_policy.py 'pm' --exp_name pm_mlp_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60
+# result in data/pm_mlp_history100_pm_18-12-2018_13-05-16
 
-## 2. feed-forward neural network
-python train_policy.py 'pm' --exp_name pm_mlp_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60 -rec
+## 2. recurrent neural network
+python train_policy.py 'pm' --exp_name pm_recurrent_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60 -rec
 # result in 
 ```
+
+* Result analysis
+```bash
+python plot.py data/pm_mlp_history100_pm_18-12-2018_13-05-16 --legend pm_mlp_his100 pm_recurrent_his100 --value AverageReturn FinalReward StdReturn
+```
+1. AverageReturn Figure:  
+
+<img src="data/Problem1/AverageReturn.png" width="60%"/>
+
+2. FinalReward Mean:   
+
+<img src="data/Problem1/FinalReward.png" width="60%"/>
+
+3. StdReturn Mean:   
+
+<img src="data/Problem1/StdReturn.png" width="60%"/>
 
 ### 2.3 Problem 3
