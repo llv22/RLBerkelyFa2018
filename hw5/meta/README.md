@@ -76,19 +76,31 @@ python plot.py data/pm_obs_average_return_pm-obs_17-12-2018_21-37-03 --legend pm
 <img src="data/Problem1/StdReturn.png" width="60%"/>
 
 ### 2.2 Problem 2
+
+* For single thread process [Too slow, then use multithread to speed-up]
 ```bash
 ## 1. feed-forward neural network
 python train_policy.py 'pm' --exp_name pm_mlp_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60
 # result in data/pm_mlp_history100_pm_18-12-2018_13-05-16
 
-## 2. recurrent neural network
+## 2. recurrent neural network [Too slow, just skip then run when back to home]
 python train_policy.py 'pm' --exp_name pm_recurrent_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60 -rec
+# result in 
+```
+* For multi-thread process
+```bash
+## 1. feed-forward neural network
+python train_policy.py 'pm' --exp_name pm_mlp_history100_tnum4 --history 100 --discount 0.90 -lr 5e-4 -n 60 -tnum 4
+# result in data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13
+
+## 2. recurrent neural network
+python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4 --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec
 # result in 
 ```
 
 * Result analysis
 ```bash
-python plot.py data/pm_mlp_history100_pm_18-12-2018_13-05-16 --legend pm_mlp_his100 pm_recurrent_his100 --value AverageReturn FinalReward StdReturn
+python plot.py data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13 --legend pm_mlp_his100_tnum4 pm_recurrent_his100_tnum4 --value AverageReturn FinalReward StdReturn
 ```
 1. AverageReturn Figure:  
 

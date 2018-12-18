@@ -169,7 +169,7 @@ def setup_logger(logdir, locals_):
 
 
 class Agent(object):
-    def __init__(self, computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args):
+    def __init__(self, computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args, parallel_args):
         super(Agent, self).__init__()
         self.ob_dim = computation_graph_args['ob_dim']
         self.ac_dim = computation_graph_args['ac_dim']
@@ -198,12 +198,13 @@ class Agent(object):
         self.normalize_advantages = estimate_return_args['normalize_advantages']
 
         self.enable_debugger = debugger_args['enable_debugger']
+        self.tf_thread_num = parallel_args['tf_thread_num']
 
         self.replay_buffer = ReplayBuffer(100000, [self.history, self.meta_ob_dim], [self.ac_dim], self.gru_size, self.task_dim)
         self.val_replay_buffer = ReplayBuffer(100000, [self.history, self.meta_ob_dim], [self.ac_dim], self.gru_size, self.task_dim)
 
     def init_tf_sess(self):
-        tf_config = tf.ConfigProto(inter_op_parallelism_threads=1, intra_op_parallelism_threads=1)
+        tf_config = tf.ConfigProto(inter_op_parallelism_threads=self.tf_thread_num, intra_op_parallelism_threads=self.tf_thread_num)
         tf_config.gpu_options.allow_growth = True # may need if using GPU
         self.sess = tf.Session(config=tf_config)
         if self.enable_debugger:
@@ -651,6 +652,7 @@ def train_PG(
         l2reg,
         recurrent,
         enable_debugger,
+        tf_thread_num,
         ):
 
     start = time.time()
@@ -717,7 +719,11 @@ def train_PG(
         'enable_debugger': enable_debugger,
     }
 
-    agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args)
+    parallel_args = {
+        'tf_thread_num': tf_thread_num,
+    }
+
+    agent = Agent(computation_graph_args, sample_trajectory_args, estimate_return_args, debugger_args, parallel_args)
 
     # build computation graph
     agent.build_computation_graph()
@@ -844,6 +850,8 @@ def main():
     parser.add_argument('--process_in_parallel', '-p', type=lambda x: str(x).lower() == 'true', default=False, help='If trigger to parallel in process of experiment')
     ### enable debugger
     parser.add_argument('--enable_debugger', '-debug', type=lambda x: str(x).lower() == 'true', default=False, help='If support for tensorboard debugging')
+    ### enable tensorflow threading number
+    parser.add_argument('--tf_thread_num', '-tnum', type=int, default=1, help='Thread number in Tensorflow')
     args = parser.parse_args()
 
     # create logdir
@@ -891,7 +899,8 @@ def main():
                 num_tasks=args.num_tasks,
                 l2reg=args.l2reg,
                 recurrent=args.recurrent,
-                enable_debugger=args.enable_debugger
+                enable_debugger=args.enable_debugger,
+                tf_thread_num=args.tf_thread_num,
                 )
         # # Awkward hacky process runs, because Tensorflow does not like
         # # repeatedly calling train_PG in the same thread.
