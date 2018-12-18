@@ -653,6 +653,8 @@ def train_PG(
         recurrent,
         enable_debugger,
         tf_thread_num,
+        test_train_shift,
+        skew_to_train,
         ):
 
     start = time.time()
@@ -671,6 +673,10 @@ def train_PG(
             'pm-obs': ObservedPointEnv,
             }
     env = envs[env_name](num_tasks)
+    if hasattr(env, 'test_train_shift'):
+        env.test_train_shift = test_train_shift
+        if hasattr(env, 'skew_to_train'):
+            env.skew_to_train = skew_to_train
 
     # Set random seeds
     tf.set_random_seed(seed)
@@ -852,6 +858,10 @@ def main():
     parser.add_argument('--enable_debugger', '-debug', type=lambda x: str(x).lower() == 'true', default=False, help='If support for tensorboard debugging')
     ### enable tensorflow threading number
     parser.add_argument('--tf_thread_num', '-tnum', type=int, default=1, help='Thread number in Tensorflow')
+    ### If env of test/train distribution don't shift
+    parser.add_argument('--test_train_shift', '-ttshift', action='store_true', help='With -ttshit to activate test/train distribution shift, otherwise deactivate')
+    ### If train sample is skewed
+    parser.add_argument('--skew_to_train', '-sktotrain', action='store_true', help='With -sktotrain to guarantee training sample with more, otherwise with less')
     args = parser.parse_args()
 
     # create logdir
@@ -901,6 +911,8 @@ def main():
                 recurrent=args.recurrent,
                 enable_debugger=args.enable_debugger,
                 tf_thread_num=args.tf_thread_num,
+                test_train_shift=args.test_train_shift,
+                skew_to_train=args.skew_to_train,
                 )
         # # Awkward hacky process runs, because Tensorflow does not like
         # # repeatedly calling train_PG in the same thread.

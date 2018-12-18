@@ -77,16 +77,6 @@ python plot.py data/pm_obs_average_return_pm-obs_17-12-2018_21-37-03 --legend pm
 
 ### 2.2 Problem 2
 
-* For single thread process [Too slow, then use multithread to speed-up]
-```bash
-## 1. feed-forward neural network
-python train_policy.py 'pm' --exp_name pm_mlp_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60
-# result in data/pm_mlp_history100_pm_18-12-2018_13-05-16 or data/pm_mlp_history100_pm_18-12-2018_15-15-14 (Only Iteration 59)
-
-## 2. recurrent neural network [Too slow, just skip then run when back to home]
-python train_policy.py 'pm' --exp_name pm_recurrent_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60 -rec
-# result in 
-```
 * For 4 threading processing
 ```bash
 ## 1. feed-forward neural network - only Iteration 59
@@ -120,8 +110,20 @@ python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum2 --history 1
 # result in 
 ```
 
+* For single thread process [Too slow, then use multithread to speed-up]
+```bash
+## 1. feed-forward neural network
+python train_policy.py 'pm' --exp_name pm_mlp_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60
+# result in data/pm_mlp_history100_pm_18-12-2018_13-05-16 or data/pm_mlp_history100_pm_18-12-2018_15-15-14 (Only Iteration 59)
+
+## 2. recurrent neural network [Too slow, just skip then run when back to home]
+python train_policy.py 'pm' --exp_name pm_recurrent_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60 -rec
+# result in 
+```
+
 * Result analysis
 ```bash
+# 4 threading of parallelization
 python plot.py data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13 data/pm_recurrent_history100_tnum4_pm_18-12-2018_15-25-31 --legend pm_mlp_his100_tnum4 pm_recurrent_his100_tnum4 --value AverageReturn FinalReward StdReturn MaxReturn
 ```
 1. AverageReturn Figure:  
@@ -141,3 +143,34 @@ python plot.py data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13 data/pm_recur
 <img src="data/Problem2/MaxReturn.png" width="60%"/>
 
 ### 2.3 Problem 3
+* For 4 threading processing with training/testing distribution shift
+```bash
+## 1. recurrent neural network
+python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4_ttshift --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift
+# result in 
+
+## 2. recurrent neural network
+python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift
+# result in 
+```
+
+* Result analysis
+```bash
+# 4 threading of parallelization
+python plot.py  --legend pm_recurrent_history100_tnum4_ttshift pm_recurrent_history150_tnum4_ttshift --value AverageReturn FinalReward ValAverageReturn ValFinalReward
+```
+1. AverageReturn Figure:  
+
+<img src="data/Problem3/AverageReturn.png" width="60%"/>
+
+2. FinalReward Mean:   
+
+<img src="data/Problem3/FinalReward.png" width="60%"/>
+
+3. ValAverageReturn Mean:   
+
+<img src="data/Problem3/ValAverageReturn.png" width="60%"/>
+
+4. ValFinalReward Mean:   
+
+<img src="data/Problem3/ValFinalReward.png" width="60%"/>
