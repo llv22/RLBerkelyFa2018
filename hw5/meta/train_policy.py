@@ -121,7 +121,7 @@ def build_policy(x, h, output_size, scope, n_layers, size, gru_size, recurrent=T
         else:
             x = tf.reshape(x, (-1, x.get_shape()[1]*x.get_shape()[2]))
             x = build_mlp(x, gru_size, scope, n_layers + 1, size, activation=activation, output_activation=activation)
-        print("before final dense x = ", x)
+        # print("before final dense x = ", x)
         x = tf.layers.dense(x, output_size, activation=output_activation, kernel_initializer=tf.initializers.truncated_normal(mean=0.0, stddev=0.01), bias_initializer=tf.zeros_initializer(), name='decoder')
     return x, h
 
