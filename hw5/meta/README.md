@@ -81,37 +81,63 @@ python plot.py data/pm_obs_average_return_pm-obs_17-12-2018_21-37-03 --legend pm
 ```bash
 ## 1. feed-forward neural network
 python train_policy.py 'pm' --exp_name pm_mlp_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60
-# result in data/pm_mlp_history100_pm_18-12-2018_13-05-16
+# result in data/pm_mlp_history100_pm_18-12-2018_13-05-16 or data/pm_mlp_history100_pm_18-12-2018_15-15-14 (Only Iteration 59)
 
 ## 2. recurrent neural network [Too slow, just skip then run when back to home]
 python train_policy.py 'pm' --exp_name pm_recurrent_history100 --history 100 --discount 0.90 -lr 5e-4 -n 60 -rec
 # result in 
 ```
-* For multi-thread process
+* For 4 threading processing
 ```bash
-## 1. feed-forward neural network
+## 1. feed-forward neural network - only Iteration 59
 python train_policy.py 'pm' --exp_name pm_mlp_history100_tnum4 --history 100 --discount 0.90 -lr 5e-4 -n 60 -tnum 4
 # result in data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13
 
 ## 2. recurrent neural network
 python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4 --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec
+# result in data/pm_recurrent_history100_tnum4_pm_18-12-2018_15-25-31
+```
+
+* For 3 threading processing
+```bash
+## 1. feed-forward neural network - only Iteration 59
+python train_policy.py 'pm' --exp_name pm_mlp_history100_tnum3 --history 100 --discount 0.90 -lr 5e-4 -n 60 -tnum 3
+# result in data/pm_mlp_history100_tnum3_pm_18-12-2018_14-56-53
+
+## 2. recurrent neural network
+python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum3 --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 3 -rec
+# result in 
+```
+
+* For 2 threading processing
+```bash
+## 1. feed-forward neural network - only Iteration 59
+python train_policy.py 'pm' --exp_name pm_mlp_history100_tnum2 --history 100 --discount 0.90 -lr 5e-4 -n 60 -tnum 2
+# result in data/pm_mlp_history100_tnum2_pm_18-12-2018_15-07-02
+
+## 2. recurrent neural network
+python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum2 --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 2 -rec
 # result in 
 ```
 
 * Result analysis
 ```bash
-python plot.py data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13 --legend pm_mlp_his100_tnum4 pm_recurrent_his100_tnum4 --value AverageReturn FinalReward StdReturn
+python plot.py data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13 data/pm_recurrent_history100_tnum4_pm_18-12-2018_15-25-31 --legend pm_mlp_his100_tnum4 pm_recurrent_his100_tnum4 --value AverageReturn FinalReward StdReturn MaxReturn
 ```
 1. AverageReturn Figure:  
 
-<img src="data/Problem1/AverageReturn.png" width="60%"/>
+<img src="data/Problem2/AverageReturn.png" width="60%"/>
 
 2. FinalReward Mean:   
 
-<img src="data/Problem1/FinalReward.png" width="60%"/>
+<img src="data/Problem2/FinalReward.png" width="60%"/>
 
 3. StdReturn Mean:   
 
-<img src="data/Problem1/StdReturn.png" width="60%"/>
+<img src="data/Problem2/StdReturn.png" width="60%"/>
+
+4. MaxReturn Mean:   
+
+<img src="data/Problem2/MaxReturn.png" width="60%"/>
 
 ### 2.3 Problem 3
