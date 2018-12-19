@@ -157,7 +157,7 @@ $$ d2 = uniform(-\infty, -1) $$
 2. with d1 and d2, we can define region 1 and region 2 as follow:  
 
 $$ region1 = \{ (x, y)| \forall x, -10 \geq y < \max(0, d1 \cdot x, d2 \cdot x ) \}$$
-$$ region2 = \{ (x, y)| (x \leq 0 \land d1 \cdot x \leq y \leq 10) \lor (x > 0 \landd2 \cdot x \leq y \leq 10) \}$$
+$$ region2 = \{ (x, y)| (x \leq 0 \land d1 \cdot x \leq y \leq 10) \lor (x > 0 \land d2 \cdot x \leq y \leq 10) \}$$
 
 3. Easy to know region1 is much larger than region 2. I define skew case as follow:
 
