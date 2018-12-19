@@ -16,6 +16,8 @@ import gym
 import logz
 import scipy.signal
 import os
+# just avoid mac run on gpu, as memory move is quite costy
+os.environ["CUDA_VISIBLE_DEVICES"]='-1'
 import time
 import inspect
 from multiprocessing import Process

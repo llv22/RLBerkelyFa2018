@@ -184,7 +184,7 @@ python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4_ttshift_skt
 ## 2. recurrent neural network with history 150
 ## skew to testing
 python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift
-# result in 
+# result in data/pm_recurrent_history150_tnum4_ttshift_pm_19-12-2018_14-01-03 [2018-12-19 14:01:05.707959 - 2018-12-19 18:16:05.707959]
 
 ## skew to training [on AWS instance]
 python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift_sktotrain --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift -sktotrain
