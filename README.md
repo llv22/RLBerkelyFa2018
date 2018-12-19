@@ -1,8 +1,9 @@
 # RLBerkelyFa2018
 Homework of CS 294-112 at UC Berkeley Deep Reinforcement Learning, refer to http://rail.eecs.berkeley.edu/deeprlcourse/
 
-
 ## Summary
+
+**Overall status**: Finished Early Dec of 2018
 
 | Assignment | Descrirption         |  Code          | Key Points               | Summary   |
 |:----------:|:--------------------:|:------------------------:|:------------------------:|:---------:|
