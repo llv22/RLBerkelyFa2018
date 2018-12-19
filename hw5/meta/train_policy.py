@@ -860,7 +860,7 @@ def main():
     parser.add_argument('--tf_thread_num', '-tnum', type=int, default=1, help='Thread number in Tensorflow')
     ### If env of test/train distribution don't shift
     parser.add_argument('--test_train_shift', '-ttshift', action='store_true', help='With -ttshit to activate test/train distribution shift, otherwise deactivate')
-    ### If train sample is skewed
+    ### If train sample is skewed, default is false, not skew to training, will be ugly result
     parser.add_argument('--skew_to_train', '-sktotrain', action='store_true', help='With -sktotrain to guarantee training sample with more, otherwise with less')
     args = parser.parse_args()
 

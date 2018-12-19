@@ -145,19 +145,34 @@ python plot.py data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13 data/pm_recur
 ### 2.3 Problem 3
 * For 4 threading processing with training/testing distribution shift
 ```bash
-## 1. recurrent neural network
+# to run together in a batch
+python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4_ttshift_sktotrain --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift -sktotrain && python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift && python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift_sktotrain --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift -sktotrain
+```
+
+```bash
+## 1. recurrent neural network with history 100 
+## skew to testing
 python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4_ttshift --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift
+# result in data/pm_recurrent_history100_tnum4_ttshift_pm_18-12-2018_23-44-46 [2018-12-18 23:04:58.116510 to 2018-12-19 06:30:04.704662]
+
+## skew to training
+python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4_ttshift_sktotrain --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift -sktotrain
 # result in 
 
-## 2. recurrent neural network
+## 2. recurrent neural network with history 150
+## skew to testing
 python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift
+# result in 
+
+## skew to training
+python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift_sktotrain --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift -sktotrain
 # result in 
 ```
 
 * Result analysis
 ```bash
 # 4 threading of parallelization
-python plot.py  --legend pm_recurrent_history100_tnum4_ttshift pm_recurrent_history150_tnum4_ttshift --value AverageReturn FinalReward ValAverageReturn ValFinalReward
+python plot.py  --legend pm_recurrent_history100_tnum4_ttshift pm_recurrent_history100_tnum4_ttshift_sktotrain pm_recurrent_history150_tnum4_ttshift pm_recurrent_history150_tnum4_ttshift_sktotrain --value AverageReturn FinalReward ValAverageReturn ValFinalReward
 ```
 1. AverageReturn Figure:  
 
