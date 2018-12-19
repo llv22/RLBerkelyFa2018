@@ -179,7 +179,7 @@ python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4_ttshift --h
 
 ## skew to training
 python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4_ttshift_sktotrain --history 100 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift -sktotrain
-# result in 
+# result in data/pm_recurrent_history100_tnum4_ttshift_sktotrain_pm_19-12-2018_10-06-16
 
 ## 2. recurrent neural network with history 150
 ## skew to testing
@@ -191,23 +191,44 @@ python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift_skt
 # result in 
 ```
 
-* Result analysis
+* Result analysis for 4 thread with history100
 ```bash
-# 4 threading of parallelization
-python plot.py  --legend pm_recurrent_history100_tnum4_ttshift pm_recurrent_history100_tnum4_ttshift_sktotrain pm_recurrent_history150_tnum4_ttshift pm_recurrent_history150_tnum4_ttshift_sktotrain --value AverageReturn FinalReward ValAverageReturn ValFinalReward
+# 4 threading of parallelization 
+python plot.py data/pm_recurrent_history100_tnum4_ttshift_pm_18-12-2018_23-44-46 data/pm_recurrent_history100_tnum4_ttshift_sktotrain_pm_19-12-2018_10-06-16 --legend pm_recurrent_history100_tnum4_ttshift pm_recurrent_history100_tnum4_ttshift_sktotrain --value AverageReturn FinalReward ValAverageReturn ValFinalReward
 ```
 1. AverageReturn Figure:  
 
-<img src="data/Problem3/AverageReturn.png" width="60%"/>
+<img src="data/Problem3.1/AverageReturn.png" width="60%"/>
 
 2. FinalReward Mean:   
 
-<img src="data/Problem3/FinalReward.png" width="60%"/>
+<img src="data/Problem3.1/FinalReward.png" width="60%"/>
 
 3. ValAverageReturn Mean:   
 
-<img src="data/Problem3/ValAverageReturn.png" width="60%"/>
+<img src="data/Problem3.1/ValAverageReturn.png" width="60%"/>
 
 4. ValFinalReward Mean:   
 
-<img src="data/Problem3/ValFinalReward.png" width="60%"/>
+<img src="data/Problem3.1/ValFinalReward.png" width="60%"/>
+
+* Result analysis for 4 thread with history150
+```bash
+# 4 threading of parallelization 
+python plot.py  --legend pm_recurrent_history150_tnum4_ttshift pm_recurrent_history150_tnum4_ttshift_sktotrain --value AverageReturn FinalReward ValAverageReturn ValFinalReward
+```
+1. AverageReturn Figure:  
+
+<img src="data/Problem3.2/AverageReturn.png" width="60%"/>
+
+2. FinalReward Mean:   
+
+<img src="data/Problem3.2/FinalReward.png" width="60%"/>
+
+3. ValAverageReturn Mean:   
+
+<img src="data/Problem3.2/ValAverageReturn.png" width="60%"/>
+
+4. ValFinalReward Mean:   
+
+<img src="data/Problem3.2/ValFinalReward.png" width="60%"/>
