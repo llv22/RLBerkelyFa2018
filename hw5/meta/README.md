@@ -147,6 +147,8 @@ python plot.py data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13 data/pm_recur
 
 <img src="graph.png" width="60%"/>
 
+generated graph from https://rechneronline.de/function-graphs/
+
 1. split region via d1 and d2 slope, d1 is between $[1, \infty]$, d2 is between $[-\infty, -1]$
 
 $$ d1 = uniform(1, \infty) $$
