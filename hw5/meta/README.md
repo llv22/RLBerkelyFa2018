@@ -143,6 +143,26 @@ python plot.py data/pm_mlp_history100_tnum4_pm_18-12-2018_14-42-13 data/pm_recur
 <img src="data/Problem2/MaxReturn.png" width="60%"/>
 
 ### 2.3 Problem 3
+* Training/Testing disjoint region distribution (With Skew to training/testing region)
+
+<img src="graph.png" width="60%"/>
+
+1. split region via d1 and d2 slope, d1 is between $[1, \infty]$, d2 is between $[-\infty, -1]$
+
+$$ d1 = uniform(1, \infty) $$
+$$ d2 = uniform(-\infty, -1) $$
+
+2. with d1 and d2, we can define region 1 and region 2 as follow:  
+
+$$ region1 = \{(x, y)| \forall x, y < \max(0, d1 \cdot x, d2 \cdot x ) \}$$
+$$ region2 = \{(x, y)| (x \leq 0 \land y \geq d1 \cdot x) \lor (x > 0 \land y > d2 \cdot x)\}$$
+
+3. Easy to know region1 is much larger than region 2. I define skew case as follow:
+
+    -  When goal (x, y) is sampled in region1 for training case, it's skewed to training (means testing region is much smaller than training => should have better generalization, as RL see more case) 
+
+    -  When goal (x, y) is sampled in region2(lower region down to region1) for training case, it's skewed to training (means testing region is much smaller than training => should have less generalization, as RL see less case) 
+
 * For 4 threading processing with training/testing distribution shift
 ```bash
 # to run together in a batch
@@ -164,7 +184,7 @@ python train_policy.py 'pm' --exp_name pm_recurrent_history100_tnum4_ttshift_skt
 python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift
 # result in 
 
-## skew to training
+## skew to training [on AWS instance]
 python train_policy.py 'pm' --exp_name pm_recurrent_history150_tnum4_ttshift_sktotrain --history 150 --discount 0.90 -lr 5e-4 -n 60  -tnum 4 -rec -ttshift -sktotrain
 # result in 
 ```
